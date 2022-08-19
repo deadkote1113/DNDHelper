@@ -1,0 +1,18 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+	foreach (var resource in stringResources)
+	{
+#>
+"<#= resource.Key #>" = "<#= resource.Value #>";
+<#
+	}
+#>
+
+<#+
+	private IEnumerable<KeyValuePair<string, string>> stringResources;
+	internal StringsTemplate(IEnumerable<KeyValuePair<string, string>> stringResources)
+	{
+		this.stringResources = stringResources;
+	}
+#>

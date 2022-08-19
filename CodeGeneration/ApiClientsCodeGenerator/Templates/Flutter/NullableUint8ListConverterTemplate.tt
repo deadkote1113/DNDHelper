@@ -1,0 +1,22 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Flutter" #>
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:json_annotation/json_annotation.dart';
+
+class NullableUint8ListConverter extends JsonConverter<Uint8List?, String?> {
+  const NullableUint8ListConverter();
+
+  @override
+  Uint8List? fromJson(String? json) => json == null ? null : base64Decode(json);
+
+  @override
+  String? toJson(Uint8List? object) => object == null ? null : base64Encode(object);
+}
+<#+
+	private FlutterConverter converter;
+	internal NullableUint8ListConverterTemplate(FlutterConverter converter)
+	{
+		this.converter = converter;
+	}
+#>

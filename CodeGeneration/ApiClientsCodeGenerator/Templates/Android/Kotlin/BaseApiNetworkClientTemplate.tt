@@ -1,0 +1,179 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Android" #>
+package <#= converter.Settings.ApiClientsPackage #>.network
+
+import java.io.*
+import java.net.*
+import java.util.*
+import java.util.concurrent.*
+import java.lang.reflect.*
+import android.os.*
+import kotlin.coroutines.*
+import kotlin.reflect.full.*
+import kotlinx.coroutines.*
+import com.google.gson.*
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.logging.HttpLoggingInterceptor
+<#
+	if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Reactive))
+	{
+#>
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.*
+<#
+	}
+#>
+import <#= converter.Settings.ApiClientsPackage #>.network.adapters.*
+import <#= converter.Settings.ApiClientsPackage #>.network.other.*
+import <#= converter.Settings.ApiClientsPackage #>.interfaces.*
+
+open class BaseApiNetworkClient(val configuration: ApiNetworkClientConfiguration = ApiNetworkClientConfiguration.default) {
+	companion object {
+		private val commonHttpClient = OkHttpClient()
+
+		private fun createSerializer() = GsonBuilder()
+			.registerTypeAdapter(Date::class.java, UnixDateAdapter())
+			.registerTypeAdapter(Date::class.createType(nullable = true).javaClass, UnixDateAdapter())
+			.registerTypeAdapter(ByteArray::class.java, ByteArrayAdapter())
+			.registerTypeAdapter(ByteArray::class.createType(nullable = true).javaClass, ByteArrayAdapter())
+			.create()
+
+		fun <T> serialize(value: T): String = createSerializer().toJson(value)
+
+		fun <T> serialize(value: T, type: Type): String = createSerializer().toJson(value, type)
+
+		fun <T> deserialize(s: String, type: Type): T = createSerializer().fromJson(s, type)
+	}
+
+<#
+	if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Asynchronous))
+	{
+#>
+	protected suspend fun <TRequest, TResponse> makeRequest(method: String, relativeUrl: String, request: TRequest?, requestType: Type?, responseType: Type, accessToken: String?): TResponse = withContext(Dispatchers.Default) {
+		val networkRequest = prepareNetworkRequest(method, relativeUrl, request, requestType, accessToken)
+		return@withContext suspendCoroutine<TResponse> { continuation ->
+			createHttpClient().newCall(networkRequest).enqueue(object : Callback {
+				override fun onFailure(call: Call, e: IOException) {
+					continuation.resumeWithException(e)
+				}
+
+				override fun onResponse(call: Call, response: Response) {
+					try {
+						val result = processNetworkResponse<TResponse>(response, responseType)
+						continuation.resume(result)
+					} catch (ex: Exception) {
+						continuation.resumeWithException(ex)
+					}
+				}
+			})
+		}
+	}
+
+	protected fun <TRequest, TResponse> makeRequest(method: String, relativeUrl: String, request: TRequest?, requestType: Type?, responseType: Type, callback: RequestCallback<TResponse>?, accessToken: String?) {
+		val networkRequest = prepareNetworkRequest(method, relativeUrl, request, requestType, accessToken)
+		createHttpClient().newCall(networkRequest).enqueue(object : Callback {
+			override fun onFailure(call: Call, e: IOException) {
+				executeCallbackOnMainThread(callback, null, e)
+			}
+
+			override fun onResponse(call: Call, response: Response) {
+				try {
+					val result = processNetworkResponse<TResponse>(response, responseType)
+					executeCallbackOnMainThread(callback, result, null)
+				} catch (ex: Exception) {
+					executeCallbackOnMainThread(callback, null, ex)
+				}
+			}
+		})
+	}
+
+<#
+	}
+	if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Reactive))
+	{
+#>
+	protected fun <TRequest, TResponse> makeRequestRx(method: String, relativeUrl: String, request: TRequest?, requestType: Type?, responseType: Type, accessToken: String?): Observable<TResponse> where TResponse: Any {
+		return Observable.fromCallable<TResponse> {
+			makeRequestSync(method, relativeUrl, request, requestType, responseType, accessToken)
+		}.subscribeOn(Schedulers.io())
+	}
+
+<#
+	}
+	if (converter.Settings.ApiClientMethodTypes != ApiClientMethodType.Asynchronous)
+	{
+#>
+	protected fun <TRequest, TResponse> makeRequestSync(method: String, relativeUrl: String, request: TRequest?, requestType: Type?, responseType: Type, accessToken: String?): TResponse {
+		val networkRequest = prepareNetworkRequest(method, relativeUrl, request, requestType, accessToken)
+		val networkResponse = createHttpClient().newCall(networkRequest).execute()
+		return processNetworkResponse(networkResponse, responseType)
+	}
+
+<#
+	}
+#>
+	protected fun buildQueryAddress(pattern: String, queryParameters: List<Pair<String, String?>>): String {
+		var queryString = ""
+		val segments = pattern.split('/').toMutableList()
+		for ((name, value) in queryParameters) {
+			if (value == null) {
+				continue
+			}
+			val segmentIndex = segments.indexOfFirst { it == "{${name}}" }
+			if (segmentIndex != -1) {
+				segments[segmentIndex] = URLEncoder.encode(value, "utf-8")
+			} else {
+				queryString += (if (queryString.isEmpty()) "?" else "&") + URLEncoder.encode(name, "utf-8") + "=" + URLEncoder.encode(value, "utf-8")
+			}
+		}
+		return segments.joinToString("/") + queryString
+	}
+
+	private fun <TRequest> prepareNetworkRequest(method: String, relativeUrl: String, request: TRequest?, requestType: Type?, accessToken: String?): Request {
+		val mediaType = "application/json; charset=utf-8".toMediaType()
+		val requestBody = (if (request == null || requestType == null) "" else serialize(request, requestType)).toRequestBody(mediaType)
+		var builder = Request.Builder()
+			.url(configuration.getRequestAddress(relativeUrl))
+			.method(method, if (method == "GET" || method == "DELETE") null else requestBody)
+			.cacheControl(CacheControl.FORCE_NETWORK)
+		if (accessToken != null) {
+			builder = builder.addHeader("Authorization", "Bearer $accessToken")
+		}
+		return builder.build()
+	}
+
+	private fun <TResponse> processNetworkResponse(response: Response, responseType: Type): TResponse {
+		val responseBody = response.body?.string() ?: ""
+		try {
+			return deserialize(responseBody, responseType) ?: throw IllegalArgumentException("Can not deserialize response body")
+		}
+		catch (ex: Exception) {
+			if (!response.isSuccessful) {
+				throw HttpRequestException(response.request.url.toString(), response.code, responseBody)
+			}
+			throw ex
+		}
+	}
+
+	private fun <TResponse> executeCallbackOnMainThread(callback: RequestCallback<TResponse>?, response: TResponse?, ex: Exception?) {
+		if (callback != null) {
+			Handler(Looper.getMainLooper()).post { callback.handle(response, ex) }
+		}
+	}
+
+	private fun createHttpClient() = commonHttpClient.newBuilder()
+		.addInterceptor(HttpLoggingInterceptor().setLevel(if (configuration.enableLogging) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE))
+		.connectTimeout(configuration.timeout, TimeUnit.SECONDS)
+		.writeTimeout(configuration.timeout, TimeUnit.SECONDS)
+		.readTimeout(configuration.timeout, TimeUnit.SECONDS)
+		.build()
+}
+<#+
+	private KotlinAndroidConverter converter;
+	internal BaseApiNetworkClientTemplate(KotlinAndroidConverter converter)
+	{
+		this.converter = converter;
+	}
+#>

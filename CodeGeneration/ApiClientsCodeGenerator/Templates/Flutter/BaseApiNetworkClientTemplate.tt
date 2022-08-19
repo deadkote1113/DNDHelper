@@ -1,0 +1,77 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Flutter" #>
+import "dart:convert";
+import "package:flutter/foundation.dart";
+import "package:http/http.dart" as http;
+import "api_network_client_configuration.dart";
+import 'other/http_request_exception.dart';
+
+class BaseApiNetworkClient {
+  final ApiNetworkClientConfiguration configuration;
+
+  BaseApiNetworkClient([ApiNetworkClientConfiguration? configuration])
+      : configuration = configuration ?? ApiNetworkClientConfiguration.main;
+
+  Future<TResponse> makeRequest<TRequest, TResponse>(
+      String method,
+      String relativeUrl,
+      TRequest? request,
+      dynamic Function(TRequest)? toRequestJson,
+      TResponse Function(dynamic) fromResponseJson,
+      String? accessToken) async {
+    final url = Uri.parse(configuration.getRequestAddress(relativeUrl));
+    final requestBody =
+        request != null && toRequestJson != null ? jsonEncode(await compute(toRequestJson, request)) : null;
+    if (configuration.printRequest) {
+      debugPrint("Sending $method request to $url, body=$requestBody");
+    }
+    var headers = {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'};
+    if (accessToken != null) {
+      headers["Authorization"] = "Bearer $accessToken";
+    }
+    var httpRequest = http.Request(method, url);
+    if (requestBody != null) {
+      httpRequest.body = requestBody;
+    }
+    httpRequest.headers.addAll(headers);
+    final response = await http.Response.fromStream(await httpRequest.send());
+    if (configuration.printResponse) {
+      debugPrint("Request to $url completed with status code ${response.statusCode}, body=${response.body}");
+    }
+    try {
+      final responseMap = jsonDecode(response.body);
+      return await compute(fromResponseJson, responseMap);
+    } catch (ex) {
+      if (response.statusCode >= 300) {
+        throw HttpRequestException(url.toString(), response.statusCode, response.body);
+      }
+      rethrow;
+    }
+  }
+
+  String buildQueryAddress(String pattern, List<MapEntry<String, String?>> queryParameters) {
+    var queryString = "";
+    final segments = pattern.split('/');
+    for (final item in queryParameters) {
+      if (item.value == null) {
+        continue;
+      }
+      final segmentIndex = segments.indexOf("{${item.key}}");
+      final encodedName = Uri.encodeComponent(item.key);
+      final encodedValue = Uri.encodeComponent(item.value!);
+      if (segmentIndex != -1) {
+        segments[segmentIndex] = encodedValue;
+      } else {
+        queryString += (queryString.isEmpty ? "?" : "&") + encodedName + "=" + encodedValue;
+      }
+    }
+    return segments.join("/") + queryString;
+  }
+}
+<#+
+	private FlutterConverter converter;
+	internal BaseApiNetworkClientTemplate(FlutterConverter converter)
+	{
+		this.converter = converter;
+	}
+#>

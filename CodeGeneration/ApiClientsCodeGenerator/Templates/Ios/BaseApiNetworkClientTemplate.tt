@@ -1,0 +1,196 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Ios" #>
+<#
+	if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Reactive))
+	{
+#>
+import RxSwift
+
+<#
+	}
+#>
+public class BaseApiNetworkClient {
+	var configuration: ApiNetworkClientConfiguration
+	
+	public init(_ configuration: ApiNetworkClientConfiguration? = nil) {
+		self.configuration = configuration ?? ApiNetworkClientConfiguration.default
+	}
+	
+<#
+	if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Asynchronous))
+	{
+#>
+	func makeRequestAsync<TRequest: Encodable, TResponse: Decodable>(method: String, address: String, request: TRequest?, accessToken: String?, callback: ((TResponse?, Error?) -> Void)?) {
+		DispatchQueue.global().async {
+			do {
+				let urlRequest = try self.prepareNetworkRequest(method: method, address: address, request: request, accessToken: accessToken)
+				URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+					self.processNetworkResponse(urlRequest: urlRequest, data: data, response: response, error: error) { response, error in
+						self.executeCallbackOnMainThread(callback, response: response, error: error)
+					}
+				}.resume()
+			} catch {
+				self.executeCallbackOnMainThread(callback, response: nil, error: error)
+			}
+		}
+	}
+
+<#
+	}
+	if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Reactive))
+	{
+#>
+	func makeRequestRx<TRequest: Encodable, TResponse: Decodable>(method: String, address: String, request: TRequest?, accessToken: String?) -> Observable<TResponse> {
+		return Observable.create { subscriber in
+			var task: URLSessionDataTask?
+			do {
+				let urlRequest = try self.prepareNetworkRequest(method: method, address: address, request: request, accessToken: accessToken)
+				task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+					self.processNetworkResponse(urlRequest: urlRequest, data: data, response: response, error: error) { (response: TResponse?, error: Error?) in
+						if let error = error {
+							subscriber.onError(error)
+						} else {
+							subscriber.onNext(response!)
+							subscriber.onCompleted()
+						}
+					}
+				}
+				task?.resume()
+			} catch {
+				subscriber.onError(error)
+			}
+			return Disposables.create {
+				task?.cancel()
+			}
+		}.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .default))
+	}
+	
+<#
+	}
+	if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Synchronous))
+	{
+#>	
+	func makeRequestSync<TRequest: Encodable, TResponse: Decodable>(method: String, address: String, request: TRequest?, accessToken: String?) throws -> TResponse {
+		var resultingResponse: TResponse?
+		var resultingError: Error?
+		let group = DispatchGroup()
+		let urlRequest = try prepareNetworkRequest(method: method, address: address, request: request, accessToken: accessToken)
+		group.enter()
+		URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+			self.processNetworkResponse(urlRequest: urlRequest, data: data, response: response, error: error) { (response: TResponse?, error: Error?) in
+				resultingResponse = response
+				resultingError = error
+				group.leave()
+			}
+		}.resume()
+		group.wait()
+		if let error = resultingError {
+			throw error
+		}
+		return resultingResponse!
+	}
+
+<#
+	}
+#>	
+	private func prepareNetworkRequest<TRequest: Encodable>(method: String, address: String, request: TRequest?, accessToken: String?) throws -> URLRequest {
+		guard let url = URL(string: configuration.getRequestAddress(relativeAddress: address)) else {
+			throw CustomError(message: "Incorrect URL")
+		}
+		var urlRequest = URLRequest(url: url)
+		let requestData = request != nil ? try BaseApiNetworkClient.getDefaultEncoder().encode(request) : nil
+		if configuration.printRequest {
+			print("Sending \(method) request to \(url.absoluteString)\(requestData != nil ? ", body=" + (String(data: requestData!, encoding: .utf8) ?? "") : "")")
+		}
+		urlRequest.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+		urlRequest.httpBody = requestData
+		urlRequest.httpMethod = method
+		if let accessToken = accessToken {
+			urlRequest.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+		}
+		urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+		return urlRequest
+	}
+	
+	private func processNetworkResponse<TResponse: Decodable>(urlRequest: URLRequest, data: Data?, response: URLResponse?, error: Error?, callback: ((TResponse?, Error?) -> Void)) {
+		let responseString = data != nil ? String(data: data!, encoding: .utf8) : nil
+		let statusCode = (response as! HTTPURLResponse).statusCode
+		if configuration.printResponse {
+			print("Request to \(urlRequest.url!.absoluteString) completed with status code=\(statusCode)\(responseString != nil ? ", body=" + responseString! : "")")
+		}
+		var responseObject: TResponse?
+		var currentError: Error? = error
+		if currentError == nil {
+			do {
+				responseObject = try BaseApiNetworkClient.getDefaultDecoder().decode(TResponse.self, from: data!)
+			} catch {
+				currentError = error
+				if statusCode >= 300 {
+					currentError = HttpRequestError(url: urlRequest.url!.absoluteString, statusCode: statusCode, response: responseString)
+				}
+			}
+		}
+		callback(responseObject, currentError)
+	}
+	
+	func buildQueryAddress(pattern: String, queryParameters: [(name: String, value: String?)]) -> String {
+		var queryString = ""
+		var segments = pattern.split(separator: "/").map { String($0) }
+		queryParameters.forEach { (name, value) in
+			guard let value = value, let encodedName = name.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed), let encodedValue = value.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) else {
+				return
+			}
+			if let segmentIndex = segments.firstIndex(of: "{\(name)}") {
+				segments[segmentIndex] = encodedValue
+			} else {
+				queryString.append(contentsOf: (queryString.isEmpty ? "?" : "&") + encodedName + "=" + encodedValue)
+			}
+		}
+		return segments.joined(separator: "/") + queryString
+	}
+	
+	private static func getDefaultEncoder() -> JSONEncoder {
+		let result = JSONEncoder()
+		result.dateEncodingStrategy = .custom { (date, encoder) in
+			var container = encoder.singleValueContainer()
+			try container.encode(Int64(date.timeIntervalSince1970 * 1000))
+		}
+		result.dataEncodingStrategy = .base64
+		return result
+	}
+	
+	public static func serialize<T>(_ value: T) throws -> String where T: Encodable {
+		let data = try getDefaultEncoder().encode(value)
+		guard let result = String(data: data, encoding: .utf8) else {
+			throw CustomError(message: "Error when converting data to utf-8")
+		}
+		return result
+	}
+
+	private static func getDefaultDecoder() -> JSONDecoder {
+		let result = JSONDecoder()
+		result.dateDecodingStrategy = .millisecondsSince1970
+		result.dataDecodingStrategy = .base64
+		return result
+	}
+	
+	public static func deserialize<T>(_ type: T.Type, from s: String) throws -> T where T: Decodable {
+		guard let data = s.data(using: .utf8) else {
+			throw CustomError(message: "Error when converting data to utf-8")
+		}
+		return try getDefaultDecoder().decode(T.self, from: data)
+	}
+		
+	private func executeCallbackOnMainThread<TResponse>(_ callback: ((TResponse?, Error?) -> Void)?, response: TResponse?, error: Error?) {
+		DispatchQueue.main.async {
+			callback?(response, error)
+		}
+	}
+}
+<#+
+	private IosConverter converter;
+	internal BaseApiNetworkClientTemplate(IosConverter converter)
+	{
+		this.converter = converter;
+	}
+#>

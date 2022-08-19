@@ -1,0 +1,20 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Flutter" #>
+import 'package:json_annotation/json_annotation.dart';
+
+class NullableDateTimeUnixConverter extends JsonConverter<DateTime?, int?> {
+  const NullableDateTimeUnixConverter();
+
+  @override
+  DateTime? fromJson(int? json) => json == null ? null : DateTime.fromMillisecondsSinceEpoch(json);
+
+  @override
+  int? toJson(DateTime? object) => object?.millisecondsSinceEpoch;
+}
+<#+
+	private FlutterConverter converter;
+	internal NullableDateTimeUnixConverterTemplate(FlutterConverter converter)
+	{
+		this.converter = converter;
+	}
+#>

@@ -1,0 +1,99 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Android" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+package <#= converter.GetPackage(type) #>
+
+<#
+	foreach (var item in imports)
+	{
+#>
+import <#= item #>
+<#
+	}
+#>
+
+<#
+	var extendsText = "";
+	var superclass = type.BaseType;
+	if (superclass != null && superclass != typeof(object))
+	{
+		extendsText = " : " + converter.GetTypeName(superclass, false);
+	}
+    var hasInheritors =  type.HasSubtypes();
+    if (type.IsSerializableInAndroid())
+	{
+        extendsText += (extendsText.Length > 0 ? ", " : " : ") + "Serializable";
+    }
+	var members = type.GetDataMembers().ToArray();
+	var declaredMembers = members.Where(item => item.DeclaringType == type);
+	var inheritedMembers = members.Where(item => item.DeclaringType != type);
+	var constructorArguments = members.Select(item => $"{item.Name.ToCamelCase()}: {converter.GetClassPropertyTypeName(item)}");
+	var baseConstructorParams = inheritedMembers.Select(item => item.Name.ToCamelCase());
+#>
+<#= hasInheritors ? "open " : "" #>class <#= converter.GetTypeName(type, false) #><#= extendsText #> {
+<#
+	if (declaredMembers.Any())
+	{
+		foreach (var member in declaredMembers)
+		{
+			var defaultValue = converter.GetPropertyDefaultValue(member);
+#>
+	var <#= member.Name.ToCamelCase() #>: <#= converter.GetClassPropertyTypeName(member) #> = <#= defaultValue #>
+<#
+		}
+		if (members.Any())
+		{
+#>
+
+<#
+		}
+	}
+	if (members.Any() || superclass != null)
+    {
+#>
+	constructor()<#= superclass != null ? " : super()" : "" #>
+<#
+    }
+	if (members.Any())
+	{
+        var baseConstructorParamsText = "";
+		if (baseConstructorParams.Any())
+        {
+            baseConstructorParamsText = " : super(" + string.Join(", ", baseConstructorParams) + ")";
+        }
+#>
+
+	constructor(<#= string.Join(", ", constructorArguments) #>)<#= baseConstructorParamsText #> {
+<#
+		foreach (var member in declaredMembers)
+		{
+#>
+		this.<#= member.Name.ToCamelCase() #> = <#= member.Name.ToCamelCase() #>
+<#
+		}
+#>
+	}
+<#
+	}
+#>
+}
+<#+
+	private KotlinAndroidConverter converter;
+	private Type type;
+	private List<string> imports;
+	internal ClassTemplate(KotlinAndroidConverter converter, Type type, IEnumerable<string> imports)
+	{
+		this.converter = converter;
+		this.type = type;
+		this.imports = new List<string>
+		{
+			"java.util.*", "java.math.*", "java.lang.*"
+		};
+		if (type.IsSerializableInAndroid())
+		{
+			this.imports.Add("java.io.*");
+		}
+		this.imports.AddRange(imports);
+	}
+#>

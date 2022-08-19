@@ -1,0 +1,12 @@
+﻿<#@ template visibility="internal" #>
+public class CustomError: LocalizedError {
+	public var message: String
+	
+	public init(message: String) {
+		self.message = message
+	}
+
+	public var errorDescription: String? {
+		return message
+	}
+}

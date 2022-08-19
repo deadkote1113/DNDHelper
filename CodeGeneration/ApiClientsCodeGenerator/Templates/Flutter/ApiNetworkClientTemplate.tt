@@ -1,0 +1,74 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Flutter" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+// ignore_for_file: prefer_inlined_adds
+
+<#
+	foreach (var item in imports)
+	{
+#>
+import "<#= item #>";
+<#
+	}
+#>
+
+class <#= type.GetControllerName() #>ApiNetworkClient extends BaseApiNetworkClient implements <#= type.GetControllerName() #>ApiClient {
+  <#= type.GetControllerName() #>ApiNetworkClient([ApiNetworkClientConfiguration? configuration]) : super(configuration);
+
+<#
+	var methods = type.GetControllerActions();
+	for (var i = 0; i < methods.Count; ++i)
+	{
+		var parametersList = methods[i].GetParameters().Select(item => "required " + converter.GetTypeName(item.ParameterType, item.CanBeNull(), item.ParameterType.CanGenericArgumentsBeNull()) + " " + item.Name).ToList();
+		parametersList.Add("required String" + (methods[i].IsAuthorizationRequired() ? "" : "?") + " accessToken");
+		var bodyParameter = methods[i].GetActionBodyParameter();
+		var bodyParameterType = bodyParameter?.ParameterType;
+		var bodyParameterTypeName = bodyParameter != null ? converter.GetTypeName(bodyParameter.ParameterType, false, bodyParameter.ParameterType.CanGenericArgumentsBeNull()) : null;
+		var queryParameters = methods[i].GetActionQueryParameters();
+		var returnType = methods[i].GetActionResponseType();
+		var returnTypeName = converter.GetTypeName(methods[i].GetActionResponseType(), false, methods[i].GetActionResponseType().CanGenericArgumentsBeNull());
+		var address = queryParameters.Any() ? $"buildQueryAddress(\"{methods[i].GetActionUrl()}\", queryParameters)" : $"\"{methods[i].GetActionUrl()}\"";
+#>
+  @override
+  Future<<#= returnTypeName #>> <#= methods[i].Name.ToCamelCase() #>({<#= string.Join(", ", parametersList) #>}) async {
+<#
+			if (queryParameters.Any()) 
+			{
+#>
+		<#= converter.GetActionQueryParametersString(queryParameters).Replace("\r\n", "\r\n    ") #>
+<#
+			}
+#>
+    return makeRequest<<#= bodyParameterTypeName ?? "int" #>, <#= returnTypeName #>>("<#= methods[i].GetActionHttpMethod() #>", <#= address #>, <#= bodyParameter != null ? bodyParameter.Name + ", " + "(request) => request" + (bodyParameterTypeName.EndsWith('?') ? "?" : "")+".toJson(" + string.Join(", ", Enumerable.Repeat("(request) => request" + (bodyParameterType.CanGenericArgumentsBeNull() ? "?" : "") + ".toJson()", bodyParameterType.GetGenericArguments().Count())) + ")" : "null, null" #>,     
+      (json) => <#= returnTypeName #>.fromJson(json<#= returnType.GetGenericArguments().Any() ? ", " + string.Join(", ", returnType.GetGenericArguments().Select(item => item.Name + ".fromJson")) : "" #>), accessToken);
+    }
+<#
+		if (i < methods.Count - 1) 
+		{
+#>
+
+<#
+		}
+#>
+<#
+	}
+#>
+}
+<#+
+	private FlutterConverter converter;
+	private Type type;
+	private List<string> imports;
+	internal ApiNetworkClientTemplate(FlutterConverter converter, Type type, IEnumerable<string> imports)
+	{
+		this.converter = converter;
+		this.type = type;
+		this.imports = new List<string>
+		{
+			$"package:{converter.Settings.PackageName}/src/{converter.Settings.ApiClientsFolder}/interfaces/{type.GetControllerName().ToSnakeCase(false)}_api_client.dart",
+			$"package:{converter.Settings.PackageName}/src/{converter.Settings.ApiClientsFolder}/network/base_api_network_client.dart",
+			$"package:{converter.Settings.PackageName}/src/{converter.Settings.ApiClientsFolder}/network/api_network_client_configuration.dart"
+		};
+		this.imports.AddRange(imports);
+	}
+#>

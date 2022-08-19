@@ -1,0 +1,93 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Ios" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+	if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Reactive))
+	{
+#>
+import RxSwift
+
+<#
+	}
+#>
+public class <#= type.GetControllerName() #>ApiNetworkClient: BaseApiNetworkClient, <#= type.GetControllerName() #>ApiClient {
+<#
+	var methods = type.GetControllerActions();
+	for (var i = 0; i < methods.Count; ++i)
+	{
+		var parametersList = methods[i].GetParameters().Select(item => item.Name + ": "+ converter.GetTypeName(item.ParameterType, item.CanBeNull(), item.ParameterType.CanGenericArgumentsBeNull())).ToList();
+		parametersList.Add("accessToken: String" + (methods[i].IsAuthorizationRequired() ? "" : "?"));
+		var bodyParameter = methods[i].GetActionBodyParameter();
+		var bodyParameterTypeName = bodyParameter != null ? converter.GetTypeName(bodyParameter.ParameterType, false, bodyParameter.ParameterType.CanGenericArgumentsBeNull()) : null;
+		var queryParameters = methods[i].GetActionQueryParameters();
+		var responseTypeName = converter.GetTypeName(methods[i].GetActionResponseType(), true, methods[i].GetActionResponseType().CanGenericArgumentsBeNull());
+		var address = queryParameters.Any() ? $"buildQueryAddress(pattern: \"{methods[i].GetActionUrl()}\", queryParameters: queryParameters)" : $"\"{methods[i].GetActionUrl()}\"";
+		if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Asynchronous))
+		{
+#>
+	public func <#= methods[i].Name.ToCamelCase() #>Async(<#= string.Join(", ", parametersList) #>, callback: ((<#= responseTypeName #>, Error?) -> Void)?) {
+<#
+			if (queryParameters.Any()) 
+			{
+#>
+		<#= converter.GetActionQueryParametersString(queryParameters).Replace("\r\n", "\r\n\t\t") #>
+<#
+			}
+#>
+		makeRequestAsync(method: "<#= methods[i].GetActionHttpMethod() #>", address: <#= address #>, request: <#= bodyParameter != null ? bodyParameter.Name : "Optional<Int>.none" #>, accessToken: accessToken, callback: callback)
+	}<#= converter.Settings.ApiClientMethodTypes != ApiClientMethodType.Asynchronous ? "\r\n" : "" #>
+<#
+		}
+		if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Reactive))
+		{
+#>
+	public func <#= methods[i].Name.ToCamelCase() #>Rx(<#= string.Join(", ", parametersList) #>) -> Observable<<#= responseTypeName #>> {
+<#
+			if (queryParameters.Any()) 
+			{
+#>
+		<#= converter.GetActionQueryParametersString(queryParameters).Replace("\r\n", "\r\n\t\t") #>
+<#
+			}
+#>
+		return makeRequestRx(method: "<#= methods[i].GetActionHttpMethod() #>", address: <#= address #>, request: <#= bodyParameter != null ? bodyParameter.Name : "Optional<Int>.none" #>, accessToken: accessToken)
+	}<#= converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Synchronous) ? "\r\n" : "" #>
+<#
+		}
+		if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Synchronous))
+		{
+#>
+	public func <#= methods[i].Name.ToCamelCase() #>Sync(<#= string.Join(", ", parametersList) #>) throws -> <#= responseTypeName #> {
+<#
+			if (queryParameters.Any()) 
+			{
+#>
+		<#= converter.GetActionQueryParametersString(queryParameters).Replace("\r\n", "\r\n\t\t") #>
+<#
+			}
+#>
+		return try makeRequestSync(method: "<#= methods[i].GetActionHttpMethod() #>", address: <#= address #>, request: <#= bodyParameter != null ? bodyParameter.Name : "Optional<Int>.none" #>, accessToken: accessToken)
+	}
+<#
+		}
+		if (i < methods.Count - 1) 
+		{
+#>
+
+<#
+		}
+#>
+<#
+	}
+#>
+}
+<#+
+	private IosConverter converter;
+	private Type type;
+	internal ApiNetworkClientTemplate(IosConverter converter, Type type)
+	{
+		this.converter = converter;
+		this.type = type;
+	}
+#>

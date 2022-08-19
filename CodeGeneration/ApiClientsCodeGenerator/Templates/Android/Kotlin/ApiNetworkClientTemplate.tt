@@ -1,0 +1,144 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Android" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+package <#= converter.GetPackage(type) #>.network
+
+<#
+	foreach (var item in imports)
+	{
+#>
+import <#= item #>
+<#
+	}
+#>
+
+class <#= type.GetControllerName() #>ApiNetworkClient(configuration: ApiNetworkClientConfiguration = ApiNetworkClientConfiguration.default) : BaseApiNetworkClient(configuration), <#= type.GetControllerName() #>ApiClient {
+<#
+	var methods = type.GetControllerActions();
+	for (var i = 0; i < methods.Count; ++i)
+	{
+		var parametersList = methods[i].GetParameters().Select(item => item.Name + ": "+ converter.GetTypeName(item.ParameterType, item.CanBeNull(), item.ParameterType.CanGenericArgumentsBeNull())).ToList();
+		parametersList.Add("accessToken: String" + (methods[i].IsAuthorizationRequired() ? "" : "?"));
+		var bodyParameter = methods[i].GetActionBodyParameter();
+		var bodyParameterTypeName = bodyParameter != null ? converter.GetTypeName(bodyParameter.ParameterType, false, bodyParameter.ParameterType.CanGenericArgumentsBeNull()) : null;
+		var queryParameters = methods[i].GetActionQueryParameters();
+		var responseTypeName = converter.GetTypeName(methods[i].GetActionResponseType(), false, methods[i].GetActionResponseType().CanGenericArgumentsBeNull());
+		var address = queryParameters.Any() ? $"buildQueryAddress(\"{methods[i].GetActionUrl()}\", queryParameters)" : $"\"{methods[i].GetActionUrl()}\"";
+		if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Asynchronous))
+		{
+#>
+	override suspend fun <#= methods[i].Name.ToCamelCase() #>(<#= string.Join(", ", parametersList) #>): <#= responseTypeName #> {
+<#
+			if (queryParameters.Any()) 
+			{
+#>
+		<#= converter.GetActionQueryParametersString(queryParameters).Replace("\r\n", "\r\n\t\t") #>
+<#
+			}
+			if (bodyParameter != null) 
+			{
+#>
+		val requestType = object : TypeToken<<#= bodyParameterTypeName #>>() { }.type
+<#
+			}
+#>
+		val responseType = object : TypeToken<<#= responseTypeName #>>() { }.type
+		return makeRequest("<#= methods[i].GetActionHttpMethod() #>", <#= address #>, <#= bodyParameter != null ? bodyParameter.Name + ", requestType" : "null, null" #>, responseType, accessToken)
+	}
+
+	override fun <#= methods[i].Name.ToCamelCase() #>(<#= string.Join(", ", parametersList) #>, callback: RequestCallback<<#= responseTypeName #>>?) {
+<#
+			if (queryParameters.Any()) 
+			{
+#>
+		<#= converter.GetActionQueryParametersString(queryParameters).Replace("\r\n", "\r\n\t\t") #>
+<#
+			}
+			if (bodyParameter != null) 
+			{
+#>
+		val requestType = object : TypeToken<<#= bodyParameterTypeName #>>() { }.type
+<#
+			}
+#>
+		val responseType = object : TypeToken<<#= responseTypeName #>>() { }.type
+		return makeRequest("<#= methods[i].GetActionHttpMethod() #>", <#= address #>, <#= bodyParameter != null ? bodyParameter.Name + ", requestType" : "null, null" #>, responseType, callback, accessToken)
+	}<#= converter.Settings.ApiClientMethodTypes != ApiClientMethodType.Asynchronous ? "\r\n" : "" #>
+<#
+		}
+		if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Reactive))
+		{
+#>
+	override fun <#= methods[i].Name.ToCamelCase() #>Rx(<#= string.Join(", ", parametersList) #>): Observable<<#= responseTypeName #>> {
+<#
+			if (queryParameters.Any()) 
+			{
+#>
+		<#= converter.GetActionQueryParametersString(queryParameters).Replace("\r\n", "\r\n\t\t") #>
+<#
+			}
+			if (bodyParameter != null) 
+			{
+#>
+		val requestType = object : TypeToken<<#= bodyParameterTypeName #>>() { }.type
+<#
+			}
+#>
+		val responseType = object : TypeToken< <#= responseTypeName #>>() { }.type
+		return makeRequestRx("<#= methods[i].GetActionHttpMethod() #>", <#= address #>, <#= bodyParameter != null ? bodyParameter.Name + ", requestType" : "null, null" #>, responseType, accessToken)
+	}<#= converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Synchronous) ? "\r\n" : "" #>
+<#
+		}
+		if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Synchronous))
+		{
+#>
+	override fun <#= methods[i].Name.ToCamelCase() #>Sync(<#= string.Join(", ", parametersList) #>): <#= responseTypeName #> {
+<#
+			if (queryParameters.Any()) 
+			{
+#>
+		<#= converter.GetActionQueryParametersString(queryParameters).Replace("\r\n", "\r\n\t\t") #>
+<#
+			}
+			if (bodyParameter != null) 
+			{
+#>
+		val requestType = object : TypeToken<<#= bodyParameterTypeName #>>() { }.type
+<#
+			}
+#>
+		val responseType = object : TypeToken< <#= responseTypeName #>>() { }.type
+		return makeRequestSync("<#= methods[i].GetActionHttpMethod() #>", <#= address #>, <#= bodyParameter != null ? bodyParameter.Name + ", requestType" : "null, null" #>, responseType, accessToken)
+	}
+<#
+		}
+		if (i < methods.Count - 1) 
+		{
+#>
+
+<#
+		}
+	}
+#>
+}
+<#+
+	private KotlinAndroidConverter converter;
+	private Type type;
+	private List<string> imports;
+	internal ApiNetworkClientTemplate(KotlinAndroidConverter converter, Type type, IEnumerable<string> imports) 
+	{
+		this.converter = converter;
+		this.type = type;
+		this.imports = new List<string>
+		{
+			"java.util.*", "java.math.*", "java.lang.*", "java.text.*", "com.google.gson.reflect.*"
+		};
+		if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Reactive))
+		{
+			this.imports.Add("io.reactivex.rxjava3.core.Observable");
+		}
+		this.imports.Add(converter.Settings.ApiClientsPackage + ".interfaces.*");
+		this.imports.AddRange(imports);
+	}
+#>

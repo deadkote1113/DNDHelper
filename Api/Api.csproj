@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+	<UserSecretsId>ad6067c0-17a2-452c-94d8-dc142e105a1b</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Authentication\ApiUserIdentity.cs" />
+    <Compile Include="Authentication\DefaultApiAuthenticationHandler.cs" />
+    <Compile Include="Authentication\DefaultApiAuthenticationExtensions.cs" />
+    <Compile Include="Authentication\DefaultApiAuthenticationOptions.cs" />
+    <Compile Include="Authentication\TokenProcessor.cs" />
+    <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Enums\ApiUserRole.cs" />
+    <Compile Include="Enums\LoginResult.cs" />
+    <Compile Include="Enums\OperationStatus.cs" />
+    <Compile Include="Extensions\ControllerExtensions.cs" />
+    <Compile Include="Authentication\ApiUserModel.cs" />
+    <Compile Include="Models\FieldModel.cs" />
+    <Compile Include="Models\TileJsoneModel.cs" />
+    <Compile Include="Requests\Game\MakeNextTurnRequest.cs" />
+    <Compile Include="Responses\Game\MakeNextTurnRespons.cs" />
+    <Compile Include="Versioning\ApiVersionRangeAttribute.cs" />
+    <Compile Include="Versioning\ApiVersionErrorProvider.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Requests\EmptyRequest.cs" />
+    <Compile Include="Requests\RequestWrapper.cs" />
+    <Compile Include="Responses\DetailedStatusResponse.cs" />
+    <Compile Include="Responses\EmptyResponse.cs" />
+    <Compile Include="Responses\ResponseWrapper.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NLog" Version="4.7.15" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BL\BL.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Entities\Entities.csproj" />
+    <ProjectReference Include="..\Tools\Tools.csproj" />
+  </ItemGroup>
+
+</Project>

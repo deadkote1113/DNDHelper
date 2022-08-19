@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<generationSettings solutionFolderPath="..\..\..\..\..\" existingFilesProcessMode="Overwrite" maxLineWidth="120"/>
+	<entities>
+		<entity name="Locations">
+		</entity>
+		<entity name="LocationsToContents">
+		</entity>
+		<entity name="Structures">
+		</entity>
+		<entity name="Landscapes">
+		</entity>
+		<entity name="Creatures">
+		</entity>
+		<entity name="Quests">
+		</entity>
+		<entity name="QuestsToItems">
+		</entity>
+		<entity name="QuestsToCreatures">
+		</entity>
+		<entity name="PicturesToOther">
+		</entity>
+		<entity name="Pictures">
+		</entity>
+	</entities>
+</configuration>

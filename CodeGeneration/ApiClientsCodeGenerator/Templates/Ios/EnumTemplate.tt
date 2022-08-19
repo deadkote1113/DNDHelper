@@ -1,0 +1,41 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.ComponentModel" #>
+<#@ import namespace="Common.Enums" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Ios" #>
+public enum <#= converter.GetTypeName(type, false) #>: String, Codable, CaseIterable {
+<#
+	var values = type.GetEnumValues().Cast<Enum>().ToArray();
+	for (var i = 0; i < values.Length; ++i)
+	{
+#>
+	case <#= values[i].ToString().ToCamelCase() #> = "<#= values[i].ToString() #>"
+<#
+	}
+#>
+
+	public var displayName: String {
+		var key = ""
+		switch self {
+<#
+		for (var i = 0; i < values.Length; ++i)
+		{
+#>
+		case .<#= values[i].ToString().ToCamelCase() #>:
+			key = "<#= converter.GetEnumResourceName(values[i]) #>"
+<#
+		}
+#>
+		}
+		return NSLocalizedString(key, tableName: "Enums", bundle: Bundle(for: BaseApiNetworkClient.self), comment: "")
+	}
+}
+<#+
+	private IosConverter converter;
+	private Type type;
+	internal EnumTemplate(IosConverter converter, Type type)
+	{
+		this.converter = converter;
+		this.type = type;
+	}
+#>

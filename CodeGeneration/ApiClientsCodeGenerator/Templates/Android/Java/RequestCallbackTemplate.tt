@@ -1,0 +1,14 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Android" #>
+package <#= converter.Settings.ApiClientsPackage #>.interfaces;
+
+@FunctionalInterface
+public interface RequestCallback<TResponse> {
+	void handle(TResponse response, Exception exception);
+}
+<#+
+	private JavaAndroidConverter converter;
+	internal RequestCallbackTemplate(JavaAndroidConverter converter) {
+		this.converter = converter;
+	}
+#>

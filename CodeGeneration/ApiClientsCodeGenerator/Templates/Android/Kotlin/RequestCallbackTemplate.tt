@@ -1,0 +1,13 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Android" #>
+package <#= converter.Settings.ApiClientsPackage #>.interfaces
+
+fun interface RequestCallback<TResponse> {
+    fun handle(response: TResponse?, exception: Exception?)
+}
+<#+
+	private KotlinAndroidConverter converter;
+	internal RequestCallbackTemplate(KotlinAndroidConverter converter) {
+		this.converter = converter;
+	}
+#>

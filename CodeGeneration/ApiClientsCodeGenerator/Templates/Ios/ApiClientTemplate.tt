@@ -1,0 +1,60 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ApiClientsCodeGenerator.Converters.Ios" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+	if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Reactive))
+	{
+#>
+import RxSwift
+
+<#
+	}
+#>
+public protocol <#= type.GetControllerName() #>ApiClient {
+<#
+	var methods = type.GetControllerActions();
+	for (var i = 0; i < methods.Count; ++i)
+	{
+		var parametersList = methods[i].GetParameters().Select(item => item.Name + ": "+  converter.GetTypeName(item.ParameterType, item.CanBeNull(), item.ParameterType.CanGenericArgumentsBeNull())).ToList();
+		parametersList.Add("accessToken: String" + (methods[i].IsAuthorizationRequired() ? "" : "?"));
+		var returnType = methods[i].GetActionResponseType();
+		var responseTypeName = converter.GetTypeName(returnType, true, returnType.CanGenericArgumentsBeNull());
+		if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Asynchronous))
+		{
+#>
+	func <#= methods[i].Name.ToCamelCase() #>Async(<#= string.Join(", ", parametersList) #>, callback: ((<#= responseTypeName #>, Error?) -> Void)?)<#= converter.Settings.ApiClientMethodTypes != ApiClientMethodType.Asynchronous ? "\r\n" : "" #>
+<#
+		}
+		if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Reactive))
+		{
+#>
+	func <#= methods[i].Name.ToCamelCase() #>Rx(<#= string.Join(", ", parametersList) #>) -> Observable<<#= responseTypeName #>><#= converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Synchronous) ? "\r\n" : "" #>
+<#
+		}
+		if (converter.Settings.ApiClientMethodTypes.HasFlag(ApiClientMethodType.Synchronous))
+		{
+#>
+	func <#= methods[i].Name.ToCamelCase() #>Sync(<#= string.Join(", ", parametersList) #>) throws -> <#= responseTypeName #>
+<#
+		}
+		if (i < methods.Count - 1) 
+		{
+#>
+
+<#
+		}
+#>
+<#
+	}
+#>
+}
+<#+
+	private IosConverter converter;
+	private Type type;
+	internal ApiClientTemplate(IosConverter converter, Type type)
+	{
+		this.converter = converter;
+		this.type = type;
+	}
+#>
