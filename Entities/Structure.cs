@@ -11,6 +11,8 @@ namespace Entities
 		public string Title { get; set; }
 		public string FlavorText { get; set; }
 
+		public List<StructuresToItemsOrCreature> StructuresToItemsOrCreatures { get; set; }
+
 		public Structure(int id, string title, string flavorText)
 		{
 			Id = id;

@@ -13,6 +13,8 @@ namespace Entities
 		public bool IsComplited { get; set; }
 		public int? NextQuestId { get; set; }
 
+		public Quest NextQuests { get; set; }
+
 		public Quest(int id, string title, string flavorText, bool isComplited, int? nextQuestId)
 		{
 			Id = id;

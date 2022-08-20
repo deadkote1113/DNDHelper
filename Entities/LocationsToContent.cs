@@ -13,6 +13,9 @@ namespace Entities
 		public int? StructureId { get; set; }
 		public int? LandscapeId { get; set; }
 
+		public Structure Structure { get; set; }
+		public Landscape Landscape { get; set; }
+
 		public LocationsToContent(int id, string title, int locationId, int? structureId, int? landscapeId)
 		{
 			Id = id;

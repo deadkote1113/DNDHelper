@@ -27,6 +27,10 @@ namespace UI.Areas.Admin.Models
 		[Display(Name = "LandscapeId")]
 		public int? LandscapeId { get; set; }
 
+		public StructureModel Structure { get; set; }
+
+		public LandscapeModel Landscape { get; set; }
+
 		public static LocationsToContentModel FromEntity(LocationsToContent obj)
 		{
 			return obj == null ? null : new LocationsToContentModel
@@ -36,6 +40,8 @@ namespace UI.Areas.Admin.Models
 				LocationId = obj.LocationId,
 				StructureId = obj.StructureId,
 				LandscapeId = obj.LandscapeId,
+				Structure = StructureModel.FromEntity(obj.Structure),
+				Landscape = LandscapeModel.FromEntity(obj.Landscape),
 			};
 		}
 

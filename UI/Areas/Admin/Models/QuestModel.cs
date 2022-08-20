@@ -27,6 +27,8 @@ namespace UI.Areas.Admin.Models
 		[Display(Name = "NextQuestId")]
 		public int? NextQuestId { get; set; }
 
+		public QuestModel NextQuests { get; set; }
+
 		public static QuestModel FromEntity(Quest obj)
 		{
 			return obj == null ? null : new QuestModel
@@ -36,6 +38,7 @@ namespace UI.Areas.Admin.Models
 				FlavorText = obj.FlavorText,
 				IsComplited = obj.IsComplited,
 				NextQuestId = obj.NextQuestId,
+				NextQuests = QuestModel.FromEntity(obj.NextQuests)
 			};
 		}
 

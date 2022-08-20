@@ -17,13 +17,13 @@ namespace UI.Areas.Admin.Models
 		[Display(Name = "QuestId")]
 		public int QuestId { get; set; }
 
-		[Required(ErrorMessage = "Укажите значение")]
 		[Display(Name = "ItemId")]
-		public int ItemId { get; set; }
+		public int? ItemId { get; set; }
 
-		[Required(ErrorMessage = "Укажите значение")]
 		[Display(Name = "CreatureId")]
-		public int CreatureId { get; set; }
+		public int? CreatureId { get; set; }
+
+		public List<QuestModel> Quests { get; set; }
 
 		public static QuestsToItemsOrCreatureModel FromEntity(QuestsToItemsOrCreature obj)
 		{
@@ -33,6 +33,7 @@ namespace UI.Areas.Admin.Models
 				QuestId = obj.QuestId,
 				ItemId = obj.ItemId,
 				CreatureId = obj.CreatureId,
+				Quests = QuestModel.FromEntitiesList(obj.Quests),
 			};
 		}
 

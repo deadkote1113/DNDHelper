@@ -11,6 +11,8 @@ namespace Entities
 		public string Title { get; set; }
 		public string FlavorText { get; set; }
 
+		//public List<QuestsToItemsOrCreature> QuestsToItemsOrCreatures { get; set; }
+
 		public Creature(int id, string title, string flavorText)
 		{
 			Id = id;

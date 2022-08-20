@@ -12,6 +12,9 @@ namespace Entities
 		public int? ItemId { get; set; }
 		public int? CreatureId { get; set; }
 
+		public Item Item { get; set; }
+		public Creature Creature { get; set; }
+
 		public StructuresToItemsOrCreature(int id, int structureId, int? itemId, int? creatureId)
 		{
 			Id = id;

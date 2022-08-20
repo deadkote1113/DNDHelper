@@ -13,6 +13,8 @@ namespace Entities
 		public int? CreatureId { get; set; }
 		public int? StructureId { get; set; }
 
+		public List<Picture> Pictures { get; set; }
+
 		public PicturesToOther(int id, int? pictureId, int? itemId, int? creatureId, int? structureId)
 		{
 			Id = id;

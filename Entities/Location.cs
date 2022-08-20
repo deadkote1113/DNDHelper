@@ -11,6 +11,8 @@ namespace Entities
 		public string Title { get; set; }
 		public string FlavorText { get; set; }
 
+		public List<LocationsToContent> locationsToContents { get; set; }
+
 		public Location(int id, string title, string flavorText)
 		{
 			Id = id;

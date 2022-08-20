@@ -53,5 +53,14 @@ namespace Dal
 		{
 			return dbObject == null ? null : new Entities.Structure(dbObject.Id, dbObject.Title, dbObject.FlavorText);
 		}
+
+		internal static Entities.Structure ConvertDbObjectToEntityWithInnerEntites(Structure dbObject)
+		{
+			return dbObject == null ? null : new Entities.Structure(dbObject.Id, dbObject.Title, dbObject.FlavorText)
+			{
+				StructuresToItemsOrCreatures = dbObject.StructuresToItemsOrCreatures
+					.Select(StructuresToItemsOrCreaturesDal.ConvertDbObjectToEntityWithInnerEntites).ToList()
+			};
+		}
 	}
 }

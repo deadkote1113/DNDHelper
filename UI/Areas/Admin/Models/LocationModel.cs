@@ -20,6 +20,8 @@ namespace UI.Areas.Admin.Models
 		[Display(Name = "FlavorText")]
 		public string FlavorText { get; set; }
 
+		public List<LocationsToContentModel> LocationsToContents { get; set; }
+
 		public static LocationModel FromEntity(Location obj)
 		{
 			return obj == null ? null : new LocationModel
@@ -27,6 +29,8 @@ namespace UI.Areas.Admin.Models
 				Id = obj.Id,
 				Title = obj.Title,
 				FlavorText = obj.FlavorText,
+
+				LocationsToContents = LocationsToContentModel.FromEntitiesList(obj.locationsToContents)
 			};
 		}
 

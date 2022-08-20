@@ -20,6 +20,8 @@ namespace UI.Areas.Admin.Models
 		[Display(Name = "FlavorText")]
 		public string FlavorText { get; set; }
 
+		public List<StructuresToItemsOrCreatureModel> StructuresToItemsOrCreatures { get; set; }
+
 		public static StructureModel FromEntity(Structure obj)
 		{
 			return obj == null ? null : new StructureModel
@@ -27,6 +29,7 @@ namespace UI.Areas.Admin.Models
 				Id = obj.Id,
 				Title = obj.Title,
 				FlavorText = obj.FlavorText,
+				StructuresToItemsOrCreatures = StructuresToItemsOrCreatureModel.FromEntitiesList(obj.StructuresToItemsOrCreatures)
 			};
 		}
 

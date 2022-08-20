@@ -83,8 +83,8 @@ create table QuestsToItemsOrCreatures (
 	Id int not null identity constraint PK_QuestsToItemsOrCreatures primary key,
 
 	QuestId int not null  constraint FK_QuestsToItems_Quests foreign key references Quests(Id),
-	ItemId int not null  constraint FK_QuestsToItems_Items foreign key references Items(Id),
-	CreatureId int not null  constraint FK_QuestsToItems_Creatures foreign key references Creatures(Id),
+	ItemId int constraint FK_QuestsToItems_Items foreign key references Items(Id),
+	CreatureId int constraint FK_QuestsToItems_Creatures foreign key references Creatures(Id),
 )
 
 create table Pictures (

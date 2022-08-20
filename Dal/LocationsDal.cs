@@ -28,7 +28,7 @@ namespace Dal
 			dbObject.FlavorText = entity.FlavorText;
 			return Task.CompletedTask;
 		}
-	
+
 		protected override Task<IQueryable<Location>> BuildDbQueryAsync(DefaultDbContext context, IQueryable<Location> dbObjects, LocationsSearchParams searchParams)
 		{
 			return Task.FromResult(dbObjects);
@@ -36,6 +36,16 @@ namespace Dal
 
 		protected override async Task<IList<Entities.Location>> BuildEntitiesListAsync(DefaultDbContext context, IQueryable<Location> dbObjects, object convertParams, bool isFull)
 		{
+			dbObjects = dbObjects.Include(item => item.LocationsToContents)
+									.ThenInclude(item => item.Landscape)
+								.Include(item => item.LocationsToContents)
+									.ThenInclude(item => item.Structure)
+										.ThenInclude(item => item.StructuresToItemsOrCreatures)
+											.ThenInclude(item => item.Item)
+								.Include(item => item.LocationsToContents)
+									.ThenInclude(item => item.Structure)
+										.ThenInclude(item => item.StructuresToItemsOrCreatures)
+											.ThenInclude(item => item.Creature);
 			return (await dbObjects.ToListAsync()).Select(ConvertDbObjectToEntity).ToList();
 		}
 
@@ -51,7 +61,10 @@ namespace Dal
 
 		internal static Entities.Location ConvertDbObjectToEntity(Location dbObject)
 		{
-			return dbObject == null ? null : new Entities.Location(dbObject.Id, dbObject.Title, dbObject.FlavorText);
+			return dbObject == null ? null : new Entities.Location(dbObject.Id, dbObject.Title, dbObject.FlavorText)
+			{
+				locationsToContents = dbObject.LocationsToContents.Select(LocationsToContentsDal.ConvertDbObjectToEntity).ToList()
+			};
 		}
 	}
 }

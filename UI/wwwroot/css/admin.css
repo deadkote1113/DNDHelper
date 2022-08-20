@@ -70,35 +70,35 @@
 	transition: 0.5s;
 }
 
-	.burger span {
-		height: 3px;
-		border-radius: 10px;
-		background: #fff;
-		width: 100%;
-		transition: 0.5s;
-	}
+.burger span {
+	height: 3px;
+	border-radius: 10px;
+	background: #fff;
+	width: 100%;
+	transition: 0.5s;
+}
 
-		.burger span::before {
-			content: '';
-			position: absolute;
-			height: 3px;
-			border-radius: 10px;
-			background: #fff;
-			width: 100%;
-			top: 0;
-			transition: 0.5s;
-		}
+.burger span::before {
+	content: '';
+	position: absolute;
+	height: 3px;
+	border-radius: 10px;
+	background: #fff;
+	width: 100%;
+	top: 0;
+	transition: 0.5s;
+}
 
-		.burger span::after {
-			content: '';
-			position: absolute;
-			height: 3px;
-			border-radius: 10px;
-			background: #fff;
-			width: 100%;
-			bottom: 0;
-			transition: 0.5s;
-		}
+.burger span::after {
+	content: '';
+	position: absolute;
+	height: 3px;
+	border-radius: 10px;
+	background: #fff;
+	width: 100%;
+	bottom: 0;
+	transition: 0.5s;
+}
 
 .burger_active span {
 	transform: translateX(0);

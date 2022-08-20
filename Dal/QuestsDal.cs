@@ -38,6 +38,7 @@ namespace Dal
 
 		protected override async Task<IList<Entities.Quest>> BuildEntitiesListAsync(DefaultDbContext context, IQueryable<Quest> dbObjects, object convertParams, bool isFull)
 		{
+			dbObjects = dbObjects.Include(item => item.NextQuest);
 			return (await dbObjects.ToListAsync()).Select(ConvertDbObjectToEntity).ToList();
 		}
 
@@ -54,7 +55,10 @@ namespace Dal
 		internal static Entities.Quest ConvertDbObjectToEntity(Quest dbObject)
 		{
 			return dbObject == null ? null : new Entities.Quest(dbObject.Id, dbObject.Title, dbObject.FlavorText,
-				dbObject.IsComplited, dbObject.NextQuestId);
+				dbObject.IsComplited, dbObject.NextQuestId)
+			{
+				NextQuests = ConvertDbObjectToEntity(dbObject.NextQuest)
+			};
 		}
 	}
 }

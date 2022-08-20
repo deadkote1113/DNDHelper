@@ -23,6 +23,10 @@ namespace UI.Areas.Admin.Models
 		[Display(Name = "CreatureId")]
 		public int? CreatureId { get; set; }
 
+		public ItemModel Item { get; set; }
+
+		public CreatureModel Creature { get; set; }
+
 		public static StructuresToItemsOrCreatureModel FromEntity(StructuresToItemsOrCreature obj)
 		{
 			return obj == null ? null : new StructuresToItemsOrCreatureModel
@@ -31,6 +35,8 @@ namespace UI.Areas.Admin.Models
 				StructureId = obj.StructureId,
 				ItemId = obj.ItemId,
 				CreatureId = obj.CreatureId,
+				Item = ItemModel.FromEntity(obj.Item),
+				Creature = CreatureModel.FromEntity(obj.Creature)
 			};
 		}
 

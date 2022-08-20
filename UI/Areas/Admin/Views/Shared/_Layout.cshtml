@@ -51,11 +51,6 @@
 						</li>
 						@if (User.Identity.IsAuthenticated)
 						{
-							<li class="nav-item">
-								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Users" asp-action="Index">
-									Пользователи
-								</a>
-							</li>	
                             <li class="nav-item">
 								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Locations" asp-action="Index">
 									Локации
@@ -91,6 +86,11 @@
 									Картинки
 								</a>
 							</li>
+                            <li class="nav-item">
+								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Users" asp-action="Index">
+									Пользователи
+								</a>
+							</li>	
                             }
 					</ul>
 				</div>

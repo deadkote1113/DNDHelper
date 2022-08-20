@@ -9,10 +9,12 @@ namespace Entities
 	{
 		public int Id { get; set; }
 		public int QuestId { get; set; }
-		public int ItemId { get; set; }
-		public int CreatureId { get; set; }
+		public int? ItemId { get; set; }
+		public int? CreatureId { get; set; }
 
-		public QuestsToItemsOrCreature(int id, int questId, int itemId, int creatureId)
+		public List<Quest> Quests { get; set; }
+
+		public QuestsToItemsOrCreature(int id, int questId, int? itemId, int? creatureId)
 		{
 			Id = id;
 			QuestId = questId;
