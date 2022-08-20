@@ -16,7 +16,7 @@
         <div class="burger">
 			<span></span>
 		</div>
-		<a class="navbar-brand" asp-controller="Home" asp-action="Index">TicTacToe</a>
+		<a class="navbar-brand" asp-controller="Home" asp-action="Index">D&D</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -55,7 +55,43 @@
 								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Users" asp-action="Index">
 									Пользователи
 								</a>
-							</li>						}
+							</li>	
+                            <li class="nav-item">
+								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Locations" asp-action="Index">
+									Локации
+								</a>
+							</li>
+                            <li class="nav-item">
+								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Structures" asp-action="Index">
+									Строения
+								</a>
+							</li>
+                            <li class="nav-item">
+								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Landscapes" asp-action="Index">
+									Окружения
+								</a>
+							</li>
+                            <li class="nav-item">
+								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Creatures" asp-action="Index">
+									Существа
+								</a>
+							</li>
+                            <li class="nav-item">
+								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Items" asp-action="Index">
+									Предметы
+								</a>
+							</li>
+                            <li class="nav-item">
+								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Quests" asp-action="Index">
+									Квесты
+								</a>
+							</li>
+                            <li class="nav-item">
+								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Pictures" asp-action="Index">
+									Картинки
+								</a>
+							</li>
+                            }
 					</ul>
 				</div>
 			</nav>

@@ -10,6 +10,8 @@ namespace Dal.DbModels
         public Item()
         {
             PicturesToOthers = new HashSet<PicturesToOther>();
+            QuestsToItemsOrCreatures = new HashSet<QuestsToItemsOrCreature>();
+            StructuresToItemsOrCreatures = new HashSet<StructuresToItemsOrCreature>();
         }
 
         public int Id { get; set; }
@@ -21,5 +23,7 @@ namespace Dal.DbModels
         public virtual Creature Creatures { get; set; }
         public virtual Structure Structures { get; set; }
         public virtual ICollection<PicturesToOther> PicturesToOthers { get; set; }
+        public virtual ICollection<QuestsToItemsOrCreature> QuestsToItemsOrCreatures { get; set; }
+        public virtual ICollection<StructuresToItemsOrCreature> StructuresToItemsOrCreatures { get; set; }
     }
 }

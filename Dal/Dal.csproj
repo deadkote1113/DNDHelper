@@ -1,14 +1,36 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BaseDal.cs" />
+    <Compile Include="DbModels\Creature.cs" />
     <Compile Include="DbModels\DefaultDbContext.cs" />
+    <Compile Include="DbModels\Item.cs" />
+    <Compile Include="DbModels\Landscape.cs" />
+    <Compile Include="DbModels\Location.cs" />
+    <Compile Include="DbModels\LocationsToContent.cs" />
+    <Compile Include="DbModels\Picture.cs" />
+    <Compile Include="DbModels\PicturesToOther.cs" />
+    <Compile Include="DbModels\Quest.cs" />
+    <Compile Include="DbModels\QuestsToItemsOrCreature.cs" />
+    <Compile Include="DbModels\Structure.cs" />
+    <Compile Include="DbModels\StructuresToItemsOrCreature.cs" />
     <Compile Include="DbModels\User.cs" />
     <Compile Include="OrderedQueryableVisitor.cs" />
     <Compile Include="UsersDal.cs" />
+    <Compile Include="CreaturesDal.cs" />
+    <Compile Include="ItemsDal.cs" />
+    <Compile Include="LandscapesDal.cs" />
+    <Compile Include="LocationsDal.cs" />
+    <Compile Include="LocationsToContentsDal.cs" />
+    <Compile Include="PicturesDal.cs" />
+    <Compile Include="PicturesToOtherDal.cs" />
+    <Compile Include="QuestsDal.cs" />
+    <Compile Include="QuestsToItemsOrCreaturesDal.cs" />
+    <Compile Include="StructuresDal.cs" />
+    <Compile Include="StructuresToItemsOrCreaturesDal.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0">

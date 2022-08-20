@@ -1,10 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Setting2.cs" />
+    <Compile Include="PicturesToOther.cs" />
+    <Compile Include="Creature.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="Landscape.cs" />
+    <Compile Include="Location.cs" />
+    <Compile Include="LocationsToContent.cs" />
+    <Compile Include="Picture.cs" />
+    <Compile Include="Quest.cs" />
+    <Compile Include="Structure.cs" />
+    <Compile Include="QuestsToItemsOrCreature.cs" />
+    <Compile Include="StructuresToItemsOrCreature.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="User.cs" />

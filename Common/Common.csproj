@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
@@ -17,6 +17,17 @@
     <Compile Include="Search\UsersSearchParams.cs" />
     <Compile Include="Search\SearchResult.cs" />
     <Compile Include="Configuration\SharedConfiguration.cs" />
+    <Compile Include="Search\PicturesToOtherSearchParams.cs" />
+    <Compile Include="Search\CreaturesSearchParams.cs" />
+    <Compile Include="Search\ItemsSearchParams.cs" />
+    <Compile Include="Search\LandscapesSearchParams.cs" />
+    <Compile Include="Search\LocationsSearchParams.cs" />
+    <Compile Include="Search\LocationsToContentsSearchParams.cs" />
+    <Compile Include="Search\PicturesSearchParams.cs" />
+    <Compile Include="Search\QuestsSearchParams.cs" />
+    <Compile Include="Search\StructuresSearchParams.cs" />
+    <Compile Include="Search\QuestsToItemsOrCreaturesSearchParams.cs" />
+    <Compile Include="Search\StructuresToItemsOrCreaturesSearchParams.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MailKit" Version="3.2.0" />

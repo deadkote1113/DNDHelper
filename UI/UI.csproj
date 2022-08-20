@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
@@ -40,6 +40,24 @@
     <Compile Include="Other\OperationResultType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Areas\Admin\Models\PicturesToOtherModel.cs" />
+    <Compile Include="Areas\Admin\Models\CreatureModel.cs" />
+    <Compile Include="Areas\Admin\Models\ItemModel.cs" />
+    <Compile Include="Areas\Admin\Models\LandscapeModel.cs" />
+    <Compile Include="Areas\Admin\Models\LocationModel.cs" />
+    <Compile Include="Areas\Admin\Models\LocationsToContentModel.cs" />
+    <Compile Include="Areas\Admin\Models\PictureModel.cs" />
+    <Compile Include="Areas\Admin\Models\QuestModel.cs" />
+    <Compile Include="Areas\Admin\Models\StructureModel.cs" />
+    <Compile Include="Areas\Admin\Models\QuestsToItemsOrCreatureModel.cs" />
+    <Compile Include="Areas\Admin\Models\StructuresToItemsOrCreatureModel.cs" />
+    <Compile Include="Areas\Admin\Controllers\CreaturesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ItemsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LandscapesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LocationsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PicturesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\QuestsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StructuresController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="compilerconfig.json" />
