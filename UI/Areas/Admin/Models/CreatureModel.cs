@@ -10,14 +10,13 @@ namespace UI.Areas.Admin.Models
 	public class CreatureModel
 	{
 		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Id")]
 		public int Id { get; set; }
 
-		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Title")]
+		[Required(ErrorMessage = "Укажите значение название")]
+		[Display(Name = "Название")]
 		public string Title { get; set; }
 
-		[Display(Name = "FlavorText")]
+		[Display(Name = "Описавние")]
 		public string FlavorText { get; set; }
 
 		public static CreatureModel FromEntity(Creature obj)

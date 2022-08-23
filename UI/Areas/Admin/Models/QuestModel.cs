@@ -10,21 +10,19 @@ namespace UI.Areas.Admin.Models
 	public class QuestModel
 	{
 		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Id")]
 		public int Id { get; set; }
 
-		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Title")]
+		[Required(ErrorMessage = "Укажите значение название")]
+		[Display(Name = "Название")]
 		public string Title { get; set; }
 
-		[Display(Name = "FlavorText")]
+		[Display(Name = "Описавние")]
 		public string FlavorText { get; set; }
 
-		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "IsComplited")]
+		[Required(ErrorMessage = "укажите Завершён ли квест")]
+		[Display(Name = "Завершён")]
 		public bool IsComplited { get; set; }
 
-		[Display(Name = "NextQuestId")]
 		public int? NextQuestId { get; set; }
 
 		public QuestModel NextQuests { get; set; }

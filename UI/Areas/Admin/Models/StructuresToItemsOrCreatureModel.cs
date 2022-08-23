@@ -10,17 +10,13 @@ namespace UI.Areas.Admin.Models
 	public class StructuresToItemsOrCreatureModel
 	{
 		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Id")]
 		public int Id { get; set; }
 
 		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "StructureId")]
 		public int StructureId { get; set; }
 
-		[Display(Name = "ItemId")]
 		public int? ItemId { get; set; }
 
-		[Display(Name = "CreatureId")]
 		public int? CreatureId { get; set; }
 
 		public ItemModel Item { get; set; }

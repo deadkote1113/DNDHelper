@@ -11,7 +11,6 @@ namespace UI.Areas.Admin.Models
 	public class UserModel
 	{
 		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Id")]
 		public int Id { get; set; }
 
 		[Required(ErrorMessage = "Укажите значение")]

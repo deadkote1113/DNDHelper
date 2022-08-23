@@ -10,21 +10,17 @@ namespace UI.Areas.Admin.Models
 	public class LocationsToContentModel
 	{
 		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Id")]
 		public int Id { get; set; }
 
-		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Title")]
+		[Required(ErrorMessage = "Укажите значение название")]
+		[Display(Name = "Название")]
 		public string Title { get; set; }
 
 		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "LocationId")]
 		public int LocationId { get; set; }
 
-		[Display(Name = "StructureId")]
 		public int? StructureId { get; set; }
 
-		[Display(Name = "LandscapeId")]
 		public int? LandscapeId { get; set; }
 
 		public StructureModel Structure { get; set; }

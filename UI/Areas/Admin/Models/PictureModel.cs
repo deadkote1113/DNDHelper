@@ -10,15 +10,14 @@ namespace UI.Areas.Admin.Models
 	public class PictureModel
 	{
 		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Id")]
 		public int Id { get; set; }
 
-		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Title")]
+		[Required(ErrorMessage = "Укажите значение название")]
+		[Display(Name = "Название")]
 		public string Title { get; set; }
 
-		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "PicturePath")]
+		[Required(ErrorMessage = "Укажите значение путь")]
+		[Display(Name = "Путь")]
 		public string PicturePath { get; set; }
 
 		public static PictureModel FromEntity(Picture obj)

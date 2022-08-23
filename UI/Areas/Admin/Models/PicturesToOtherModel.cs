@@ -10,19 +10,14 @@ namespace UI.Areas.Admin.Models
 	public class PicturesToOtherModel
 	{
 		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Id")]
 		public int Id { get; set; }
 
-		[Display(Name = "PictureId")]
 		public int? PictureId { get; set; }
 
-		[Display(Name = "ItemId")]
 		public int? ItemId { get; set; }
 
-		[Display(Name = "CreatureId")]
 		public int? CreatureId { get; set; }
 
-		[Display(Name = "StructureId")]
 		public int? StructureId { get; set; }
 
 		public static PicturesToOtherModel FromEntity(PicturesToOther obj)
