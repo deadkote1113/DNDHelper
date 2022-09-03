@@ -7,18 +7,8 @@ using Entities;
 
 namespace UI.Areas.Admin.Models
 {
-	public class StructureModel
+	public class StructureModel : ModelWithPicture
 	{
-		[Required(ErrorMessage = "Укажите значение")]
-		public int Id { get; set; }
-
-		[Required(ErrorMessage = "Укажите значение название")]
-		[Display(Name = "Название")]
-		public string Title { get; set; }
-
-		[Display(Name = "Описавние")]
-		public string FlavorText { get; set; }
-
 		public List<StructuresToItemsOrCreatureModel> StructuresToItemsOrCreatures { get; set; }
 
 		public static StructureModel FromEntity(Structure obj)

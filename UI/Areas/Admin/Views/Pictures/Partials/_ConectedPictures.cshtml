@@ -1,0 +1,27 @@
+﻿@using System.Web
+@using Newtonsoft.Json
+@model InnerPictureFilterModel
+@{
+}
+<div class="row" id="InnerPictures">
+
+</div>
+<script>
+    $(document).ready(function () {
+        var filterModel = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(JsonConvert.SerializeObject(Model)))");
+
+        $.ajax({
+			url: "/Admin/Pictures/AjaxGetPathes",
+			type: "post",
+			data: {
+				filterModel: filterModel
+			},
+			success: function (html) {
+                $("#InnerPictures").append(html);
+			},
+			error: function(){ 
+				console.log("error")
+			}
+		});
+	});
+</script>

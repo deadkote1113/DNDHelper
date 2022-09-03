@@ -33,11 +33,24 @@ namespace Dal
 	
 		protected override Task<IQueryable<PicturesToOther>> BuildDbQueryAsync(DefaultDbContext context, IQueryable<PicturesToOther> dbObjects, PicturesToOtherSearchParams searchParams)
 		{
+			if(searchParams.ItemId != null)
+			{
+				dbObjects = dbObjects.Where(item => item.ItemId == searchParams.ItemId);
+			}
+			if (searchParams.StructureId != null)
+			{
+				dbObjects = dbObjects.Where(item => item.StructureId == searchParams.StructureId);
+			}
+			if (searchParams.CreatureId != null)
+			{
+				dbObjects = dbObjects.Where(item => item.CreatureId == searchParams.CreatureId);
+			}
 			return Task.FromResult(dbObjects);
 		}
 
 		protected override async Task<IList<Entities.PicturesToOther>> BuildEntitiesListAsync(DefaultDbContext context, IQueryable<PicturesToOther> dbObjects, object convertParams, bool isFull)
 		{
+			dbObjects = dbObjects.Include(p => p.Picture);
 			return (await dbObjects.ToListAsync()).Select(ConvertDbObjectToEntity).ToList();
 		}
 
@@ -54,7 +67,10 @@ namespace Dal
 		internal static Entities.PicturesToOther ConvertDbObjectToEntity(PicturesToOther dbObject)
 		{
 			return dbObject == null ? null : new Entities.PicturesToOther(dbObject.Id, dbObject.PictureId,
-				dbObject.ItemId, dbObject.CreatureId, dbObject.StructureId);
+				dbObject.ItemId, dbObject.CreatureId, dbObject.StructureId)
+			{
+				Picture = PicturesDal.ConvertDbObjectToEntity(dbObject.Picture),
+			};
 		}
 	}
 }

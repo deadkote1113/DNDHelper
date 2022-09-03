@@ -3,44 +3,28 @@
 @{
 	var exists = Model != null && Model.Id != 0;
 	ViewBag.Title = (exists ? "Редактирование" : "Создание") + " предмета";
+    var pictureFilterModel = new InnerPictureFilterModel()
+    {
+        Type = PictureType.Item,
+        Id = Model.Id
+    };
 }
 
-<form asp-action="Update" asp-antiforgery="true" method="post">
-	<div class="row">
-		<input type="hidden" asp-for="Id"/>
-		<div class="col-md-4 col-sm-6">
-			<div class="form-group">
-				<label asp-for="Title"></label>
-				<input type="text" asp-for="Title" class="form-control"/>
-				<span asp-validation-for="Title" class="text-danger"></span>
-			</div>
-		</div>
-		<div class="col-md-4 col-sm-6">
-			<div class="form-group">
-				<label asp-for="FlavorText"></label>
-				<input type="text" asp-for="FlavorText" class="form-control"/>
-				<span asp-validation-for="FlavorText" class="text-danger"></span>
-			</div>
-		</div>
-		<div class="col-md-4 col-sm-6">
-			<div class="form-group">
-				<label asp-for="CreaturesId"></label>
-				<input type="text" asp-for="CreaturesId" class="form-control"/>
-				<span asp-validation-for="CreaturesId" class="text-danger"></span>
-			</div>
-		</div>
-		<div class="col-md-4 col-sm-6">
-			<div class="form-group">
-				<label asp-for="StructuresId"></label>
-				<input type="text" asp-for="StructuresId" class="form-control"/>
-				<span asp-validation-for="StructuresId" class="text-danger"></span>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12 text-center">
-			<button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
-			<a asp-action="Index" class="btn btn-outline-secondary">Отмена</a>
-		</div>
-	</div>
-</form>
+<div class="row">
+    @if(Model.Id != 0)
+    {
+        <div class="col-md-6">
+            <partial name="../Pictures/Partials/_AddConnect" model="@pictureFilterModel">
+            <partial name="../Pictures/Partials/_ConectedPictures" model="@pictureFilterModel">
+        </div>
+    }
+    <form asp-action="Update" asp-antiforgery="true" method="post" class="@(Model.Id != 0 ? "col-md-6" : "col-md-12")">
+        <div class="col-md-12">
+           <partial name="ModelWithPicture/MainInfo" model="@Model">
+            <div class="col-md-12 text-center">
+			    <button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
+			    <a asp-action="Index" class="btn btn-outline-secondary">Отмена</a>
+		    </div>
+        </div>
+    </form>
+</div>

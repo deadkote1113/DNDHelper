@@ -7,18 +7,8 @@ using Entities;
 
 namespace UI.Areas.Admin.Models
 {
-	public class CreatureModel
+	public class CreatureModel : ModelWithPicture
 	{
-		[Required(ErrorMessage = "Укажите значение")]
-		public int Id { get; set; }
-
-		[Required(ErrorMessage = "Укажите значение название")]
-		[Display(Name = "Название")]
-		public string Title { get; set; }
-
-		[Display(Name = "Описавние")]
-		public string FlavorText { get; set; }
-
 		public static CreatureModel FromEntity(Creature obj)
 		{
 			return obj == null ? null : new CreatureModel

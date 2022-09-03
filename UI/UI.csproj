@@ -15,6 +15,7 @@
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Admin\Models\ModelWithPicture.cs" />
     <Compile Include="Areas\Admin\Models\FileManager\DirectoryModel.cs" />
     <Compile Include="Areas\Admin\Models\FileManager\FileManagerEnvironment.cs" />
     <Compile Include="Areas\Admin\Models\FileManager\FileManagerOptions.cs" />
@@ -22,8 +23,9 @@
     <Compile Include="Areas\Admin\Models\FileManager\FileModel.cs" />
     <Compile Include="Areas\Admin\Models\FileManager\RenameError.cs" />
     <Compile Include="Areas\Admin\Models\FileManager\UploadError.cs" />
-    <Compile Include="Areas\Admin\Models\ViewModels\TileJsoneModel.cs" />
-    <Compile Include="Areas\Admin\Models\ViewModels\FieldViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\FilterModels\InnerPictureFilterModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\PictureViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\Select2ViewModel.cs" />
     <Compile Include="Areas\Public\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Public\Controllers\HomeController.cs" />
     <Compile Include="Extensions\Mvc\AddressesHelper.cs" />

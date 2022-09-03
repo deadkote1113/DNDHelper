@@ -10,6 +10,7 @@
     <Compile Include="Configuration\Mail\MailExtensions.cs" />
     <Compile Include="Configuration\Mail\SmtpConfiguration.cs" />
     <Compile Include="Enums\TyleTypes.cs" />
+    <Compile Include="Enums\PictureType.cs" />
     <Compile Include="Enums\UserRole.cs" />
     <Compile Include="Enums\EnumExtensions.cs" />
     <Compile Include="Helpers.cs" />

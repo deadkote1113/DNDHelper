@@ -10,6 +10,17 @@
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/lib/jquery-datetimepicker/build/jquery.datetimepicker.min.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/lib/select2/css/select2.min.css" asp-append-version="true" />
+	<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
+	<script src="~/lib/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js" asp-append-version="true"></script>
+	<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js" asp-append-version="true"></script>
+	<script src="~/lib/tinymce/tinymce.min.js" asp-append-version="true"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+	<script src="~/lib/knockout/build/output/knockout-latest.min.js" asp-append-version="true"></script>
+	<script src="~/lib/knockout.mapping/knockout.mapping.min.js" asp-append-version="true"></script>
+	<script src="~/lib/select2/js/select2.min.js" asp-append-version="true"></script>
 </head>
 <body>
 	<nav class="navbar navbar-dark fixed-top bg-dark navbar-expand-md">
@@ -133,7 +144,6 @@
 		</div>
 	}
 
-	<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
 	<script src="~/js/pageUtils.js" asp-append-version="true"></script>
 		<script>
 		pageUtils.setAppRootPath("@Url.Content("~")");
@@ -163,14 +173,6 @@
 			toggleSideBar();
 		});
 	</script>
-	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
-	<script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
-	<script src="~/lib/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js" asp-append-version="true"></script>
-	<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js" asp-append-version="true"></script>
-	<script src="~/lib/tinymce/tinymce.min.js" asp-append-version="true"></script>
-	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
-	<script src="~/lib/knockout/build/output/knockout-latest.min.js" asp-append-version="true"></script>
-	<script src="~/lib/knockout.mapping/knockout.mapping.min.js" asp-append-version="true"></script>
 	<script src="~/js/admin.js" asp-append-version="true"></script>
 	@RenderSection("Scripts", required: false)
 </body>

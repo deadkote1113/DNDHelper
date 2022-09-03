@@ -1,0 +1,23 @@
+﻿@model ModelWithPicture
+@{
+
+}
+<input type="hidden" asp-for="Id"/>
+<div class="col-md-12">
+	<div class="form-group">
+        <div class="row">
+            <label asp-for="Title" class="col-md-3" style="padding-left: 0px;"></label>
+		    <input type="text" asp-for="Title" class="form-control col-md-9"/>
+		    <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+	</div>
+</div>
+<div class="col-md-12">
+	<div class="form-group">
+        <div class="row">
+		    <label asp-for="FlavorText"></label>
+		    <textarea asp-for="FlavorText" class="form-control" rows="8"> </textarea>
+		    <span asp-validation-for="FlavorText" class="text-danger"></span>
+        </div>
+	</div>
+</div>

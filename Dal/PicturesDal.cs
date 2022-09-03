@@ -31,6 +31,10 @@ namespace Dal
 	
 		protected override Task<IQueryable<Picture>> BuildDbQueryAsync(DefaultDbContext context, IQueryable<Picture> dbObjects, PicturesSearchParams searchParams)
 		{
+			if(string.IsNullOrEmpty(searchParams.SearchQuery) == false)
+			{
+				dbObjects = dbObjects.Where(item => searchParams.SearchQuery.Contains(item.Title));
+			}
 			dbObjects = dbObjects.OrderByDescending(item => item.Id);
 			return Task.FromResult(dbObjects);
 		}

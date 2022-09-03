@@ -7,18 +7,8 @@ using Entities;
 
 namespace UI.Areas.Admin.Models
 {
-	public class ItemModel
+	public class ItemModel : ModelWithPicture
 	{
-		[Required(ErrorMessage = "Укажите значение")]
-		public int Id { get; set; }
-
-		[Required(ErrorMessage = "Укажите значение название")]
-		[Display(Name = "Название")]
-		public string Title { get; set; }
-
-		[Display(Name = "Описавние")]
-		public string FlavorText { get; set; }
-
 		public int? CreaturesId { get; set; }
 
 		public int? StructuresId { get; set; }

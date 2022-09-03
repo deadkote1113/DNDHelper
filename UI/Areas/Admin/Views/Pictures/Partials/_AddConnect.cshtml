@@ -1,0 +1,61 @@
+﻿@using System.Web
+@using Newtonsoft.Json
+@model InnerPictureFilterModel
+@{
+}
+
+<div class="row col-md-12">
+    <div class="col-md-12">
+         <lable> Добавить фото</lable>
+        <select class="select pictureSelect">
+        </select>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        
+        let lastIndex = 0;
+        const selectWidth = "100%";
+        var filterModel = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(JsonConvert.SerializeObject(Model)))");
+        
+        $(".pictureSelect").select2({
+		        ajax: {
+			        url: "/Admin/Pictures/AjaxGetPictures",
+			        dataType: 'json',
+                    data: function (param) {
+                        return {
+                            lastIndex,
+                            q: param.term
+                        }
+			        },
+			        processResults: function (data) {
+				        return { results: data };
+                    },
+                },
+                tags: true,
+                createTag: function (params) {
+                    return {
+                        id: -1,
+                        text: params.term
+                    }
+                },
+                width: selectWidth,
+            });
+
+         $(".pictureSelect").on("select2:select", function (e) {
+            var option = e.params.data;
+            console.log(option)
+            $.ajax({
+                method: "POST",
+                url: "/Admin/Pictures/AjaxAddPictures",
+                data: { 
+                    PictureId: option.id,
+                    filterModel: filterModel
+                },
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        });
+	});
+</script>

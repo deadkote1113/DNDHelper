@@ -1,0 +1,36 @@
+﻿@model PictureViewModel
+
+@{
+}
+<style>
+    .picture{
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+    }
+    .picture-div{
+        padding: 20px;
+    }
+</style>
+
+<div class="picture-div">
+    <img src="@Model.Picture.PicturePath" class="picture"/>
+    <a id="deleteLink-@Model.PictureLinkId" class="btn btn-outline-secondary">Отвязать</a>
+</div>
+
+<script>
+    $("#deleteLink-@Model.PictureLinkId").on("click", function(){
+         $.ajax({
+		    url: "/Admin/Pictures/DeleteLink?LinkId=@Model.PictureLinkId",
+		    type: "Get",
+		    success: function (html) {
+                location.reload();
+		    },
+		    error: function(){ 
+			    console.log("error")
+		    }
+	    });
+    })
+   
+</script>
