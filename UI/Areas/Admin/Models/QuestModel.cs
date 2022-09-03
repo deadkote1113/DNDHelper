@@ -9,7 +9,6 @@ namespace UI.Areas.Admin.Models
 {
 	public class QuestModel
 	{
-		[Required(ErrorMessage = "Укажите значение")]
 		public int Id { get; set; }
 
 		[Required(ErrorMessage = "Укажите значение название")]

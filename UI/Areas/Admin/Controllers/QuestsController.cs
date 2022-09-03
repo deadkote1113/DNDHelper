@@ -30,9 +30,10 @@ namespace UI.Areas.Admin.Controllers
 			return View(viewModel);
 		}
 
-		public async Task<IActionResult> Update(int? id)
+		public async Task<IActionResult> Update(int? id, int? previosQuestId)
 		{
 			var model = new QuestModel();
+			ViewBag.PreviosQuestId = previosQuestId;
 			if (id != null)
 			{
 				model = QuestModel.FromEntity(await new QuestsBL().GetAsync(id.Value));
@@ -44,13 +45,19 @@ namespace UI.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Update(QuestModel model)
+		public async Task<IActionResult> Update(QuestModel model, int? previosQuestId)
 		{
 			if (!ModelState.IsValid)
 			{
 				return View(model);
 			}
-			await new QuestsBL().AddOrUpdateAsync(QuestModel.ToEntity(model));
+			var id = await new QuestsBL().AddOrUpdateAsync(QuestModel.ToEntity(model));
+			if(previosQuestId != null)
+			{
+				var mainQuest = await new QuestsBL().GetAsync(previosQuestId.Value);
+				mainQuest.NextQuestId = id;
+				await new QuestsBL().AddOrUpdateAsync(mainQuest);
+			}
 			TempData[OperationResultType.Success.ToString()] = "Данные сохранены";
 			return RedirectToAction("Index");
 		}
@@ -63,6 +70,20 @@ namespace UI.Areas.Admin.Controllers
 			else
 				TempData[OperationResultType.Error.ToString()] = "Объект не найден";
 			return RedirectToAction("Index");
+		}
+		
+		public async Task<IActionResult> GetInnerQuest(int id)
+		{
+			var quest = await new QuestsBL().GetAsync(id);
+			var model = QuestModel.FromEntity(quest);
+			return PartialView("Partials/_InnerQuest", model);
+		}
+
+		public async Task<JsonResult> GetInnerQuestInfo(int id)
+		{
+			var quest = await new QuestsBL().GetAsync(id);
+			var model = QuestModel.FromEntity(quest);
+			return Json(model);
 		}
 	}
 }

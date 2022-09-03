@@ -40,7 +40,15 @@
 							@item.Title
 						</td>
 						<td class="text-center">
-							<a asp-action="Update" asp-route-id="@item.Id">Изменить</a><br/>
+                            @if(@item.NextQuestId == null)
+                            {
+                                <a asp-action="Update" asp-route-previosQuestId="@item.Id">Добавить следующий квест</a><br/>
+                            }
+                            else
+                            {
+                                 <a asp-action="Update" title="название : @item.NextQuests.Title" asp-route-id="@item.NextQuestId">Изменить следующий квест</a><br/>
+                            }
+                            <a asp-action="Update" asp-route-id="@item.Id">Изменить</a><br/>
 							<a asp-action="Delete" asp-route-id="@item.Id" class="delete-object-button">Удалить</a>
 						</td>
 					</tr>
