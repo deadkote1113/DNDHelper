@@ -47,7 +47,7 @@ namespace Dal
 			{
 				dbObjects = dbObjects.Where(item => item.Login.Contains(searchParams.SearchQuery));
 			}
-			dbObjects = dbObjects.OrderBy(item => item.Login);
+			dbObjects = dbObjects.OrderByDescending(item => item.Id);
 			return Task.FromResult(dbObjects);
 		}
 

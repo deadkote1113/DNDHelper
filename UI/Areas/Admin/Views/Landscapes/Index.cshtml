@@ -1,7 +1,7 @@
 ﻿@model SearchResultViewModel<LandscapeModel>
 
 @{
-	ViewBag.Title = "Окружениея";
+	ViewBag.Title = "Окружения";
 	var pagedList = Html.PagedList(Model.PagesInfo.ItemsCount, Model.PagesInfo.ItemsPerPage, Model.PagesInfo.CurrentPage,
 		Model.PagesInfo.DisplayedPages, pageNumber => Url.Action(Url.GetAction(), new
 		{
@@ -30,14 +30,14 @@
 		<div class="table-responsive">
 			<table class="table table-striped">
 				<tr>
-					<th class="text-center">ID</th>
+					<th class="text-center">Название</th>
 					<th class="text-center">Действия</th>
 				</tr>
 				@foreach (var item in Model.Objects)
 				{
 					<tr>
 						<td class="text-center">
-							@item.Id
+							@item.Title
 						</td>
 						<td class="text-center">
 							<a asp-action="Update" asp-route-id="@item.Id">Изменить</a><br/>

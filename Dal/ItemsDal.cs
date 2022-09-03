@@ -33,6 +33,7 @@ namespace Dal
 	
 		protected override Task<IQueryable<Item>> BuildDbQueryAsync(DefaultDbContext context, IQueryable<Item> dbObjects, ItemsSearchParams searchParams)
 		{
+			dbObjects = dbObjects.OrderByDescending(item => item.Id);
 			return Task.FromResult(dbObjects);
 		}
 
