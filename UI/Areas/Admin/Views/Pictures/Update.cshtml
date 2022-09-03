@@ -1,32 +1,59 @@
 ﻿@model PictureModel
 
 @{
-	var exists = Model != null && Model.Id != 0;
-	ViewBag.Title = (exists ? "Редактирование" : "Создание") + " Фотография";
+    var exists = Model != null && Model.Id != 0;
+    ViewBag.Title = (exists ? "Редактирование" : "Создание") + " Фотография";
+    ViewBag.UseFileManager = true;
 }
 
 <form asp-action="Update" asp-antiforgery="true" method="post">
+    <input type="hidden" asp-for="PicturePath" />  
+	<input type="hidden" asp-for="Id"/>
 	<div class="row">
-		<input type="hidden" asp-for="Id"/>
-		<div class="col-md-4 col-sm-6">
+        <div class="col-md-10 photo-div" style="@(Model.Id == 0 ? "display: none" : "")">
+			<div class="form-group">
+				<img id="photo-frame" src="@Model.PicturePath" alt />
+			</div>
+		</div>
+		<div class="col-md-2">
 			<div class="form-group">
 				<label asp-for="Title"></label>
 				<input type="text" asp-for="Title" class="form-control"/>
 				<span asp-validation-for="Title" class="text-danger"></span>
 			</div>
 		</div>
-		<div class="col-md-4 col-sm-6">
-			<div class="form-group">
-				<label asp-for="PicturePath"></label>
-				<input type="text" asp-for="PicturePath" class="form-control"/>
-				<span asp-validation-for="PicturePath" class="text-danger"></span>
-			</div>
-		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12 text-center">
-			<button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
+            <a href="javascript: void(0)" class="btn btn-outline-primary open-file-manager-button" title="Загрузить макет">
+			    Загрузить макет
+		    </a>
+			<button class="btn btn-outline-primary show-after-picture-load" type="submit" style="display: none">@(exists ? "Сохранить" : "Добавить")</button>
 			<a asp-action="Index" class="btn btn-outline-secondary">Отмена</a>
 		</div>
 	</div>
 </form>
+
+
+@section Scripts
+{
+    <script>
+		pageUtils.bindDefaultFileManagerHandlers('.open-file-manager-button');
+	</script>
+
+    <script>
+        $(document).ready(function () {
+            window.addEventListener('message', function(event) {
+			    var data = event.data.content;
+                if (event.data.type !== 'SpaceApp.FileManager.FileSelected') {
+                    return;
+                }
+                $(".show-after-picture-load").show();
+                $(".photo-div").show();
+                $("#photo-frame").attr("src",data.url)
+                $("#PicturePath").val(data.url);
+		    });
+        });
+		
+	</script>
+}
