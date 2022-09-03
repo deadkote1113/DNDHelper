@@ -2,7 +2,7 @@
 
 @{
 	var exists = Model != null && Model.Id != 0;
-	ViewBag.Title = (exists ? "Редактирование" : "Создание") + " Существа";
+	ViewBag.Title = (exists ? "Редактирование" : "Создание") + " существа";
 }
 
 <form asp-action="Update" asp-antiforgery="true" method="post">
