@@ -29,6 +29,10 @@
     <Compile Include="Search\StructuresSearchParams.cs" />
     <Compile Include="Search\QuestsToItemsOrCreaturesSearchParams.cs" />
     <Compile Include="Search\StructuresToItemsOrCreaturesSearchParams.cs" />
+    <Compile Include="Search\AwardsSearchParams.cs" />
+    <Compile Include="Search\NominationsSearchParams.cs" />
+    <Compile Include="Search\NominationsSelectionOptionsSearchParams.cs" />
+    <Compile Include="Search\VotesSearchParams.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MailKit" Version="3.2.0" />

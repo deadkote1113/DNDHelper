@@ -1,0 +1,6 @@
+﻿@model IEnumerable<NominationsSelectionOptionModel>
+
+@foreach (var option in Model)
+{
+    <partial name="Partials/_Option" model="option" />
+}

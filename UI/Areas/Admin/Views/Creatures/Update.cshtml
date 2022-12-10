@@ -14,8 +14,7 @@
     @if(Model.Id != 0)
     {
         <div class="col-md-6">
-            <partial name="../Pictures/Partials/_AddConnect" model="@pictureFilterModel">
-            <partial name="../Pictures/Partials/_ConectedPictures" model="@pictureFilterModel">
+            <partial name="../Pictures/Partials/_PictureEditor" model="@pictureFilterModel">
         </div>
     }
     <form asp-action="Update" asp-antiforgery="true" method="post" class="@(Model.Id != 0 ? "col-md-6" : "col-md-12")">

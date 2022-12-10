@@ -16,6 +16,10 @@
     <Compile Include="Structure.cs" />
     <Compile Include="QuestsToItemsOrCreature.cs" />
     <Compile Include="StructuresToItemsOrCreature.cs" />
+    <Compile Include="Award.cs" />
+    <Compile Include="Nomination.cs" />
+    <Compile Include="NominationsSelectionOption.cs" />
+    <Compile Include="Vote.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="User.cs" />

@@ -18,11 +18,14 @@ namespace Dal.DbModels
         {
         }
 
+        public virtual DbSet<Award> Awards { get; set; }
         public virtual DbSet<Creature> Creatures { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Landscape> Landscapes { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<LocationsToContent> LocationsToContents { get; set; }
+        public virtual DbSet<Nomination> Nominations { get; set; }
+        public virtual DbSet<NominationsSelectionOption> NominationsSelectionOptions { get; set; }
         public virtual DbSet<Picture> Pictures { get; set; }
         public virtual DbSet<PicturesToOther> PicturesToOthers { get; set; }
         public virtual DbSet<Quest> Quests { get; set; }
@@ -30,6 +33,7 @@ namespace Dal.DbModels
         public virtual DbSet<Structure> Structures { get; set; }
         public virtual DbSet<StructuresToItemsOrCreature> StructuresToItemsOrCreatures { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Vote> Votes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -42,6 +46,17 @@ namespace Dal.DbModels
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");
+
+            modelBuilder.Entity<Award>(entity =>
+            {
+                entity.Property(e => e.Title).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Awards)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Awards_Users");
+            });
 
             modelBuilder.Entity<Creature>(entity =>
             {
@@ -98,6 +113,33 @@ namespace Dal.DbModels
                     .HasConstraintName("FK_LocationsToContents_Structures");
             });
 
+            modelBuilder.Entity<Nomination>(entity =>
+            {
+                entity.Property(e => e.Title).IsRequired();
+
+                entity.HasOne(d => d.Awards)
+                    .WithMany(p => p.Nominations)
+                    .HasForeignKey(d => d.AwardsId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Nominations_Awards");
+            });
+
+            modelBuilder.Entity<NominationsSelectionOption>(entity =>
+            {
+                entity.Property(e => e.Title).IsRequired();
+
+                entity.HasOne(d => d.Nomination)
+                    .WithMany(p => p.NominationsSelectionOptions)
+                    .HasForeignKey(d => d.NominationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_NominationsSelectionOptions_Nominations");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.NominationsSelectionOptions)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_Nominations_Users");
+            });
+
             modelBuilder.Entity<Picture>(entity =>
             {
                 entity.Property(e => e.PicturePath).IsRequired();
@@ -109,6 +151,11 @@ namespace Dal.DbModels
             {
                 entity.ToTable("PicturesToOther");
 
+                entity.HasOne(d => d.Award)
+                    .WithMany(p => p.PicturesToOthers)
+                    .HasForeignKey(d => d.AwardId)
+                    .HasConstraintName("FK_PicturesToOther_Awards");
+
                 entity.HasOne(d => d.Creature)
                     .WithMany(p => p.PicturesToOthers)
                     .HasForeignKey(d => d.CreatureId)
@@ -118,6 +165,16 @@ namespace Dal.DbModels
                     .WithMany(p => p.PicturesToOthers)
                     .HasForeignKey(d => d.ItemId)
                     .HasConstraintName("FK_PicturesToOther_Items");
+
+                entity.HasOne(d => d.Nomination)
+                    .WithMany(p => p.PicturesToOthers)
+                    .HasForeignKey(d => d.NominationId)
+                    .HasConstraintName("FK_PicturesToOther_Nominations");
+
+                entity.HasOne(d => d.NominationsSelectionOption)
+                    .WithMany(p => p.PicturesToOthers)
+                    .HasForeignKey(d => d.NominationsSelectionOptionId)
+                    .HasConstraintName("FK_PicturesToOther_NominationsSelectionOptions");
 
                 entity.HasOne(d => d.Picture)
                     .WithMany(p => p.PicturesToOthers)
@@ -147,13 +204,11 @@ namespace Dal.DbModels
                 entity.HasOne(d => d.Creature)
                     .WithMany(p => p.QuestsToItemsOrCreatures)
                     .HasForeignKey(d => d.CreatureId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_QuestsToItems_Creatures");
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.QuestsToItemsOrCreatures)
                     .HasForeignKey(d => d.ItemId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_QuestsToItems_Items");
 
                 entity.HasOne(d => d.Quest)
@@ -201,6 +256,20 @@ namespace Dal.DbModels
                 entity.Property(e => e.Password).IsRequired();
 
                 entity.Property(e => e.RegistrationDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Vote>(entity =>
+            {
+                entity.HasOne(d => d.NominationsSelectionOptions)
+                    .WithMany(p => p.Votes)
+                    .HasForeignKey(d => d.NominationsSelectionOptionsId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Votes_NominationsSelectionOptions");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Votes)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_Votes_Users");
             });
 
             OnModelCreatingPartial(modelBuilder);

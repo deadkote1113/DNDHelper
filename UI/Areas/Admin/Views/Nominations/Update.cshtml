@@ -1,0 +1,85 @@
+﻿@model NominationModel
+
+@{
+    var exists = Model != null && Model.Id != 0;
+    ViewBag.Title = (exists ? "Редактирование" : "Создание") + " Номинации";
+    var pictureFilterModel = new InnerPictureFilterModel()
+    {
+        Type = PictureType.Nomination,
+        Id = Model.Id
+    };
+    var creatMode = new NominationsSelectionOptionModel() 
+    {
+        Id = 0,
+        NominationId = Model.Id,
+    };
+}
+<div class="row">
+    @if (Model.Id != 0)
+    {
+        <div class="col-md-6">
+            <partial name="../Pictures/Partials/_PictureEditor" model="@pictureFilterModel">
+        </div>
+    }
+    <form asp-action="Update" asp-antiforgery="true" method="post" class="@(Model.Id != 0 ? "col-md-6" : "col-md-12")">
+        <input asp-for="AwardsId" type="hidden"/>
+        <div class="col-md-12">
+            <partial name="ModelWithPicture/MainInfo" model="@Model">
+            <div class="col-md-12 text-center">
+                <button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Отмена</a>
+            </div>
+        </div>
+    </form>
+</div>
+@if (Model.Id != 0)
+{
+    <div class="col-md-12">
+        <h1 class="text-center">
+            Варианты ответов
+        </h1>
+    </div>
+    <div class="col-md-12">
+        <h2 class="text-center">
+            Добавить новый
+        </h2>
+    </div>
+    <div id="NominationOprions">
+        <div class="col-md-12">
+            <partial name="Partials/_Option" model="@creatMode" />
+        </div>
+        <div class="col-md-12">
+            <h2 class="text-center">
+                Редактировать старые
+            </h2>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function (event) {
+            $(".option").on("submit", function () {
+                var form = $(this);
+                $.ajax({
+                    type: 'post',
+                    url: form.attr("action"),
+                    data: form.serialize(),
+                    success: function (html) {
+                        if (html != "") {
+                            form.parent().parent().parent().append(html);
+                        }
+                    }
+                });
+                return false;
+            });
+            $.ajax({
+                type: 'get',
+                url: "/Admin/Nominations/GetOptions?nominationId=" + @Model.Id,
+                success: function (html) {
+                    console.log(html)
+                    if (html != "") {
+                        $("#NominationOprions").append(html);
+                    }
+                }
+            });
+        });
+    </script>
+}

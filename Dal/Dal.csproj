@@ -5,12 +5,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BaseDal.cs" />
+    <Compile Include="DbModels\Award.cs" />
     <Compile Include="DbModels\Creature.cs" />
     <Compile Include="DbModels\DefaultDbContext.cs" />
     <Compile Include="DbModels\Item.cs" />
     <Compile Include="DbModels\Landscape.cs" />
     <Compile Include="DbModels\Location.cs" />
     <Compile Include="DbModels\LocationsToContent.cs" />
+    <Compile Include="DbModels\Nomination.cs" />
+    <Compile Include="DbModels\NominationsSelectionOption.cs" />
     <Compile Include="DbModels\Picture.cs" />
     <Compile Include="DbModels\PicturesToOther.cs" />
     <Compile Include="DbModels\Quest.cs" />
@@ -18,6 +21,7 @@
     <Compile Include="DbModels\Structure.cs" />
     <Compile Include="DbModels\StructuresToItemsOrCreature.cs" />
     <Compile Include="DbModels\User.cs" />
+    <Compile Include="DbModels\Vote.cs" />
     <Compile Include="OrderedQueryableVisitor.cs" />
     <Compile Include="UsersDal.cs" />
     <Compile Include="CreaturesDal.cs" />
@@ -31,6 +35,10 @@
     <Compile Include="QuestsToItemsOrCreaturesDal.cs" />
     <Compile Include="StructuresDal.cs" />
     <Compile Include="StructuresToItemsOrCreaturesDal.cs" />
+    <Compile Include="AwardsDal.cs" />
+    <Compile Include="NominationsDal.cs" />
+    <Compile Include="NominationsSelectionOptionsDal.cs" />
+    <Compile Include="VotesDal.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0">

@@ -1,0 +1,23 @@
+﻿@model IEnumerable<PictureViewModel>
+
+@{
+}
+<style>
+    .preview-picture {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 400px;
+        max-height: 400px;
+    }
+
+    .preview-picture-div {
+        padding: 20px;
+    }
+</style>
+@foreach (var picture in Model)
+{
+    <div class="preview-picture-div">
+        <img src="@picture.Picture.PicturePath" class="preview-picture" />
+    </div>
+}

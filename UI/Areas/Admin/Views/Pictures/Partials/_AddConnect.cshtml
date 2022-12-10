@@ -1,24 +1,21 @@
 ﻿@using System.Web
 @using Newtonsoft.Json
-@model InnerPictureFilterModel
+@model PictureEditorViewModel
 @{
 }
 
 <div class="row col-md-12">
-    <div class="col-md-12">
-         <lable> Добавить фото</lable>
-        <select class="select pictureSelect">
-        </select>
-    </div>
+    <lable> Добавить фото</lable>
+    <select class="select pictureSelect-@Model.UniqId"> </select>
 </div>
 <script>
     $(document).ready(function () {
         
         let lastIndex = 0;
         const selectWidth = "100%";
-        var filterModel = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(JsonConvert.SerializeObject(Model)))");
+        var filterModel = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(JsonConvert.SerializeObject(Model.Filter)))");
         
-        $(".pictureSelect").select2({
+        $(".pictureSelect-" + @Model.UniqId).select2({
 		        ajax: {
 			        url: "/Admin/Pictures/AjaxGetPictures",
 			        dataType: 'json',
@@ -42,7 +39,7 @@
                 width: selectWidth,
             });
 
-         $(".pictureSelect").on("select2:select", function (e) {
+        $(".pictureSelect-" + @Model.UniqId).on("select2:select", function (e) {
             var option = e.params.data;
             console.log(option)
             $.ajax({
@@ -52,8 +49,9 @@
                     PictureId: option.id,
                     filterModel: filterModel
                 },
-                success: function (data) {
-                    location.reload();
+                success: function (html) {
+                    console.log(html)
+                    $("#InnerPictures-" + @Model.UniqId).append(html);
                 }
             });
         });

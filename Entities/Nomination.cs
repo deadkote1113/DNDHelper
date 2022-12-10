@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Common.Enums;
+
+namespace Entities
+{
+	public class Nomination
+	{
+		public int Id { get; set; }
+		public string Title { get; set; }
+		public string Description { get; set; }
+		public int AwardsId { get; set; }
+
+		public Nomination(int id, string title, string description, int awardsId)
+		{
+			Id = id;
+			Title = title;
+			Description = description;
+			AwardsId = awardsId;
+		}
+	}
+}

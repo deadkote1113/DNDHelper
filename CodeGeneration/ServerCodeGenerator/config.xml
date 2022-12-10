@@ -2,27 +2,13 @@
 <configuration>
 	<generationSettings solutionFolderPath="..\..\..\..\..\" existingFilesProcessMode="Overwrite" maxLineWidth="120"/>
 	<entities>
-		<entity name="Creature">
+		<entity name="Award">
 		</entity>
-		<entity name="Item">
+		<entity name="Nomination">
 		</entity>
-		<entity name="Landscape">
+		<entity name="NominationsSelectionOption">
 		</entity>
-		<entity name="Location">
-		</entity>
-		<entity name="LocationsToContent">
-		</entity>
-		<entity name="Picture">
-		</entity>
-		<entity name="PicturesToOther">
-		</entity>
-		<entity name="Quest">
-		</entity>
-		<entity name="QuestsToItemsOrCreature">
-		</entity>
-		<entity name="Structure">
-		</entity>
-		<entity name="StructuresToItemsOrCreature">
+		<entity name="Vote">
 		</entity>
 	</entities>
 </configuration>

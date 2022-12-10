@@ -28,5 +28,9 @@
     <Compile Include="QuestsToItemsOrCreaturesBL.cs" />
     <Compile Include="StructuresBL.cs" />
     <Compile Include="StructuresToItemsOrCreaturesBL.cs" />
+    <Compile Include="AwardsBL.cs" />
+    <Compile Include="NominationsBL.cs" />
+    <Compile Include="NominationsSelectionOptionsBL.cs" />
+    <Compile Include="VotesBL.cs" />
   </ItemGroup>
 </Project>

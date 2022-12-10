@@ -14,23 +14,22 @@
     }
 </style>
 
-<div class="picture-div">
+<div class="picture-div" id="Picture-@Model.PictureLinkId">
     <img src="@Model.Picture.PicturePath" class="picture"/>
     <a id="deleteLink-@Model.PictureLinkId" class="btn btn-outline-secondary">Отвязать</a>
+    <script>
+        $("#deleteLink-@Model.PictureLinkId").on("click", function () {
+            $.ajax({
+                url: "/Admin/Pictures/DeleteLink?LinkId=@Model.PictureLinkId",
+                type: "Get",
+                success: function (html) {
+                    $("#Picture-" + @Model.PictureLinkId).remove();
+                },
+                error: function () {
+                    console.log("error")
+                }
+            });
+        })
+    </script>
 </div>
 
-<script>
-    $("#deleteLink-@Model.PictureLinkId").on("click", function(){
-         $.ajax({
-		    url: "/Admin/Pictures/DeleteLink?LinkId=@Model.PictureLinkId",
-		    type: "Get",
-		    success: function (html) {
-                location.reload();
-		    },
-		    error: function(){ 
-			    console.log("error")
-		    }
-	    });
-    })
-   
-</script>

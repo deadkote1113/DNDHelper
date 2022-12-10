@@ -98,6 +98,11 @@
 								</a>
 							</li>
                             <li class="nav-item">
+                                <a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Awards" asp-action="Index">
+                                    Награждения
+                                </a>
+                            </li>
+                            <li class="nav-item">
 								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Users" asp-action="Index">
 									Пользователи
 								</a>

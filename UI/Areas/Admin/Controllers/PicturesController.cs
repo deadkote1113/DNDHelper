@@ -72,8 +72,8 @@ namespace UI.Areas.Admin.Controllers
 			var searchParams = InnerPictureFilterModel.ConvertToSearchParams(filterModel);
 			var picturesToOters = await new PicturesToOtherBL().GetAsync(searchParams);
 			var model = picturesToOters.Objects.Select(item => new PictureViewModel(PictureModel.FromEntity(item.Picture), item.Id));
-
-			return PartialView("Partials/_Items", model);
+			var viewName = filterModel.ViewName ?? "Partials/_Items";
+			return PartialView(viewName, model);
 		}
 
 		public async Task<IActionResult> AjaxGetPictures(int lastIndex, string q)
@@ -88,7 +88,7 @@ namespace UI.Areas.Admin.Controllers
 			return Json(categories);
 		}
 
-		public async Task AjaxAddPictures(int PictureId, InnerPictureFilterModel filterModel)
+		public async Task<IActionResult> AjaxAddPictures(int PictureId, InnerPictureFilterModel filterModel)
 		{
 			var pictureLink = new PicturesToOther()
 			{
@@ -112,8 +112,28 @@ namespace UI.Areas.Admin.Controllers
 						pictureLink.StructureId = filterModel.Id;
 						break;
 					}
+				case PictureType.Award:
+					{
+						pictureLink.AwardId = filterModel.Id;
+						break;
+					}
+				case PictureType.Nomination:
+					{
+						pictureLink.NominationId = filterModel.Id;
+						break;
+					}
+				case PictureType.NominationSelectionOption:
+					{
+						pictureLink.NominationsSelectionOptionId = filterModel.Id;
+						break;
+					}
 			}
-			await new PicturesToOtherBL().AddOrUpdateAsync(pictureLink);
+			var linkId = await new PicturesToOtherBL().AddOrUpdateAsync(pictureLink);
+			var picture = await new PicturesBL().GetAsync(PictureId);
+
+			var model = new PictureViewModel(PictureModel.FromEntity(picture), linkId);
+
+			return PartialView("Partials/_Item", model);
 		}
 
 		public async Task DeleteLink(int LinkId)

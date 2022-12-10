@@ -102,3 +102,35 @@ create table PicturesToOther(
 	StructureId int constraint FK_PicturesToOther_Structures foreign key references Structures(Id),
 )
 
+create table Awards(
+	Id int not null identity constraint PK_Awards primary key,
+	UserId int not null constraint FK_Awards_Users foreign key references Users(Id),
+	Title nvarchar(max) not null,
+	Description nvarchar(max),
+)
+
+create table Nominations(
+	Id int not null identity constraint PK_Nominations primary key,
+	Title nvarchar(max) not null,
+	Description nvarchar(max),
+	AwardsId int not null constraint FK_Nominations_Awards foreign key references Awards(Id),
+)
+
+create table NominationsSelectionOptions(
+	Id int not null identity constraint PK_NominationsSelectionOptions primary key,
+	UserId int constraint FK_NominationsSelectionOptions_Users foreign key references Users(Id),
+	Title nvarchar(max) not null,
+	Description nvarchar(max),
+	NominationId int not null constraint FK_NominationsSelectionOptions_Nominations foreign key references Nominations(Id),
+)
+
+create table Votes
+(
+	Id int not null identity constraint PK_Votes primary key,
+	UserId int constraint FK_Votes_Users foreign key references Users(Id),
+	NominationsSelectionOptionsId int not null constraint FK_Votes_NominationsSelectionOptions foreign key references NominationsSelectionOptions(Id)
+)
+
+alter table [dbo].[PicturesToOther] add AwardId int constraint FK_PicturesToOther_Awards foreign key references Awards(Id);
+alter table [dbo].[PicturesToOther] add NominationId int constraint FK_PicturesToOther_Nominations foreign key references Nominations(Id);
+alter table [dbo].[PicturesToOther] add NominationsSelectionOptionId int constraint FK_PicturesToOther_NominationsSelectionOptions foreign key references NominationsSelectionOptions(Id);

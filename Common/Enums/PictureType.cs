@@ -8,5 +8,8 @@ namespace Common.Enums
 		Item = 0,
 		Create = 1,
 		Structure = 2,
+		Award = 3,
+		Nomination = 4,
+		NominationSelectionOption = 5
 	}
 }

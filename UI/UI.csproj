@@ -24,6 +24,8 @@
     <Compile Include="Areas\Admin\Models\FileManager\RenameError.cs" />
     <Compile Include="Areas\Admin\Models\FileManager\UploadError.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\FilterModels\InnerPictureFilterModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\FilterModels\NominationFilterModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\PictureEditorViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\PictureViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\Select2ViewModel.cs" />
     <Compile Include="Areas\Public\Controllers\ErrorController.cs" />
@@ -60,6 +62,13 @@
     <Compile Include="Areas\Admin\Controllers\PicturesController.cs" />
     <Compile Include="Areas\Admin\Controllers\QuestsController.cs" />
     <Compile Include="Areas\Admin\Controllers\StructuresController.cs" />
+    <Compile Include="Areas\Admin\Models\AwardModel.cs" />
+    <Compile Include="Areas\Admin\Models\NominationModel.cs" />
+    <Compile Include="Areas\Admin\Models\NominationsSelectionOptionModel.cs" />
+    <Compile Include="Areas\Admin\Models\VoteModel.cs" />
+    <Compile Include="Areas\Admin\Controllers\AwardsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NominationsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\VotesController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="compilerconfig.json" />
@@ -84,7 +93,7 @@
   </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties libman_1json__JsonSchema="http://json.schemastore.org/opspec-io-0.1.7" />
+      <UserProperties appsettings_1development_1json__JsonSchema="https://cdn.jsdelivr.net/gh/tarampampam/error-pages@latest/schemas/config/1.0.schema.json" libman_1json__JsonSchema="http://json.schemastore.org/opspec-io-0.1.7" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

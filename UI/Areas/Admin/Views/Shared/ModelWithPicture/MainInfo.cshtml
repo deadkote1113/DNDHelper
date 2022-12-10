@@ -1,8 +1,8 @@
 ﻿@model ModelWithPicture
 @{
-
+    var id = Model.Id;
 }
-<input type="hidden" asp-for="Id"/>
+<input type="hidden" value="@Model.Id" asp-for="Id"/>
 <div class="col-md-12">
 	<div class="form-group">
         <div class="row">
