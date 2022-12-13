@@ -58,7 +58,7 @@ namespace UI.Areas.Admin.Controllers
 			}
 			await new NominationsBL().AddOrUpdateAsync(NominationModel.ToEntity(model));
 			TempData[OperationResultType.Success.ToString()] = "Данные сохранены";
-			return RedirectToAction("Index");
+			return RedirectToAction("Index", new { awardId = model.AwardsId});
 		}
 
 		public async Task<IActionResult> Delete(int id)

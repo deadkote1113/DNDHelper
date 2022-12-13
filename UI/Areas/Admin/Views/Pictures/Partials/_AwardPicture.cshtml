@@ -1,0 +1,8 @@
+﻿@model IEnumerable<PictureViewModel>
+
+@foreach (var picture in Model)
+{
+    <div class="award-picture-div">
+        <img src="@picture.Picture.PicturePath" class="award-picture" />
+    </div>
+}

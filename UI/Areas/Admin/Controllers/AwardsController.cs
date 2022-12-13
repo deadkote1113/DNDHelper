@@ -74,5 +74,46 @@ namespace UI.Areas.Admin.Controllers
 		{
 			return View();
 		}
+
+		public async Task<IActionResult> SeeNominations(int awardId, int nominationCount)
+		{
+			var nominations = await new NominationsBL().GetAsync(new NominationsSearchParams(nominationCount - 1, 1)
+			{
+				AwardId = awardId,
+			});
+			if(nominations.Objects.Count == 0)
+			{
+				return View("AwardEnd");
+			}
+			var nomination = nominations.Objects.FirstOrDefault();
+			var options = await new NominationsSelectionOptionsBL().GetAsync(new NominationsSelectionOptionsSearchParams()
+			{
+				NominationId = nomination.Id
+			});
+			var nominationModel = NominationModel.FromEntity(nomination);
+			var optionModels = NominationsSelectionOptionModel.FromEntitiesList(options.Objects);
+			var model = new SeeNominationsViewModel(nominationModel, optionModels);
+			return View(model);
+		}
+
+		public async Task<IActionResult> AjaxGetAwards(int lastIndex, string q)
+		{
+			var categories = (await new AwardsBL().GetAsync(new AwardsSearchParams(lastIndex, 5)
+			{
+				SearchQuery = q,
+			})).Objects.Select(item => new Select2ViewModel(item.Id.ToString(), item.Title));
+
+			return Json(categories);
+		}
+
+		public async Task<IActionResult> SeeVotes(int awardId, int nominationCount, int nominationId)
+		{
+			var votes = await new VotesBL().GetAsync(new VotesSearchParams()
+			{
+				NominationId = nominationId
+			});
+			var models = VoteModel.FromEntitiesList(votes.Objects);
+			return View(models);
+		}
 	}
 }

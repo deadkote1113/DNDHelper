@@ -27,6 +27,7 @@
     <Compile Include="Areas\Admin\Models\ViewModels\FilterModels\NominationFilterModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\PictureEditorViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\PictureViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\SeeNominationsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\Select2ViewModel.cs" />
     <Compile Include="Areas\Public\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Public\Controllers\HomeController.cs" />

@@ -31,6 +31,10 @@ namespace Dal
 	
 		protected override Task<IQueryable<Vote>> BuildDbQueryAsync(DefaultDbContext context, IQueryable<Vote> dbObjects, VotesSearchParams searchParams)
 		{
+			if (searchParams.NominationId.HasValue)
+			{
+				dbObjects = dbObjects.Where(item => item.NominationsSelectionOptions.NominationId == searchParams.NominationId);
+			}
 			return Task.FromResult(dbObjects);
 		}
 

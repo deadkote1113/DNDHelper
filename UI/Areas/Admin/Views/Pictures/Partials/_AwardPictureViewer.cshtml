@@ -1,0 +1,14 @@
+﻿@model InnerPictureFilterModel
+
+@{
+    var random = new Random();
+    var id = random.Next(1000000);
+    Model.ViewName = "Partials/_AwardPicture";
+    var model = new PictureEditorViewModel()
+    {
+        Filter = Model,
+        UniqId = id
+    };
+}
+
+<partial name="../Pictures/Partials/_ConectedPictures" model="model">

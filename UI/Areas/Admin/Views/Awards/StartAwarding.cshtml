@@ -1,0 +1,48 @@
+﻿@{
+    Layout = "_AwardingLayout";
+}
+
+<div class="row col-md-12">
+    <lable> Выберите награждение</lable>
+    <select class="select awardingSelect"> </select>
+</div>
+
+<div class="row col-md-12">
+    <a href="Admin/Awards/SeeNominations?AwardId=1&nominationCount=1"> <h1>начать</h1></a>
+</div>
+<script>
+    $(document).ready(function () {
+
+        let lastIndex = 0;
+        const selectWidth = "100%";
+        $(".awardingSelect").select2({
+            ajax: {
+                url: "/Admin/Awards/AjaxGetAwards",
+                dataType: 'json',
+                data: function (param) {
+                    return {
+                        lastIndex,
+                        q: param.term
+                    }
+                },
+                processResults: function (data) {
+                    return { results: data };
+                },
+            },
+            tags: true,
+            createTag: function (params) {
+                return {
+                    id: -1,
+                    text: params.term
+                }
+            },
+            width: selectWidth,
+        });
+
+        $(".awardingSelect").on("select2:select", function (e) {
+            var option = e.params.data;
+            console.log(option)
+            $("a").attr("href", `/Admin/Awards/SeeNominations?AwardId=${option.id}&nominationCount=1`)
+        });
+    });
+</script>

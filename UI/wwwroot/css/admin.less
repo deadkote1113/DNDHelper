@@ -2,7 +2,7 @@
 	position: fixed;
 	top: 0;
 	bottom: 0;
-	left: 0;
+	left: -100%;
 	z-index: 100; /* Behind the navbar */
 	padding: 58px 0 0; /* Height of navbar */
 	box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
@@ -21,6 +21,13 @@
 		position: -webkit-sticky;
 		position: sticky;
 	}
+}
+.sidebar_active {
+	left: 0;
+}
+
+.sidebar .nav-link.active {
+	color: #007bff;
 }
 
 .sidebar .nav-link {
@@ -53,4 +60,59 @@
 
 .pagination .page-item.active .page-link:not([href]):hover {
 	color: white;
+}
+
+.burger {
+	width: 35px;
+	height: 20px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	margin-right: 25px;
+	cursor: pointer;
+	transform-origin: 0;
+	transition: 0.5s;
+}
+
+.burger span {
+	height: 3px;
+	border-radius: 10px;
+	background: #fff;
+	width: 100%;
+	transition: 0.5s;
+}
+
+.burger span::before {
+	content: '';
+	position: absolute;
+	height: 3px;
+	border-radius: 10px;
+	background: #fff;
+	width: 100%;
+	top: 0;
+	transition: 0.5s;
+}
+
+.burger span::after {
+	content: '';
+	position: absolute;
+	height: 3px;
+	border-radius: 10px;
+	background: #fff;
+	width: 100%;
+	bottom: 0;
+	transition: 0.5s;
+}
+
+.burger_active span {
+	transform: translateX(0);
+	background: transparent;
+}
+
+.burger_active span::before {
+	transform: rotate(45deg);
+}
+
+.burger_active span::after {
+	transform: rotate(-45deg);
 }

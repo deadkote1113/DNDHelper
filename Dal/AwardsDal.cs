@@ -32,6 +32,10 @@ namespace Dal
 	
 		protected override Task<IQueryable<Award>> BuildDbQueryAsync(DefaultDbContext context, IQueryable<Award> dbObjects, AwardsSearchParams searchParams)
 		{
+			if(string.IsNullOrEmpty(searchParams.SearchQuery) == false)
+			{
+				dbObjects = dbObjects.Where(item => item.Title.ToLower().Contains(searchParams.SearchQuery.ToLower()));
+			}
 			return Task.FromResult(dbObjects);
 		}
 

@@ -1,10 +1,18 @@
 ﻿[
-	{
-		"outputFile": "wwwroot/css/admin.css",
-		"inputFile": "wwwroot/css/admin.less"
-	},
-	{
-		"outputFile": "wwwroot/lib/filemanager/filemanager.css",
-		"inputFile": "wwwroot/lib/filemanager/filemanager.less"
-	}
+  {
+    "outputFile": "wwwroot/css/admin.css",
+    "inputFile": "wwwroot/css/admin.less"
+  },
+  {
+    "outputFile": "wwwroot/lib/filemanager/filemanager.css",
+    "inputFile": "wwwroot/lib/filemanager/filemanager.less"
+  },
+  {
+    "outputFile": "wwwroot/Scss/Awards.css",
+    "inputFile": "wwwroot/Scss/Awards.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/award.css",
+    "inputFile": "wwwroot/css/award.less"
+  }
 ]

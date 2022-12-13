@@ -62,7 +62,7 @@
 						</li>
 						@if (User.Identity.IsAuthenticated)
 						{
-                            <li class="nav-item">
+                            @*<li class="nav-item">
 								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Locations" asp-action="Index">
 									Локации
 								</a>
@@ -91,7 +91,7 @@
 								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Quests" asp-action="Index">
 									Квесты
 								</a>
-							</li>
+							</li>*@
                             <li class="nav-item">
 								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Pictures" asp-action="Index">
 									Картинки
@@ -100,6 +100,11 @@
                             <li class="nav-item">
                                 <a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Awards" asp-action="Index">
                                     Награждения
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Awards" asp-action="StartAwarding">
+                                    Начать Награждение
                                 </a>
                             </li>
                             <li class="nav-item">
