@@ -5,9 +5,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FCM.Net.Core" Version="1.0.1" />
-    <PackageReference Include="MailKit" Version="3.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NLog" Version="4.7.15" />
+    <PackageReference Include="MailKit" Version="3.4.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="NLog" Version="5.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
