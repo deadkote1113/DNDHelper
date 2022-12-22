@@ -6,6 +6,7 @@
   <ItemGroup>
     <Compile Include="BaseDal.cs" />
     <Compile Include="DbModels\Award.cs" />
+    <Compile Include="DbModels\AwardSession.cs" />
     <Compile Include="DbModels\Creature.cs" />
     <Compile Include="DbModels\DefaultDbContext.cs" />
     <Compile Include="DbModels\Item.cs" />
@@ -39,6 +40,7 @@
     <Compile Include="NominationsDal.cs" />
     <Compile Include="NominationsSelectionOptionsDal.cs" />
     <Compile Include="VotesDal.cs" />
+    <Compile Include="AwardSessionsDal.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0">
@@ -57,5 +59,14 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Entities\Entities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 </Project>

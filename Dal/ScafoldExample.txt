@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext 'Data Source=localhost;Initial Catalog=DNDHelper;Integrated security=True;TrustServerCertificate=True' Microsoft.EntityFrameworkCore.SqlServer -Context DefaultDbContext -OutputDir DbModels -StartupProject Dal -Project Dal -Force

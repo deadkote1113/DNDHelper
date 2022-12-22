@@ -33,6 +33,7 @@
     <Compile Include="Search\NominationsSearchParams.cs" />
     <Compile Include="Search\NominationsSelectionOptionsSearchParams.cs" />
     <Compile Include="Search\VotesSearchParams.cs" />
+    <Compile Include="Search\AwardSessionsSearchParams.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MailKit" Version="3.4.3" />

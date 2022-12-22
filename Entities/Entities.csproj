@@ -20,6 +20,7 @@
     <Compile Include="Nomination.cs" />
     <Compile Include="NominationsSelectionOption.cs" />
     <Compile Include="Vote.cs" />
+    <Compile Include="AwardSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="User.cs" />

@@ -32,5 +32,6 @@
     <Compile Include="NominationsBL.cs" />
     <Compile Include="NominationsSelectionOptionsBL.cs" />
     <Compile Include="VotesBL.cs" />
+    <Compile Include="AwardSessionsBL.cs" />
   </ItemGroup>
 </Project>

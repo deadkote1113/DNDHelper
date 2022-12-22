@@ -2,11 +2,7 @@
 <configuration>
 	<generationSettings solutionFolderPath="..\..\..\..\..\" existingFilesProcessMode="Overwrite" maxLineWidth="120"/>
 	<entities>
-		<entity name="Award">
-		</entity>
-		<entity name="Nomination">
-		</entity>
-		<entity name="NominationsSelectionOption">
+		<entity name="AwardSession">
 		</entity>
 		<entity name="Vote">
 		</entity>

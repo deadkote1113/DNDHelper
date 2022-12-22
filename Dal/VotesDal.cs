@@ -26,6 +26,8 @@ namespace Dal
 		{
 			dbObject.UserId = entity.UserId;
 			dbObject.NominationsSelectionOptionsId = entity.NominationsSelectionOptionsId;
+			dbObject.IsCanseld = entity.IsCanseld;
+			dbObject.TelegramUserName = entity.TelegramUserName;
 			return Task.CompletedTask;
 		}
 	
@@ -56,7 +58,7 @@ namespace Dal
 		internal static Entities.Vote ConvertDbObjectToEntity(Vote dbObject)
 		{
 			return dbObject == null ? null : new Entities.Vote(dbObject.Id, dbObject.UserId,
-				dbObject.NominationsSelectionOptionsId);
+				dbObject.NominationsSelectionOptionsId, dbObject.IsCanseld, dbObject.TelegramUserName);
 		}
 	}
 }

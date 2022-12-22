@@ -134,3 +134,16 @@ create table Votes
 alter table [dbo].[PicturesToOther] add AwardId int constraint FK_PicturesToOther_Awards foreign key references Awards(Id);
 alter table [dbo].[PicturesToOther] add NominationId int constraint FK_PicturesToOther_Nominations foreign key references Nominations(Id);
 alter table [dbo].[PicturesToOther] add NominationsSelectionOptionId int constraint FK_PicturesToOther_NominationsSelectionOptions foreign key references NominationsSelectionOptions(Id);
+ 
+alter table Votes add IsCanseld bit not null
+alter table Votes add TelegramUserName nvarchar(max) not null 
+
+create table AwardSessions
+(
+	Id int not null identity constraint PK_AwardSessions primary key,
+	UserId int not null constraint FK_AwardSessions_Users foreign key references Users(Id),
+	ConnectionCode nvarchar(max) not null, 
+	State int not null, 
+	NominationPassed int not null
+);
+
