@@ -41,6 +41,13 @@ namespace BL
 		{
 			return new AwardSessionsDal().GetAsync(searchParams);
 		}
+
+		public string GenerateCode()
+		{
+			Random random = new Random();
+			const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			return new string(Enumerable.Repeat(chars, 4) .Select(s => s[random.Next(s.Length)]).ToArray());
+		}
 	}
 }
 

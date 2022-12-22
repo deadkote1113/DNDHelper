@@ -13,6 +13,8 @@ public partial class Award
 
     public string Description { get; set; }
 
+    public virtual ICollection<AwardSession> AwardSessions { get; } = new List<AwardSession>();
+
     public virtual ICollection<Nomination> Nominations { get; } = new List<Nomination>();
 
     public virtual ICollection<PicturesToOther> PicturesToOthers { get; } = new List<PicturesToOther>();

@@ -29,6 +29,7 @@
     <Compile Include="Areas\Admin\Models\ViewModels\PictureViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\SeeNominationsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\Select2ViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\VoteViewModel.cs" />
     <Compile Include="Areas\Public\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Public\Controllers\HomeController.cs" />
     <Compile Include="Extensions\Mvc\AddressesHelper.cs" />
@@ -69,9 +70,7 @@
     <Compile Include="Areas\Admin\Models\VoteModel.cs" />
     <Compile Include="Areas\Admin\Controllers\AwardsController.cs" />
     <Compile Include="Areas\Admin\Controllers\NominationsController.cs" />
-    <Compile Include="Areas\Admin\Controllers\VotesController.cs" />
     <Compile Include="Areas\Admin\Models\AwardSessionModel.cs" />
-    <Compile Include="Areas\Admin\Controllers\AwardSessionsController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="compilerconfig.json" />

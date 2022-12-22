@@ -62,18 +62,23 @@
     <div class="swiper-pagination"></div>
 </div>
 <div class="col-md-12 text-center" style="padding:40px;">
-    <button class="btn btn-outline-primary">Узнать результат</button>
+    <a class="btn btn-outline-primary" id="SeeVotes" href="SeeVotes?">Узнать результат</a>
 </div>
 @section Scripts
     {
     <script>
-        var swiper = new Swiper('.swiper-container', {
-            slidesPerView: 2,
-            spaceBetween: 40,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-        });
+        $(document).ready(function () {
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 2,
+                spaceBetween: 40,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+            let sessionId = sessionStorage.getItem("AwardSessionId")
+            var href = `SeeVotes?sessionId=${sessionId}`;
+            $("#SeeVotes").attr("href", href)
+        }) 
     </script>
 }

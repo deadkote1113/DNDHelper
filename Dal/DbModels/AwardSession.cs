@@ -15,5 +15,9 @@ public partial class AwardSession
 
     public int NominationPassed { get; set; }
 
+    public int AwardId { get; set; }
+
+    public virtual Award Award { get; set; }
+
     public virtual User User { get; set; }
 }

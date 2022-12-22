@@ -147,3 +147,5 @@ create table AwardSessions
 	NominationPassed int not null
 );
 
+
+alter table AwardSessions add AwardId int not null constraint FK_AwardSessions_Awards Foreign key references Awards(Id)

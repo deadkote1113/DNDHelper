@@ -73,6 +73,11 @@ public partial class DefaultDbContext : DbContext
         {
             entity.Property(e => e.ConnectionCode).IsRequired();
 
+            entity.HasOne(d => d.Award).WithMany(p => p.AwardSessions)
+                .HasForeignKey(d => d.AwardId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AwardSessions_Awards");
+
             entity.HasOne(d => d.User).WithMany(p => p.AwardSessions)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)

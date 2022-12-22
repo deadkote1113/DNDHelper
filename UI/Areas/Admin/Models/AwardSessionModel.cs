@@ -23,11 +23,13 @@ namespace UI.Areas.Admin.Models
 
 		[Required(ErrorMessage = "Укажите значение")]
 		[Display(Name = "State")]
-		public int State { get; set; }
+		public AwardSessionsState State { get; set; }
 
 		[Required(ErrorMessage = "Укажите значение")]
 		[Display(Name = "NominationPassed")]
 		public int NominationPassed { get; set; }
+
+		public int AwardId { get; set; }
 
 		public static AwardSessionModel FromEntity(AwardSession obj)
 		{
@@ -38,13 +40,14 @@ namespace UI.Areas.Admin.Models
 				ConnectionCode = obj.ConnectionCode,
 				State = obj.State,
 				NominationPassed = obj.NominationPassed,
+				AwardId = obj.AwardId,
 			};
 		}
 
 		public static AwardSession ToEntity(AwardSessionModel obj)
 		{
 			return obj == null ? null : new AwardSession(obj.Id, obj.UserId, obj.ConnectionCode, obj.State,
-				obj.NominationPassed);
+				obj.NominationPassed, obj.AwardId);
 		}
 
 		public static List<AwardSessionModel> FromEntitiesList(IEnumerable<AwardSession> list)

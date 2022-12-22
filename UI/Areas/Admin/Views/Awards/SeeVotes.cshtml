@@ -1,7 +1,35 @@
-﻿@model IEnumerable<VoteModel>
+﻿@model IEnumerable<VoteViewModel>
 @{
     Layout = "_AwardingLayout";
 }
 <h1>
     Результаты
 </h1>
+<div class="row col-md-12">
+    @foreach (var vote in Model)
+    {
+       <div class="col-md-12">
+	        <div class="form-group">
+                <div class="row">
+		            <label>
+                        @vote.Option.Title: за этот вариант проголосовало @vote.Vote.Count человек
+                    </label>
+                </div>
+	        </div>
+        </div>
+    }
+</div>
+
+<div class="col-md-12 text-center">
+    <a id="GoNext" href="#">
+        Далее 
+    </a>
+</div>
+
+<script>
+    $(document).ready(function () {
+        let sessionId = sessionStorage.getItem("AwardSessionId")
+        var href = `GoNext?sessionId=${sessionId}`;
+        $("#GoNext").attr("href", href);
+    })
+</script>

@@ -26,13 +26,18 @@ namespace Dal
 		{
 			dbObject.UserId = entity.UserId;
 			dbObject.ConnectionCode = entity.ConnectionCode;
-			dbObject.State = entity.State;
+			dbObject.State = (int)entity.State;
 			dbObject.NominationPassed = entity.NominationPassed;
+			dbObject.AwardId = entity.AwardId;
 			return Task.CompletedTask;
 		}
 	
 		protected override Task<IQueryable<AwardSession>> BuildDbQueryAsync(DefaultDbContext context, IQueryable<AwardSession> dbObjects, AwardSessionsSearchParams searchParams)
 		{
+			if (searchParams.State.HasValue)
+			{
+				dbObjects = dbObjects.Where(item => item.State == (int)searchParams.State);
+			}
 			return Task.FromResult(dbObjects);
 		}
 
@@ -54,7 +59,8 @@ namespace Dal
 		internal static Entities.AwardSession ConvertDbObjectToEntity(AwardSession dbObject)
 		{
 			return dbObject == null ? null : new Entities.AwardSession(dbObject.Id, dbObject.UserId,
-				dbObject.ConnectionCode, dbObject.State, dbObject.NominationPassed);
+				dbObject.ConnectionCode, (AwardSessionsState)dbObject.State, dbObject.NominationPassed,
+				dbObject.AwardId);
 		}
 	}
 }

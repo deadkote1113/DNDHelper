@@ -70,16 +70,55 @@ namespace UI.Areas.Admin.Controllers
 			return RedirectToAction("Index");
 		}
 
+
+
+
 		public async Task<IActionResult> StartAwarding()
 		{
-			return View();
+			var sessions = await new AwardSessionsBL().GetAsync(new AwardSessionsSearchParams() { State = AwardSessionsState.InProgress });
+			var sessionsModel = AwardSessionModel.FromEntitiesList(sessions.Objects);
+			return View(sessionsModel);
 		}
 
-		public async Task<IActionResult> SeeNominations(int awardId, int nominationCount)
+		public async Task<IActionResult> AjaxGetAwards(int lastIndex, string q)
 		{
-			var nominations = await new NominationsBL().GetAsync(new NominationsSearchParams(nominationCount - 1, 1)
+			var categories = (await new AwardsBL().GetAsync(new AwardsSearchParams(lastIndex, 5)
 			{
+				SearchQuery = q,
+			})).Objects.Select(item => new Select2ViewModel(item.Id.ToString(), item.Title));
+
+			return Json(categories);
+		}
+
+		public async Task<IActionResult> AjaxCreateSession(int awardId)
+		{
+			var user = UserModel.FromEntity(await new UsersBL().GetAsync(User.Identity.Name));
+			var code = new AwardSessionsBL().GenerateCode();
+			var session = new AwardSessionModel()
+			{
+				UserId = user.Id,
 				AwardId = awardId,
+				State = AwardSessionsState.Created,
+				ConnectionCode = code,
+			};
+			var id = await new AwardSessionsBL().AddOrUpdateAsync(AwardSessionModel.ToEntity(session));
+			return Json(new { code, id });
+		}
+
+		public async Task<IActionResult> AjaxStartAwarding(int sessionId)
+		{
+			var session = await new AwardSessionsBL().GetAsync(sessionId);
+			session.State = AwardSessionsState.InProgress;
+			await new AwardSessionsBL().AddOrUpdateAsync(session);
+			return Json(new { Url = $"SeeNominations?sessionId={session.Id}" });
+		}
+
+		public async Task<IActionResult> SeeNominations(int sessionId)
+		{
+			var session = await new AwardSessionsBL().GetAsync(sessionId);
+			var nominations = await new NominationsBL().GetAsync(new NominationsSearchParams(session.NominationPassed, 1)
+			{
+				AwardId = session.AwardId,
 			});
 			if(nominations.Objects.Count == 0)
 			{
@@ -96,24 +135,57 @@ namespace UI.Areas.Admin.Controllers
 			return View(model);
 		}
 
-		public async Task<IActionResult> AjaxGetAwards(int lastIndex, string q)
+		public async Task<IActionResult> SeeVotes(int sessionId)
 		{
-			var categories = (await new AwardsBL().GetAsync(new AwardsSearchParams(lastIndex, 5)
+			var result = new List<VoteViewModel>();
+			var session = await new AwardSessionsBL().GetAsync(sessionId);
+			var nomination = (await new NominationsBL().GetAsync(new NominationsSearchParams(session.NominationPassed, 1)
 			{
-				SearchQuery = q,
-			})).Objects.Select(item => new Select2ViewModel(item.Id.ToString(), item.Title));
+				AwardId = session.AwardId,
+			})).Objects.FirstOrDefault();
 
-			return Json(categories);
-		}
-
-		public async Task<IActionResult> SeeVotes(int awardId, int nominationCount, int nominationId)
-		{
 			var votes = await new VotesBL().GetAsync(new VotesSearchParams()
 			{
-				NominationId = nominationId
+				NominationId = nomination.Id
 			});
-			var models = VoteModel.FromEntitiesList(votes.Objects);
-			return View(models);
+			var nominationOptions = await new NominationsSelectionOptionsBL().GetAsync( new NominationsSelectionOptionsSearchParams()
+			{
+				NominationId = nomination.Id
+			});
+			foreach (var nominationOption in nominationOptions.Objects)
+			{
+				var votesModels = votes.Objects.Where(item => item.NominationsSelectionOptionsId == nominationOption.Id);
+				var voteModel = new VoteViewModel(NominationsSelectionOptionModel.FromEntity(nominationOption), VoteModel.FromEntitiesList(votesModels));
+				result.Add(voteModel);
+			}
+			return View(result);
+		}
+
+		public async Task<IActionResult> GoNext(int sessionId)
+		{
+			var session = await new AwardSessionsBL().GetAsync(sessionId);
+			var nominations = await new NominationsBL().GetAsync(new NominationsSearchParams()
+			{
+				AwardId = session.AwardId
+			});
+			if(nominations.Objects.Count - 1 == session.NominationPassed)
+			{
+				session.NominationPassed++;
+				session.State = AwardSessionsState.End;
+				await new AwardSessionsBL().AddOrUpdateAsync(session);
+				return RedirectToAction("AwardEnd", new { sessionId });
+			}
+			else
+			{
+				session.NominationPassed++;
+				await new AwardSessionsBL().AddOrUpdateAsync(session);
+				return RedirectToAction("SeeNominations", new { sessionId });
+			}
+		}
+
+		public async Task<IActionResult> AwardEnd(int sessionId)
+		{
+			return View();
 		}
 	}
 }
