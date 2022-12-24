@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
-using Servises.BackGround;
+using Servises.BackGround.TelegramServises;
 
 namespace Servises;
 

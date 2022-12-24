@@ -53,7 +53,7 @@ public partial class DefaultDbContext : DbContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(SharedConfiguration.DbConnectionString ?? "Data Source=localhost;Initial Catalog=DNDHelper;Integrated security=True");
+                optionsBuilder.UseNpgsql(SharedConfiguration.DbConnectionString ?? "Data Source=localhost;Initial Catalog=DNDHelper;Integrated security=True");
             }
         }
 
@@ -61,7 +61,13 @@ public partial class DefaultDbContext : DbContext
     {
         modelBuilder.Entity<Award>(entity =>
         {
-            entity.Property(e => e.Title).IsRequired();
+            entity.HasKey(e => e.Id).HasName("Awards_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Awards_id_seq\"'::regclass)");
+            entity.Property(e => e.Description).HasMaxLength(10000);
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(10000);
 
             entity.HasOne(d => d.User).WithMany(p => p.Awards)
                 .HasForeignKey(d => d.UserId)
@@ -71,7 +77,12 @@ public partial class DefaultDbContext : DbContext
 
         modelBuilder.Entity<AwardSession>(entity =>
         {
-            entity.Property(e => e.ConnectionCode).IsRequired();
+            entity.HasKey(e => e.Id).HasName("AwardSessions_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"AwardSessions_id_seq\"'::regclass)");
+            entity.Property(e => e.ConnectionCode)
+                .IsRequired()
+                .HasMaxLength(10000);
 
             entity.HasOne(d => d.Award).WithMany(p => p.AwardSessions)
                 .HasForeignKey(d => d.AwardId)
@@ -86,14 +97,26 @@ public partial class DefaultDbContext : DbContext
 
         modelBuilder.Entity<Creature>(entity =>
         {
-            entity.Property(e => e.Title).IsRequired();
+            entity.HasKey(e => e.Id).HasName("Creatures_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Creatures_id_seq\"'::regclass)");
+            entity.Property(e => e.FlavorText).HasMaxLength(10000);
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(10000);
         });
 
         modelBuilder.Entity<Item>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("Items_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Items_id_seq\"'::regclass)");
             entity.Property(e => e.CreaturesId).HasColumnName("CreaturesID");
+            entity.Property(e => e.FlavorText).HasMaxLength(10000);
             entity.Property(e => e.StructuresId).HasColumnName("StructuresID");
-            entity.Property(e => e.Title).IsRequired();
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(10000);
 
             entity.HasOne(d => d.Creatures).WithMany(p => p.Items)
                 .HasForeignKey(d => d.CreaturesId)
@@ -106,17 +129,34 @@ public partial class DefaultDbContext : DbContext
 
         modelBuilder.Entity<Landscape>(entity =>
         {
-            entity.Property(e => e.Title).IsRequired();
+            entity.HasKey(e => e.Id).HasName("Landscapes_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Landscapes_id_seq\"'::regclass)");
+            entity.Property(e => e.FlavorText).HasMaxLength(10000);
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(10000);
         });
 
         modelBuilder.Entity<Location>(entity =>
         {
-            entity.Property(e => e.Title).IsRequired();
+            entity.HasKey(e => e.Id).HasName("Locations_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Locations_id_seq\"'::regclass)");
+            entity.Property(e => e.FlavorText).HasMaxLength(10000);
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(10000);
         });
 
         modelBuilder.Entity<LocationsToContent>(entity =>
         {
-            entity.Property(e => e.Title).IsRequired();
+            entity.HasKey(e => e.Id).HasName("LocationsToContents_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"LocationsToContents_id_seq\"'::regclass)");
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(10000);
 
             entity.HasOne(d => d.Landscape).WithMany(p => p.LocationsToContents)
                 .HasForeignKey(d => d.LandscapeId)
@@ -134,7 +174,13 @@ public partial class DefaultDbContext : DbContext
 
         modelBuilder.Entity<Nomination>(entity =>
         {
-            entity.Property(e => e.Title).IsRequired();
+            entity.HasKey(e => e.Id).HasName("Nominations_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Nominations_id_seq\"'::regclass)");
+            entity.Property(e => e.Description).HasMaxLength(10000);
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(10000);
 
             entity.HasOne(d => d.Awards).WithMany(p => p.Nominations)
                 .HasForeignKey(d => d.AwardsId)
@@ -144,7 +190,13 @@ public partial class DefaultDbContext : DbContext
 
         modelBuilder.Entity<NominationsSelectionOption>(entity =>
         {
-            entity.Property(e => e.Title).IsRequired();
+            entity.HasKey(e => e.Id).HasName("NominationsSelectionOptions_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"NominationsSelectionOptions_id_seq\"'::regclass)");
+            entity.Property(e => e.Description).HasMaxLength(10000);
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(10000);
 
             entity.HasOne(d => d.Nomination).WithMany(p => p.NominationsSelectionOptions)
                 .HasForeignKey(d => d.NominationId)
@@ -153,22 +205,32 @@ public partial class DefaultDbContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.NominationsSelectionOptions)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_Nominations_Users");
+                .HasConstraintName("FK_NominationsSelectionOptions_Users");
         });
 
         modelBuilder.Entity<Picture>(entity =>
         {
-            entity.Property(e => e.PicturePath).IsRequired();
-            entity.Property(e => e.Title).IsRequired();
+            entity.HasKey(e => e.Id).HasName("Pictures_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Pictures_id_seq\"'::regclass)");
+            entity.Property(e => e.PicturePath)
+                .IsRequired()
+                .HasMaxLength(10000);
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(10000);
         });
 
         modelBuilder.Entity<PicturesToOther>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PicturesToOther_pkey");
+
             entity.ToTable("PicturesToOther");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"PicturesToOther_id_seq\"'::regclass)");
 
             entity.HasOne(d => d.Award).WithMany(p => p.PicturesToOthers)
                 .HasForeignKey(d => d.AwardId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_PicturesToOther_Awards");
 
             entity.HasOne(d => d.Creature).WithMany(p => p.PicturesToOthers)
@@ -181,17 +243,15 @@ public partial class DefaultDbContext : DbContext
 
             entity.HasOne(d => d.Nomination).WithMany(p => p.PicturesToOthers)
                 .HasForeignKey(d => d.NominationId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_PicturesToOther_Nominations");
 
             entity.HasOne(d => d.NominationsSelectionOption).WithMany(p => p.PicturesToOthers)
                 .HasForeignKey(d => d.NominationsSelectionOptionId)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_PicturesToOther_NominationsSelectionOptions");
 
             entity.HasOne(d => d.Picture).WithMany(p => p.PicturesToOthers)
                 .HasForeignKey(d => d.PictureId)
-                .HasConstraintName("FK_PicturesToOther_Pictures");
+                .HasConstraintName("fk_picturestoother_pictures");
 
             entity.HasOne(d => d.Structure).WithMany(p => p.PicturesToOthers)
                 .HasForeignKey(d => d.StructureId)
@@ -200,8 +260,17 @@ public partial class DefaultDbContext : DbContext
 
         modelBuilder.Entity<Quest>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("Quests_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Quests_id_seq\"'::regclass)");
+            entity.Property(e => e.FlavorText).HasMaxLength(10000);
+            entity.Property(e => e.IsComplited)
+                .IsRequired()
+                .HasDefaultValueSql("true");
             entity.Property(e => e.NextQuestId).HasColumnName("NextQuestID");
-            entity.Property(e => e.Title).IsRequired();
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(10000);
 
             entity.HasOne(d => d.NextQuest).WithMany(p => p.InverseNextQuest)
                 .HasForeignKey(d => d.NextQuestId)
@@ -210,6 +279,10 @@ public partial class DefaultDbContext : DbContext
 
         modelBuilder.Entity<QuestsToItemsOrCreature>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("QuestsToItemsOrCreatures_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"QuestsToItemsOrCreatures_id_seq\"'::regclass)");
+
             entity.HasOne(d => d.Creature).WithMany(p => p.QuestsToItemsOrCreatures)
                 .HasForeignKey(d => d.CreatureId)
                 .HasConstraintName("FK_QuestsToItems_Creatures");
@@ -226,11 +299,20 @@ public partial class DefaultDbContext : DbContext
 
         modelBuilder.Entity<Structure>(entity =>
         {
-            entity.Property(e => e.Title).IsRequired();
+            entity.HasKey(e => e.Id).HasName("Structures_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Structures_id_seq\"'::regclass)");
+            entity.Property(e => e.FlavorText).HasMaxLength(10000);
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(10000);
         });
 
         modelBuilder.Entity<StructuresToItemsOrCreature>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("StructuresToItemsOrCreatures_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"StructuresToItemsOrCreatures_id_seq\"'::regclass)");
             entity.Property(e => e.StructureId).HasColumnName("StructureID");
 
             entity.HasOne(d => d.Creature).WithMany(p => p.StructuresToItemsOrCreatures)
@@ -249,18 +331,23 @@ public partial class DefaultDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasIndex(e => e.Login, "Unique_Users_Login").IsUnique();
+            entity.HasKey(e => e.Id).HasName("Users_pkey");
 
-            entity.Property(e => e.Login)
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Users_id_seq\"'::regclass)");
+            entity.Property(e => e.Login).HasMaxLength(255);
+            entity.Property(e => e.Password)
                 .IsRequired()
-                .HasMaxLength(200);
-            entity.Property(e => e.Password).IsRequired();
-            entity.Property(e => e.RegistrationDate).HasColumnType("datetime");
+                .HasMaxLength(10000);
         });
 
         modelBuilder.Entity<Vote>(entity =>
         {
-            entity.Property(e => e.TelegramUserName).IsRequired();
+            entity.HasKey(e => e.Id).HasName("Votes_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Votes_id_seq\"'::regclass)");
+            entity.Property(e => e.TelegramUserName)
+                .IsRequired()
+                .HasMaxLength(10000);
 
             entity.HasOne(d => d.NominationsSelectionOptions).WithMany(p => p.Votes)
                 .HasForeignKey(d => d.NominationsSelectionOptionsId)
@@ -271,6 +358,23 @@ public partial class DefaultDbContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_Votes_Users");
         });
+        modelBuilder.HasSequence<int>("Awards_id_seq");
+        modelBuilder.HasSequence<int>("AwardSessions_id_seq");
+        modelBuilder.HasSequence<int>("Creatures_id_seq");
+        modelBuilder.HasSequence<int>("Items_id_seq");
+        modelBuilder.HasSequence<int>("Landscapes_id_seq");
+        modelBuilder.HasSequence<int>("Locations_id_seq");
+        modelBuilder.HasSequence<int>("LocationsToContents_id_seq");
+        modelBuilder.HasSequence<int>("Nominations_id_seq");
+        modelBuilder.HasSequence<int>("NominationsSelectionOptions_id_seq");
+        modelBuilder.HasSequence<int>("Pictures_id_seq");
+        modelBuilder.HasSequence<int>("PicturesToOther_id_seq");
+        modelBuilder.HasSequence<int>("Quests_id_seq");
+        modelBuilder.HasSequence<int>("QuestsToItemsOrCreatures_id_seq");
+        modelBuilder.HasSequence<int>("Structures_id_seq");
+        modelBuilder.HasSequence<int>("StructuresToItemsOrCreatures_id_seq");
+        modelBuilder.HasSequence<int>("Users_id_seq");
+        modelBuilder.HasSequence<int>("Votes_id_seq");
 
         OnModelCreatingPartial(modelBuilder);
     }

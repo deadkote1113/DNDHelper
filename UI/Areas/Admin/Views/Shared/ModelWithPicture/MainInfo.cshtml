@@ -7,7 +7,7 @@
 	<div class="form-group">
         <div class="row">
             <label asp-for="Title" class="col-md-3" style="padding-left: 0px;"></label>
-		    <input type="text" asp-for="Title" class="form-control col-md-9"/>
+		    <input type="text" name="Title" class="form-control col-md-9" value="@Model.Title"/>
 		    <span asp-validation-for="Title" class="text-danger"></span>
         </div>
 	</div>
@@ -16,7 +16,7 @@
 	<div class="form-group">
         <div class="row">
 		    <label asp-for="FlavorText"></label>
-		    <textarea asp-for="FlavorText" class="form-control" rows="8"> </textarea>
+            <textarea name="FlavorText" class="form-control" rows="8">@Model.FlavorText </textarea>
 		    <span asp-validation-for="FlavorText" class="text-danger"></span>
         </div>
 	</div>

@@ -16,7 +16,7 @@ namespace UI.Areas.Admin.Models
 		[Display(Name = "Название")]
 		public string Title { get; set; }
 
-		[Display(Name = "Описавние")]
+		[Display(Name = "Описание")]
 		public string FlavorText { get; set; }
 	}
 }

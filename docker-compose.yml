@@ -1,0 +1,96 @@
+version: '3.4'
+
+volumes:
+  db:
+    driver: local
+
+networks:
+  postgres:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: postgresContainer
+    image: postgres:14.4
+    environment:
+      POSTGRES_DB: "DNDHelper"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "1113"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes: 
+      - db:/var/lib/postgresql/data
+      - ./Dal/Scripts/postgresql.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d AlphaDom"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - postgres
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:5.7
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "habrpguser@habr.com"
+      PGADMIN_DEFAULT_PASSWORD: "pgadminpwd4habr"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      - postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbit
+    ports:
+      - 15672:15672
+      - 4001:5672
+    expose:
+     - 15672
+     - 5672
+    container_name: RabbitContainer
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 30s
+      retries: 3
+      start_period: 5s
+
+  servises:
+    image: ${DOCKER_REGISTRY-}servises
+    build:
+      context: .
+      dockerfile: Servises/Dockerfile
+    networks:
+      - postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  ui:
+    image: ${DOCKER_REGISTRY-}ui
+    build:
+      context: .
+      dockerfile: UI/Dockerfile
+    networks:
+      - postgres
+    depends_on:
+      postgres:
+        condition: service_healthy

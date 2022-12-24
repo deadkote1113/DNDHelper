@@ -55,9 +55,9 @@ namespace UI.Areas.Admin.Controllers
 			{
 				return View(model);
 			}
-			await new AwardsBL().AddOrUpdateAsync(AwardModel.ToEntity(model));
+			model.Id = await new AwardsBL().AddOrUpdateAsync(AwardModel.ToEntity(model));
 			TempData[OperationResultType.Success.ToString()] = "Данные сохранены";
-			return RedirectToAction("Index");
+			return View(model);
 		}
 
 		public async Task<IActionResult> Delete(int id)

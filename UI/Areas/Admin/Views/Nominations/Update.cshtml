@@ -12,6 +12,7 @@
     {
         Id = 0,
         NominationId = Model.Id,
+        Title = "",  
     };
 }
 <div class="row">
@@ -27,7 +28,7 @@
             <partial name="ModelWithPicture/MainInfo" model="@Model">
             <div class="col-md-12 text-center">
                 <button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
-                <a asp-action="Index" class="btn btn-outline-secondary">Отмена</a>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Назад</a>
             </div>
         </div>
     </form>
@@ -74,7 +75,6 @@
                 type: 'get',
                 url: "/Admin/Nominations/GetOptions?nominationId=" + @Model.Id,
                 success: function (html) {
-                    console.log(html)
                     if (html != "") {
                         $("#NominationOprions").append(html);
                     }

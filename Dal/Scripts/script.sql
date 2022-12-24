@@ -1,11 +1,4 @@
-﻿create database DNDHelper
-alter database DNDHelper set recovery simple
-go
-
-use DNDHelper
-go
-
-create table Users
+﻿create table Users
 (
 	Id int not null identity constraint PK_Users primary key,
 	[Login] nvarchar(200) constraint Unique_Users_Login unique not null,
@@ -52,7 +45,6 @@ create table Creatures(
 	Id int not null identity constraint PK_Creatures primary key,
 	Title nvarchar(max) not null,
 	FlavorText nvarchar(max),
-	--TO DO Charectiristic
 )
 
 create table Items(
@@ -100,6 +92,9 @@ create table PicturesToOther(
 	ItemId int constraint FK_PicturesToOther_Items foreign key references Items(Id),
 	CreatureId int constraint FK_PicturesToOther_Creatures foreign key references Creatures(Id),
 	StructureId int constraint FK_PicturesToOther_Structures foreign key references Structures(Id),
+	AwardId int constraint FK_PicturesToOther_Awards foreign key references Awards(Id),
+	NominationId int constraint FK_PicturesToOther_Nominations foreign key references Nominations(Id),
+	NominationsSelectionOptionId int constraint FK_PicturesToOther_NominationsSelectionOptions foreign key references NominationsSelectionOptions(Id)
 )
 
 create table Awards(
@@ -128,15 +123,10 @@ create table Votes
 (
 	Id int not null identity constraint PK_Votes primary key,
 	UserId int constraint FK_Votes_Users foreign key references Users(Id),
-	NominationsSelectionOptionsId int not null constraint FK_Votes_NominationsSelectionOptions foreign key references NominationsSelectionOptions(Id)
+	NominationsSelectionOptionsId int not null constraint FK_Votes_NominationsSelectionOptions foreign key references NominationsSelectionOptions(Id),
+	TelegramUserName nvarchar(max) not null 
 )
 
-alter table [dbo].[PicturesToOther] add AwardId int constraint FK_PicturesToOther_Awards foreign key references Awards(Id);
-alter table [dbo].[PicturesToOther] add NominationId int constraint FK_PicturesToOther_Nominations foreign key references Nominations(Id);
-alter table [dbo].[PicturesToOther] add NominationsSelectionOptionId int constraint FK_PicturesToOther_NominationsSelectionOptions foreign key references NominationsSelectionOptions(Id);
- 
-alter table Votes add IsCanseld bit not null
-alter table Votes add TelegramUserName nvarchar(max) not null 
 
 create table AwardSessions
 (
@@ -144,8 +134,6 @@ create table AwardSessions
 	UserId int not null constraint FK_AwardSessions_Users foreign key references Users(Id),
 	ConnectionCode nvarchar(max) not null, 
 	State int not null, 
-	NominationPassed int not null
+	NominationPassed int not null,
+	AwardId int not null constraint FK_AwardSessions_Awards Foreign key references Awards(Id)
 );
-
-
-alter table AwardSessions add AwardId int not null constraint FK_AwardSessions_Awards Foreign key references Awards(Id)

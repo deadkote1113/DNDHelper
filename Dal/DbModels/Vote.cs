@@ -11,9 +11,9 @@ public partial class Vote
 
     public int NominationsSelectionOptionsId { get; set; }
 
-    public bool IsCanseld { get; set; }
-
     public string TelegramUserName { get; set; }
+
+    public bool IsCanseld { get; set; }
 
     public virtual NominationsSelectionOption NominationsSelectionOptions { get; set; }
 
