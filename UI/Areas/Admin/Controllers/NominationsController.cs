@@ -35,6 +35,7 @@ namespace UI.Areas.Admin.Controllers
 		public async Task<IActionResult> Update(int? id, int awardId)
 		{
 			var model = new NominationModel();
+			ViewBag.AwardId = awardId;
 			if (id != null)
 			{
 				model = NominationModel.FromEntity(await new NominationsBL().GetAsync(id.Value));
@@ -58,6 +59,7 @@ namespace UI.Areas.Admin.Controllers
 			}
 			model.Id = await new NominationsBL().AddOrUpdateAsync(NominationModel.ToEntity(model));
 			TempData[OperationResultType.Success.ToString()] = "Данные сохранены";
+			ViewBag.AwardId = model.AwardsId;
 			return View(model);
 		}
 

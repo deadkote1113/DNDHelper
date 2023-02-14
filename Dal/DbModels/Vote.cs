@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace Dal.DbModels;
@@ -15,7 +16,11 @@ public partial class Vote
 
     public bool IsCanseld { get; set; }
 
-    public virtual NominationsSelectionOption NominationsSelectionOptions { get; set; }
+	public string? TelegramAvatar { get; set; }
+
+	public int VoteTir { get; set; }
+
+	public virtual NominationsSelectionOption NominationsSelectionOptions { get; set; }
 
     public virtual User User { get; set; }
 }

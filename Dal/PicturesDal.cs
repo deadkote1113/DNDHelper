@@ -33,7 +33,7 @@ namespace Dal
 		{
 			if(string.IsNullOrEmpty(searchParams.SearchQuery) == false)
 			{
-				dbObjects = dbObjects.Where(item => searchParams.SearchQuery.Contains(item.Title));
+				dbObjects = dbObjects.Where(item => item.Title.Contains(searchParams.SearchQuery));
 			}
 			dbObjects = dbObjects.OrderByDescending(item => item.Id);
 			return Task.FromResult(dbObjects);

@@ -6,13 +6,13 @@
     Результаты
 </h1>
 <div class="row col-md-12">
-    @foreach (var vote in Model)
+    @foreach (var vote in Model.OrderByDescending(item => item.Vote.Sum(item => ((int)item.VoteTir) + 1)))
     {
        <div class="col-md-12">
 	        <div class="form-group">
                 <div class="row">
 		            <label>
-                        @vote.Option.Title: за этот вариант проголосовало @vote.Vote.Count человек
+                        @vote.Option.Title: Этот вариант набирает @vote.Vote.Sum(item => ((int)item.VoteTir) + 1) очков
                     </label>
                 </div>
 	        </div>

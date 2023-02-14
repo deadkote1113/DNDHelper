@@ -10,6 +10,7 @@ using BL;
 using UI.Areas.Admin.Models;
 using UI.Areas.Admin.Models.ViewModels;
 using UI.Other;
+using FCM.Net;
 
 namespace UI.Areas.Admin.Controllers
 {
@@ -186,6 +187,21 @@ namespace UI.Areas.Admin.Controllers
 		public async Task<IActionResult> AwardEnd(int sessionId)
 		{
 			return View();
+		}
+
+		public async Task<IActionResult> CountVotes(int sessionId)
+		{
+			var session = await new AwardSessionsBL().GetAsync(sessionId);
+			var nomination = (await new NominationsBL().GetAsync(new NominationsSearchParams(session.NominationPassed, 1)
+			{
+				AwardId = session.AwardId
+			})).Objects.FirstOrDefault();
+			var votes = await new VotesBL().GetAsync(new VotesSearchParams()
+			{
+				NominationId = nomination.Id
+			});
+			var voteCount = votes.Objects.GroupBy(item => item.TelegramUserName).Where(item => item.Count() == 3).Count();
+			return Json(new { voteCount});
 		}
 	}
 }

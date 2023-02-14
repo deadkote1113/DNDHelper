@@ -13,13 +13,18 @@ namespace Entities
 		public bool IsCanseld { get; set; }
 		public string TelegramUserName { get; set; }
 
-		public Vote(int id, int? userId, int nominationsSelectionOptionsId, bool isCanseld, string telegramUserName)
+		public string TelegramAvatar { get; set; }
+		public VoteTir VoteTir { get; set; }
+
+		public Vote(int id, int? userId, int nominationsSelectionOptionsId, bool isCanseld, string telegramUserName, string telegramAvatar, VoteTir voteTir)
 		{
 			Id = id;
 			UserId = userId;
 			NominationsSelectionOptionsId = nominationsSelectionOptionsId;
 			IsCanseld = isCanseld;
 			TelegramUserName = telegramUserName;
+			TelegramAvatar = telegramAvatar;
+			VoteTir = voteTir;
 		}
 	}
 }

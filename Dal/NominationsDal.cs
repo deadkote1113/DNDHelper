@@ -27,6 +27,7 @@ namespace Dal
 			dbObject.Title = entity.Title;
 			dbObject.Description = entity.Description;
 			dbObject.AwardsId = entity.AwardsId;
+			dbObject.OrderId = entity.OrderId;
 			return Task.CompletedTask;
 		}
 	
@@ -36,6 +37,7 @@ namespace Dal
 			{
 				dbObjects = dbObjects.Where(item => item.AwardsId == searchParams.AwardId);
 			}
+			dbObjects = dbObjects.OrderBy(item => item.OrderId ?? 0);
 			return Task.FromResult(dbObjects);
 		}
 
@@ -57,7 +59,7 @@ namespace Dal
 		internal static Entities.Nomination ConvertDbObjectToEntity(Nomination dbObject)
 		{
 			return dbObject == null ? null : new Entities.Nomination(dbObject.Id, dbObject.Title, dbObject.Description,
-				dbObject.AwardsId);
+				dbObject.AwardsId, dbObject.OrderId);
 		}
 	}
 }

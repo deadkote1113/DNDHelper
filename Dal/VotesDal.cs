@@ -28,6 +28,8 @@ namespace Dal
 			dbObject.NominationsSelectionOptionsId = entity.NominationsSelectionOptionsId;
 			dbObject.IsCanseld = entity.IsCanseld;
 			dbObject.TelegramUserName = entity.TelegramUserName;
+			dbObject.VoteTir = (int)entity.VoteTir;
+			dbObject.TelegramAvatar = entity.TelegramAvatar;
 			return Task.CompletedTask;
 		}
 	
@@ -58,7 +60,8 @@ namespace Dal
 		internal static Entities.Vote ConvertDbObjectToEntity(Vote dbObject)
 		{
 			return dbObject == null ? null : new Entities.Vote(dbObject.Id, dbObject.UserId,
-				dbObject.NominationsSelectionOptionsId, dbObject.IsCanseld, dbObject.TelegramUserName);
+				dbObject.NominationsSelectionOptionsId, dbObject.IsCanseld, dbObject.TelegramUserName,
+				dbObject.TelegramAvatar, (VoteTir)dbObject.VoteTir);
 		}
 	}
 }

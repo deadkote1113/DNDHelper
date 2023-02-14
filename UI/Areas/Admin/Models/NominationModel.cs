@@ -12,6 +12,8 @@ namespace UI.Areas.Admin.Models
 		[Required(ErrorMessage = "Укажите значение")]
 		[Display(Name = "AwardsId")]
 		public int AwardsId { get; set; }
+		[Display(Name = "Порядок")]
+		public int? OrderId { get; set; }
 
 		public static NominationModel FromEntity(Nomination obj)
 		{
@@ -21,12 +23,13 @@ namespace UI.Areas.Admin.Models
 				Title = obj.Title,
 				FlavorText = obj.Description,
 				AwardsId = obj.AwardsId,
+				OrderId = obj.OrderId,
 			};
 		}
 
 		public static Nomination ToEntity(NominationModel obj)
 		{
-			return obj == null ? null : new Nomination(obj.Id, obj.Title, obj.FlavorText, obj.AwardsId);
+			return obj == null ? null : new Nomination(obj.Id, obj.Title, obj.FlavorText, obj.AwardsId, obj.OrderId);
 		}
 
 		public static List<NominationModel> FromEntitiesList(IEnumerable<Nomination> list)

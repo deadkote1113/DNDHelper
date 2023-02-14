@@ -329,3 +329,7 @@ create table "PicturesToOther" (
 	constraint "FK_PicturesToOther_NominationsSelectionOptions" foreign key ("NominationsSelectionOptionId") references "NominationsSelectionOptions"("Id"),
 	CONSTRAINT "PicturesToOther_pkey" PRIMARY KEY ("Id")
 );
+
+alter table "Votes" add column "VoteTir" int;
+alter table "Votes" add column "TelegramAvatar" character varying(10000);
+alter table "Nominations" add column "OrderId" int;

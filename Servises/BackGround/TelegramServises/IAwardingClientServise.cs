@@ -10,9 +10,9 @@ internal interface IAwardingClientServise
 
 	Task Subscride(TelegramUser user, string code, CancellationToken cancellationToken);
 
-	Task SendOptions(List<TelegramUser> user, List<NominationsSelectionOption> options, CancellationToken cancellationToken);
-
 	Task Vote(TelegramUser user, int optionIndex, CancellationToken cancellationToken);
 
 	Task CancelVote(TelegramUser user, CancellationToken cancellationToken);
+
+	Task UpdateAwardSessions(List<AwardSession> newSessions, CancellationToken cancellationToken);
 }

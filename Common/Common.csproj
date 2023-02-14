@@ -9,6 +9,7 @@
     <Compile Include="Attributes\ApiClientsCodeGenerator\SerializableInAndroidAttribute.cs" />
     <Compile Include="Configuration\Mail\MailExtensions.cs" />
     <Compile Include="Configuration\Mail\SmtpConfiguration.cs" />
+    <Compile Include="Enums\VoteTir.cs" />
     <Compile Include="Enums\TyleTypes.cs" />
     <Compile Include="Enums\PictureType.cs" />
     <Compile Include="Enums\AwardSessionsState.cs" />

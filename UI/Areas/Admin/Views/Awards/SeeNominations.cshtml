@@ -63,6 +63,7 @@
 </div>
 <div class="col-md-12 text-center" style="padding:40px;">
     <a class="btn btn-outline-primary" id="SeeVotes" href="SeeVotes?">Узнать результат</a>
+    <span id="voteCounter">0</span>
 </div>
 @section Scripts
     {
@@ -78,7 +79,23 @@
             });
             let sessionId = sessionStorage.getItem("AwardSessionId")
             var href = `SeeVotes?sessionId=${sessionId}`;
-            $("#SeeVotes").attr("href", href)
+            $("#SeeVotes").attr("href", href);
+            CountVotes();
         }) 
+
+        function CountVotes(){
+            let sessionId = sessionStorage.getItem("AwardSessionId")
+            $.ajax({
+                url: "CountVotes",
+			    type: "get",
+			    data: {
+                    sessionId: sessionId
+			    },
+			    success: function (data) {
+                    $("#voteCounter").text(data.voteCount);
+			    }
+		    });
+            setTimeout(CountVotes, 2000);
+        }
     </script>
 }

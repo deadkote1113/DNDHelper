@@ -27,6 +27,8 @@ namespace UI.Areas.Admin.Models
 		[Required(ErrorMessage = "Укажите значение")]
 		[Display(Name = "TelegramUserName")]
 		public string TelegramUserName { get; set; }
+		public string TelegramAvatar { get; set; }
+		public VoteTir VoteTir { get; set; }
 
 		public static VoteModel FromEntity(Vote obj)
 		{
@@ -37,13 +39,15 @@ namespace UI.Areas.Admin.Models
 				NominationsSelectionOptionsId = obj.NominationsSelectionOptionsId,
 				IsCanseld = obj.IsCanseld,
 				TelegramUserName = obj.TelegramUserName,
+				TelegramAvatar = obj.TelegramAvatar,
+				VoteTir = obj.VoteTir,
 			};
 		}
 
 		public static Vote ToEntity(VoteModel obj)
 		{
 			return obj == null ? null : new Vote(obj.Id, obj.UserId, obj.NominationsSelectionOptionsId, obj.IsCanseld,
-				obj.TelegramUserName);
+				obj.TelegramUserName, obj.TelegramAvatar, obj.VoteTir);
 		}
 
 		public static List<VoteModel> FromEntitiesList(IEnumerable<Vote> list)
