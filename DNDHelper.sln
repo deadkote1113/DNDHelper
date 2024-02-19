@@ -19,10 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGeneration", "CodeGener
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerCodeGenerator", "CodeGeneration\ServerCodeGenerator\ServerCodeGenerator.csproj", "{9A41E194-36A1-4775-B9F3-4400E4C2E6D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiClientsCodeGenerator", "CodeGeneration\ApiClientsCodeGenerator\ApiClientsCodeGenerator.csproj", "{56E45A76-F96F-433F-9A60-95FCCE7EB4D2}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{2F20F057-D113-4927-BF3D-8892528CA7C3}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{08C39AA2-1E56-48B1-8733-13DB0126F35C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -66,14 +62,6 @@ Global
 		{9A41E194-36A1-4775-B9F3-4400E4C2E6D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A41E194-36A1-4775-B9F3-4400E4C2E6D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A41E194-36A1-4775-B9F3-4400E4C2E6D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{56E45A76-F96F-433F-9A60-95FCCE7EB4D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56E45A76-F96F-433F-9A60-95FCCE7EB4D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56E45A76-F96F-433F-9A60-95FCCE7EB4D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56E45A76-F96F-433F-9A60-95FCCE7EB4D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F20F057-D113-4927-BF3D-8892528CA7C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F20F057-D113-4927-BF3D-8892528CA7C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F20F057-D113-4927-BF3D-8892528CA7C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F20F057-D113-4927-BF3D-8892528CA7C3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9F03A6F-1D1A-4C98-B2B9-698C304A4B1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9F03A6F-1D1A-4C98-B2B9-698C304A4B1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9F03A6F-1D1A-4C98-B2B9-698C304A4B1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -88,7 +76,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9A41E194-36A1-4775-B9F3-4400E4C2E6D1} = {16E304E4-A3E6-4E39-8258-E7D2F4B786F1}
-		{56E45A76-F96F-433F-9A60-95FCCE7EB4D2} = {16E304E4-A3E6-4E39-8258-E7D2F4B786F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C1911E6-9DD4-45B3-BEB7-0842A0A7207D}

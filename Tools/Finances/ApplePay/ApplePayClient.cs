@@ -1,18 +1,15 @@
-﻿ using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
- using System.Threading.Tasks;
- using Newtonsoft.Json;
- using Tools.Finances.ApplePay.Models;
- using Tools.Finances.ApplePay.Other;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Tools.Finances.ApplePay.Models;
+using Tools.Finances.ApplePay.Other;
 
- namespace Tools.Finances.ApplePay
+namespace Tools.Finances.ApplePay
 {
 	public class ApplePayClient
 	{

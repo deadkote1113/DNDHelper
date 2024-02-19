@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Dal.DbModels;
+﻿namespace Dal.DbModels;
 
 public partial class PicturesToOther
 {
@@ -23,15 +20,9 @@ public partial class PicturesToOther
 
     public virtual Award Award { get; set; }
 
-    public virtual Creature Creature { get; set; }
-
-    public virtual Item Item { get; set; }
-
     public virtual Nomination Nomination { get; set; }
 
     public virtual NominationsSelectionOption NominationsSelectionOption { get; set; }
 
     public virtual Picture Picture { get; set; }
-
-    public virtual Structure Structure { get; set; }
 }

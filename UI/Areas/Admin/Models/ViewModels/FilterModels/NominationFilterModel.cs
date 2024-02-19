@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace UI.Areas.Admin.Models.ViewModels.FilterModels
+﻿namespace UI.Areas.Admin.Models.ViewModels.FilterModels
 {
 	public class NominationFilterModel : BaseFilterModel
 	{

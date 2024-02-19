@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Tools.Finances.Sberbank.Responses.Models;
+﻿using Tools.Finances.Sberbank.Responses.Models;
 
 namespace Tools.Finances.Sberbank.Responses
 {

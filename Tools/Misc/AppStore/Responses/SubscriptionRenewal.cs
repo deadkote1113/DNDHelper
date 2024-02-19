@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 using Tools.Misc.AppStore.Enums;
-using Tools.Serialization;
 using Tools.Serialization.Converters;
 
 namespace Tools.Misc.AppStore.Responses

@@ -1,5 +1,4 @@
-﻿using Dal.DbModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace UI.Areas.Admin.Models.ViewModels
 {

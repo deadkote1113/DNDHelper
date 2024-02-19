@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Tools.Finances.Sberbank.Enums;
+﻿using Tools.Finances.Sberbank.Enums;
 
 namespace Tools.Finances.Sberbank.Requests
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Dal.DbModels;
+﻿namespace Dal.DbModels;
 
 public partial class AwardSession
 {

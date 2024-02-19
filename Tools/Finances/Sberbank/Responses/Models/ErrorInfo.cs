@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Tools.Finances.Sberbank.Responses.Models
+﻿namespace Tools.Finances.Sberbank.Responses.Models
 {
 	/// <summary>
 	/// Класс, описывающий ошибку, возникшую при выполнении запроса к платежному шлюзу.

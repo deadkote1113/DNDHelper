@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Common.Enums;
-using Entities;
 using User = Entities.User;
 
 namespace UI.Areas.Admin.Models

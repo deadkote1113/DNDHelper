@@ -6,10 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualBasic;
-using Newtonsoft.Json.Converters;
 using UI.Areas.Admin.Models.FileManager;
 
 namespace UI.Areas.Admin.Controllers

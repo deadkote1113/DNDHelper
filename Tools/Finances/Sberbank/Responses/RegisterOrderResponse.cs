@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tools.Finances.Sberbank.Responses
+﻿namespace Tools.Finances.Sberbank.Responses
 {
 	/// <summary>
 	/// Класс, описывающий ответ на запрос создания нового заказа (<see cref="Requests.RegisterOrderRequest"/>).

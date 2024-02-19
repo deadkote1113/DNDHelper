@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Common.Enums;
 using Entities;
 
 namespace UI.Areas.Admin.Models
@@ -13,12 +11,6 @@ namespace UI.Areas.Admin.Models
 		public int Id { get; set; }
 
 		public int? PictureId { get; set; }
-
-		public int? ItemId { get; set; }
-
-		public int? CreatureId { get; set; }
-
-		public int? StructureId { get; set; }
 
 		public int? AwardId { get; set; }
 
@@ -32,9 +24,6 @@ namespace UI.Areas.Admin.Models
 			{
 				Id = obj.Id,
 				PictureId = obj.PictureId,
-				ItemId = obj.ItemId,
-				CreatureId = obj.CreatureId,
-				StructureId = obj.StructureId,
 				AwardId = obj.AwardId,
 				NominationId = obj.NominationId,
 				NominationsSelectionOptionId = obj.NominationsSelectionOptionId,
@@ -43,8 +32,7 @@ namespace UI.Areas.Admin.Models
 
 		public static PicturesToOther ToEntity(PicturesToOtherModel obj)
 		{
-			return obj == null ? null : new PicturesToOther(obj.Id, obj.PictureId, obj.ItemId, obj.CreatureId,
-				obj.StructureId, obj.AwardId, obj.NominationId, obj.NominationsSelectionOptionId);
+			return obj == null ? null : new PicturesToOther(obj.Id, obj.PictureId, obj.AwardId, obj.NominationId, obj.NominationsSelectionOptionId);
 		}
 
 		public static List<PicturesToOtherModel> FromEntitiesList(IEnumerable<PicturesToOther> list)

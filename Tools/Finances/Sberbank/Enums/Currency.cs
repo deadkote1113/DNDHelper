@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tools.Finances.Sberbank.Enums
+﻿namespace Tools.Finances.Sberbank.Enums
 {
 	/// <summary>
 	/// Коды валют согласно стандарту ISO 4217.

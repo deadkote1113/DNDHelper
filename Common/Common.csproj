@@ -21,16 +21,7 @@
     <Compile Include="Search\SearchResult.cs" />
     <Compile Include="Configuration\SharedConfiguration.cs" />
     <Compile Include="Search\PicturesToOtherSearchParams.cs" />
-    <Compile Include="Search\CreaturesSearchParams.cs" />
-    <Compile Include="Search\ItemsSearchParams.cs" />
-    <Compile Include="Search\LandscapesSearchParams.cs" />
-    <Compile Include="Search\LocationsSearchParams.cs" />
-    <Compile Include="Search\LocationsToContentsSearchParams.cs" />
     <Compile Include="Search\PicturesSearchParams.cs" />
-    <Compile Include="Search\QuestsSearchParams.cs" />
-    <Compile Include="Search\StructuresSearchParams.cs" />
-    <Compile Include="Search\QuestsToItemsOrCreaturesSearchParams.cs" />
-    <Compile Include="Search\StructuresToItemsOrCreaturesSearchParams.cs" />
     <Compile Include="Search\AwardsSearchParams.cs" />
     <Compile Include="Search\NominationsSearchParams.cs" />
     <Compile Include="Search\NominationsSelectionOptionsSearchParams.cs" />

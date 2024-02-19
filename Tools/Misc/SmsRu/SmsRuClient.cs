@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Tools.Misc.SmsRu.Requests;
 using Tools.Misc.SmsRu.Responses;
-using Tools.Serialization;
 using Tools.Serialization.Converters;
 using UnixDateTimeConverter = Tools.Serialization.Converters.UnixDateTimeConverter;
 

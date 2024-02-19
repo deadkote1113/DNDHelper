@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Common.Enums;
 using Common.Search;
 using Dal.DbModels;
 
@@ -25,9 +24,6 @@ namespace Dal
 		protected override Task UpdateBeforeSavingAsync(DefaultDbContext context, Entities.PicturesToOther entity, PicturesToOther dbObject, bool exists)
 		{
 			dbObject.PictureId = entity.PictureId;
-			dbObject.ItemId = entity.ItemId;
-			dbObject.CreatureId = entity.CreatureId;
-			dbObject.StructureId = entity.StructureId;
 			dbObject.AwardId = entity.AwardId;
 			dbObject.NominationId = entity.NominationId;
 			dbObject.NominationsSelectionOptionId = entity.NominationsSelectionOptionId;
@@ -82,8 +78,7 @@ namespace Dal
 		internal static Entities.PicturesToOther ConvertDbObjectToEntity(PicturesToOther dbObject)
 		{
 			return dbObject == null ? null : new Entities.PicturesToOther(dbObject.Id, dbObject.PictureId,
-				dbObject.ItemId, dbObject.CreatureId, dbObject.StructureId, dbObject.AwardId, dbObject.NominationId,
-				dbObject.NominationsSelectionOptionId)
+				dbObject.AwardId, dbObject.NominationId, dbObject.NominationsSelectionOptionId)
 			{
 				Picture = PicturesDal.ConvertDbObjectToEntity(dbObject.Picture),
 			};

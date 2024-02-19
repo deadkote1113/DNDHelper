@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
+﻿using System.IO;
 using System.Net.Http;
 using System.Security.Authentication;
 using System.Text;
@@ -9,7 +6,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using Tools.Misc.AppStore.Enums;
 using Tools.Misc.AppStore.Requests;
 using Tools.Misc.AppStore.Responses;
 using UnixDateTimeConverter = Tools.Serialization.Converters.UnixDateTimeConverter;

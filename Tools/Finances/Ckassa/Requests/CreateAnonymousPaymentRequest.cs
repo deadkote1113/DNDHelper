@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Tools.Finances.Ckassa.Attributes;
 using Tools.Finances.Ckassa.Enums;
 using Tools.Finances.Ckassa.Models;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Common.Enums;
-
-namespace Common.Search
+﻿namespace Common.Search
 {
 	public class NominationsSelectionOptionsSearchParams : BaseSearchParams
 	{

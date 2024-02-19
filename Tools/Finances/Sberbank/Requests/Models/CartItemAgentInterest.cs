@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tools.Finances.Sberbank.Requests.Models
+﻿namespace Tools.Finances.Sberbank.Requests.Models
 {
 	/// <summary>
 	/// Класс, содержащий информацию об агентской комиссии за продажу товара.

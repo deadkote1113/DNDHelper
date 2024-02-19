@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using Tools.Finances.Sberbank.Enums;
+﻿using Newtonsoft.Json;
 using Tools.Finances.Sberbank.Responses.Models;
 
 namespace Tools.Finances.Sberbank.Responses

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using Common.Enums;
-using Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace UI.Areas.Admin.Models
 {

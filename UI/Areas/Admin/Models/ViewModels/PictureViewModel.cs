@@ -1,6 +1,4 @@
-﻿using UI.Areas.Admin.Models.ViewModels.FilterModels;
-
-namespace UI.Areas.Admin.Models.ViewModels
+﻿namespace UI.Areas.Admin.Models.ViewModels
 {
 	public class PictureViewModel
 	{

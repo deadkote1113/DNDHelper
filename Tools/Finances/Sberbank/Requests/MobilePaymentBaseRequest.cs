@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Tools.Finances.Sberbank.Enums;
 using Tools.Finances.Sberbank.Serializers;

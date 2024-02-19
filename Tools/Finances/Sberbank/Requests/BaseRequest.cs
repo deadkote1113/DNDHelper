@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Tools.Finances.Sberbank.Enums;
-using Tools.Finances.Sberbank.Serializers;
+﻿using Tools.Finances.Sberbank.Serializers;
 
 namespace Tools.Finances.Sberbank.Requests
 {

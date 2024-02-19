@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -97,21 +95,6 @@ namespace UI.Areas.Admin.Controllers
 
 			switch (filterModel.Type)
 			{
-				case PictureType.Item:
-					{
-						pictureLink.ItemId = filterModel.Id;
-						break;
-					}
-				case PictureType.Create:
-					{
-						pictureLink.CreatureId = filterModel.Id;
-						break;
-					}
-				case PictureType.Structure:
-					{
-						pictureLink.StructureId = filterModel.Id;
-						break;
-					}
 				case PictureType.Award:
 					{
 						pictureLink.AwardId = filterModel.Id;

@@ -16,18 +16,9 @@
     <ProjectReference Include="..\Tools\Tools.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UsersBL.cs" />
-    <Compile Include="CreaturesBL.cs" />
-    <Compile Include="ItemsBL.cs" />
-    <Compile Include="LandscapesBL.cs" />
-    <Compile Include="LocationsBL.cs" />
-    <Compile Include="LocationsToContentsBL.cs" />
     <Compile Include="PicturesBL.cs" />
     <Compile Include="PicturesToOtherBL.cs" />
-    <Compile Include="QuestsBL.cs" />
-    <Compile Include="QuestsToItemsOrCreaturesBL.cs" />
-    <Compile Include="StructuresBL.cs" />
-    <Compile Include="StructuresToItemsOrCreaturesBL.cs" />
+    <Compile Include="UsersBL.cs" />
     <Compile Include="AwardsBL.cs" />
     <Compile Include="NominationsBL.cs" />
     <Compile Include="NominationsSelectionOptionsBL.cs" />

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Tools.Finances.Sberbank.Requests
+﻿namespace Tools.Finances.Sberbank.Requests
 {
 	/// <summary>
 	/// Класс, описывающий запрос на завершение оплаты предавторизованного заказа.
