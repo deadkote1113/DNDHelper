@@ -18,12 +18,6 @@ create table "Users"
 	CONSTRAINT "Users_pkey" PRIMARY KEY ("Id")
 );
 
---1qazxsw234
---insert into "Users" ("Login", "Password", "RoleId", "IsBlocked", "RegistrationDate") values
---('dev', 'edfd75fd2fdfa6f7a9ee8475ad570f74f7d2a29f4ac3893290b99c3f203d50286741e1d2a7f2734c382dbf42d3ce0d5b0c5fefe635df01d65dba424417fe8580', 0, false, CURRENT_TIMESTAMP),
---('admin', 'edfd75fd2fdfa6f7a9ee8475ad570f74f7d2a29f4ac3893290b99c3f203d50286741e1d2a7f2734c382dbf42d3ce0d5b0c5fefe635df01d65dba424417fe8580', 1, false, CURRENT_TIMESTAMP);
-
-
 CREATE SEQUENCE "Awards_id_seq"
     AS integer
     START WITH 1
@@ -204,3 +198,17 @@ create table "PicturesToOther" (
 	CONSTRAINT "PicturesToOther_pkey" PRIMARY KEY ("Id")
 );
 
+--1qazxsw234
+insert into "Users" ("Login", "Password", "RoleId", "IsBlocked", "RegistrationDate") values
+('dev', 'edfd75fd2fdfa6f7a9ee8475ad570f74f7d2a29f4ac3893290b99c3f203d50286741e1d2a7f2734c382dbf42d3ce0d5b0c5fefe635df01d65dba424417fe8580', 0, false, CURRENT_TIMESTAMP),
+('admin', 'edfd75fd2fdfa6f7a9ee8475ad570f74f7d2a29f4ac3893290b99c3f203d50286741e1d2a7f2734c382dbf42d3ce0d5b0c5fefe635df01d65dba424417fe8580', 1, false, CURRENT_TIMESTAMP);
+
+INSERT INTO public."Readers"
+	("Name")
+	VALUES ('Господин Ведущий'),
+	('Денис'),
+	('Олег'),
+	('Глеб'),
+	('Клим'),
+	('Настя'),
+	('Никита');

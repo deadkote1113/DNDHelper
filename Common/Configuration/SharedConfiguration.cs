@@ -11,6 +11,8 @@ namespace Common.Configuration
 
 		public static ILoggerFactory LoggerFactory { get; private set; }
 
+		public const int DefaultReaderId = 1;
+
 		public static void UpdateSharedConfiguration(string dbConnectionString, SmtpConfiguration smtpConfiguration, ILoggerFactory loggerFactory)
 		{
 			DbConnectionString = dbConnectionString;
