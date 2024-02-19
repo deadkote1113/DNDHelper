@@ -95,17 +95,17 @@ namespace UI.Areas.Admin.Controllers
 
 			switch (filterModel.Type)
 			{
-				case PictureType.Award:
+				case PictureToOtherType.Award:
 					{
 						pictureLink.AwardId = filterModel.Id;
 						break;
 					}
-				case PictureType.Nomination:
+				case PictureToOtherType.Nomination:
 					{
 						pictureLink.NominationId = filterModel.Id;
 						break;
 					}
-				case PictureType.NominationSelectionOption:
+				case PictureToOtherType.NominationSelectionOption:
 					{
 						pictureLink.NominationsSelectionOptionId = filterModel.Id;
 						break;

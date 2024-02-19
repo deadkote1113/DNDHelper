@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Common.Search;
 using Dal.DbModels;
+using Common.Enums;
 
 namespace Dal
 {
@@ -25,6 +26,7 @@ namespace Dal
 		{
 			dbObject.Title = entity.Title;
 			dbObject.Link = entity.Link;
+			dbObject.Type = (int)entity.Type;
 			return Task.CompletedTask;
 		}
 	
@@ -55,7 +57,7 @@ namespace Dal
 
 		internal static Entities.Picture ConvertDbObjectToEntity(Picture dbObject)
 		{
-			return dbObject == null ? null : new Entities.Picture(dbObject.Id, dbObject.Title, dbObject.Link);
+			return dbObject == null ? null : new Entities.Picture(dbObject.Id, dbObject.Title, dbObject.Link, (PictureType)dbObject.Type);
 		}
 	}
 }

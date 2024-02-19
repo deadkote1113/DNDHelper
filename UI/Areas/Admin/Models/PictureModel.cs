@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Common.Enums;
 using Entities;
 
 namespace UI.Areas.Admin.Models
@@ -16,7 +17,11 @@ namespace UI.Areas.Admin.Models
 
 		[Required(ErrorMessage = "Укажите значение путь")]
 		[Display(Name = "Путь")]
-		public string PicturePath { get; set; }
+		public string Link { get; set; }
+
+		[Required(ErrorMessage = "Тип")]
+		[Display(Name = "Тип")]
+		public PictureType Type { get; set; }
 
 		public static PictureModel FromEntity(Picture obj)
 		{
@@ -24,13 +29,14 @@ namespace UI.Areas.Admin.Models
 			{
 				Id = obj.Id,
 				Title = obj.Title,
-				PicturePath = obj.Link,
+				Link = obj.Link,
+				Type = obj.Type,
 			};
 		}
 
 		public static Picture ToEntity(PictureModel obj)
 		{
-			return obj == null ? null : new Picture(obj.Id, obj.Title, obj.PicturePath);
+			return obj == null ? null : new Picture(obj.Id, obj.Title, obj.Link, obj.Type);
 		}
 
 		public static List<PictureModel> FromEntitiesList(IEnumerable<Picture> list)

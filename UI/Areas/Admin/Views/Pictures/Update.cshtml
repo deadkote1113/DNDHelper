@@ -7,12 +7,12 @@
 }
 
 <form asp-action="Update" asp-antiforgery="true" method="post">
-    <input type="hidden" asp-for="PicturePath" />  
+    <input type="hidden" asp-for="Link" />  
 	<input type="hidden" asp-for="Id"/>
 	<div class="row">
         <div class="col-md-10 photo-div" style="@(Model.Id == 0 ? "display: none" : "")">
 			<div class="form-group">
-				<img id="photo-frame" src="@Model.PicturePath" alt />
+				<img id="photo-frame" src="@Model.Link" alt />
 			</div>
 		</div>
 		<div class="col-md-2">
@@ -51,7 +51,7 @@
                 $(".show-after-picture-load").show();
                 $(".photo-div").show();
                 $("#photo-frame").attr("src",data.url)
-                $("#PicturePath").val(data.url);
+                $("#Link").val(data.url);
 		    });
         });
 	</script>

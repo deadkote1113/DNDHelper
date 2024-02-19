@@ -15,7 +15,7 @@
 </style>
 
 <div class="picture-div" id="Picture-@Model.PictureLinkId">
-    <img src="@Model.Picture.PicturePath" class="picture"/>
+    <img src="@Model.Picture.Link" class="picture"/>
     <a id="deleteLink-@Model.PictureLinkId" class="btn btn-outline-secondary">Отвязать</a>
     <script>
         $("#deleteLink-@Model.PictureLinkId").on("click", function () {

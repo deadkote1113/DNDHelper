@@ -3,7 +3,7 @@
     Layout = "_AwardingLayout";
     var nominationPhoto = new InnerPictureFilterModel()
     {
-        Type = PictureType.Nomination,
+        Type = PictureToOtherType.Nomination,
         Id = Model.Nimination.Id,
         Counts = 1,
     };
@@ -43,7 +43,7 @@
         {
             var pictureFilterModel = new InnerPictureFilterModel()
                 {
-                    Type = PictureType.NominationSelectionOption,
+                    Type = PictureToOtherType.NominationSelectionOption,
                     Id = option.Id,
                 };
             <div class="swiper-slide">

@@ -1,9 +1,7 @@
-﻿namespace Common.Enums
+﻿namespace Common.Enums;
+
+public enum PictureType
 {
-	public enum PictureType
-	{
-		Award = 3,
-		Nomination = 4,
-		NominationSelectionOption = 5
-	}
+	Picture = 1,
+	YouTube = 2
 }

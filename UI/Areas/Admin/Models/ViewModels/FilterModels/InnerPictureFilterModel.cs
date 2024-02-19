@@ -5,7 +5,7 @@ namespace UI.Areas.Admin.Models.ViewModels.FilterModels
 {
 	public class InnerPictureFilterModel
 	{
-		public PictureType Type { get; set; }
+		public PictureToOtherType Type { get; set; }
 		public int Id { get; set; }
 		public int? Counts { get; set; }
 		public string ViewName { get; set; }
@@ -16,17 +16,17 @@ namespace UI.Areas.Admin.Models.ViewModels.FilterModels
 			result.ObjectsCount = filter.Counts;
 			switch (filter.Type)
 			{
-				case PictureType.Award:
+				case PictureToOtherType.Award:
 					{
 						result.AwardId = filter.Id;
 						break;
 					}
-				case PictureType.Nomination:
+				case PictureToOtherType.Nomination:
 					{
 						result.NominationId = filter.Id;
 						break;
 					}
-				case PictureType.NominationSelectionOption:
+				case PictureToOtherType.NominationSelectionOption:
 					{
 						result.NominationsSelectionOptionId = filter.Id;
 						break;

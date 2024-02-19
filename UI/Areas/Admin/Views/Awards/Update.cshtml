@@ -5,7 +5,7 @@
 	ViewBag.Title = (exists ? "Редактирование" : "Создание") + " награждения";
     var pictureFilterModel = new InnerPictureFilterModel()
     {
-        Type = PictureType.Award,
+        Type = PictureToOtherType.Award,
         Id = Model.Id
     };
 }
