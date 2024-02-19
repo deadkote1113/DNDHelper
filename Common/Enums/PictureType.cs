@@ -2,6 +2,6 @@
 
 public enum PictureType
 {
-	Picture = 1,
-	YouTube = 2
+	Picture = 0,
+	YouTube = 1
 }

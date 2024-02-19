@@ -4,55 +4,99 @@
     var exists = Model != null && Model.Id != 0;
     ViewBag.Title = (exists ? "Редактирование" : "Создание") + " фотография";
     ViewBag.UseFileManager = true;
+
+    var showVideo = Model.Id != 0 && Model.Type == PictureType.YouTube;
+    var showPicture = Model.Id != 0 && Model.Type == PictureType.Picture;
 }
 
 <form asp-action="Update" asp-antiforgery="true" method="post">
-    <input type="hidden" asp-for="Link" />  
-	<input type="hidden" asp-for="Id"/>
-	<div class="row">
-        <div class="col-md-10 photo-div" style="@(Model.Id == 0 ? "display: none" : "")">
-			<div class="form-group">
-				<img id="photo-frame" src="@Model.Link" alt />
-			</div>
-		</div>
-		<div class="col-md-2">
-			<div class="form-group">
-				<label asp-for="Title"></label>
-				<input type="text" asp-for="Title" class="form-control"/>
-				<span asp-validation-for="Title" class="text-danger"></span>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12 text-center">
+    <input type="hidden" asp-for="Link" />
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Type" />
+    <div class="row">
+        <div class="col-md-10 photo-div" style="@(showPicture == false ? "display: none" : "")">
+            <div class="form-group">
+                <img id="photo-frame" src="@Model.Link" alt />
+            </div>
+        </div>
+        <div class="col-md-10 video-div" style="@(showVideo == false ? "display: none" : "")">
+            <div class="form-group">
+                <iframe id="video-frame" src="@Model.Link" al" frameborder="0" width="100%" height="315"></iframe>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input type="text" asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
             <a href="javascript: void(0)" class="btn btn-outline-primary open-file-manager-button" title="Загрузить макет">
-			    Загрузить картинку
-		    </a>
-			<button class="btn btn-outline-primary show-after-picture-load" type="submit" style="display: none">@(exists ? "Сохранить" : "Добавить")</button>
+                Загрузить картинку
+            </a>
+            <a href="javascript: void(0)" class="btn btn-outline-primary youtube-change-link" title="Загрузить макет">
+                Загрузить видос с ютуба
+            </a>
+            <button class="btn btn-outline-primary show-after-picture-load" type="submit" style="display: none">@(exists ? "Сохранить" : "Добавить")</button>
             <a asp-action="Index" class="btn btn-outline-secondary">Назад</a>
-		</div>
-	</div>
+        </div>
+    </div>
 </form>
 
 
 @section Scripts
 {
     <script>
-		pageUtils.bindDefaultFileManagerHandlers('.open-file-manager-button');
-	</script>
+        pageUtils.bindDefaultFileManagerHandlers('.open-file-manager-button');
+    </script>
 
     <script>
+        function ShowPicture() {
+            $(".show-after-picture-load").show();
+            $(".photo-div").show();
+        }
+        function HidePicture() {
+            $(".photo-div").hide();
+        }
+
+        function ShowYoutube() {
+            $(".show-after-picture-load").show();
+            $(".video-div").show();
+        }
+        function HideYoutube() {
+            $(".video-div").hide();
+        }
+
         $(document).ready(function () {
-            window.addEventListener('message', function(event) {
-			    var data = event.data.content;
+            window.addEventListener('message', function (event) {
+                var data = event.data.content;
                 if (event.data.type !== 'SpaceApp.FileManager.FileSelected') {
                     return;
                 }
-                $(".show-after-picture-load").show();
-                $(".photo-div").show();
-                $("#photo-frame").attr("src",data.url)
+
+                HideYoutube();
+                ShowPicture();
+                $("#photo-frame").attr("src", data.url);
                 $("#Link").val(data.url);
-		    });
+                $("#Type").val(@((int)PictureType.Picture));
+            });
+
+            $(".youtube-change-link").on("click", function () {
+                var input = prompt('вставьте ссылку');
+                var link = "http://www.youtube.com/embed/" + 
+                    input.split("https://www.youtube.com/watch?v=")[1].split("&")[0];
+
+                console.log(link);
+                
+                HidePicture();
+                ShowYoutube();
+                $("#video-frame").attr("src", link);
+                $("#Link").val(link);
+                $("#Type").val(@((int)PictureType.YouTube));
+            });
         });
-	</script>
+    </script>
 }
