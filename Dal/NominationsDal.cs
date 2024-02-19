@@ -27,7 +27,6 @@ namespace Dal
 			dbObject.Description = entity.Description;
 			dbObject.AwardsId = entity.AwardsId;
 			dbObject.OrderId = entity.OrderId;
-			dbObject.ReaderId = entity.ReaderId;
 			return Task.CompletedTask;
 		}
 	
@@ -43,8 +42,6 @@ namespace Dal
 
 		protected override async Task<IList<Entities.Nomination>> BuildEntitiesListAsync(DefaultDbContext context, IQueryable<Nomination> dbObjects, object convertParams, bool isFull)
 		{
-			dbObjects = dbObjects
-				.Include(item => item.Reader);
 			return (await dbObjects.ToListAsync()).Select(ConvertDbObjectToEntity).ToList();
 		}
 
@@ -61,10 +58,7 @@ namespace Dal
 		internal static Entities.Nomination ConvertDbObjectToEntity(Nomination dbObject)
 		{
 			return dbObject == null ? null : new Entities.Nomination(dbObject.Id, dbObject.Title, dbObject.Description,
-				dbObject.AwardsId, dbObject.OrderId, dbObject.ReaderId)
-			{
-				Reader = ReadersDal.ConvertDbObjectToEntity(dbObject.Reader),
-			};
+				dbObject.AwardsId, dbObject.OrderId);
 		}
 	}
 }

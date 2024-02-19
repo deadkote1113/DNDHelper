@@ -8,6 +8,8 @@ using UI.Areas.Admin.Models;
 using UI.Areas.Admin.Models.ViewModels;
 using UI.Other;
 using UI.Areas.Admin.Models.ViewModels.FilterModels;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace UI.Areas.Admin.Controllers
 {
@@ -15,13 +17,10 @@ namespace UI.Areas.Admin.Controllers
 	[Authorize(Roles = nameof(UserRole.Admin))]
 	public class NominationsController : Controller
 	{
-		public async Task<IActionResult> Index(NominationFilterModel filterModel, int page = 1)
+		public async Task<IActionResult> Index(NominationFilterModel filterModel)
 		{
-			const int objectsPerPage = 20;
 			var searchResult = await new NominationsBL().GetAsync(new NominationsSearchParams
 			{
-				StartIndex = (page - 1) * objectsPerPage,
-				ObjectsCount = objectsPerPage,
 				AwardId = filterModel.AwardId
 			});
 			var viewModel = new SearchResultViewModel<NominationModel, NominationFilterModel>(NominationModel.FromEntitiesList(searchResult.Objects),
@@ -43,6 +42,7 @@ namespace UI.Areas.Admin.Controllers
 			{
 				model.AwardsId = awardId;
 			}
+			await ConfigureViewBag();
 			return View(model);
 		}
 
@@ -57,6 +57,7 @@ namespace UI.Areas.Admin.Controllers
 			model.Id = await new NominationsBL().AddOrUpdateAsync(NominationModel.ToEntity(model));
 			TempData[OperationResultType.Success.ToString()] = "Данные сохранены";
 			ViewBag.AwardId = model.AwardsId;
+			await ConfigureViewBag();
 			return View(model);
 		}
 
@@ -78,6 +79,7 @@ namespace UI.Areas.Admin.Controllers
 			}
 			var id = await new NominationsSelectionOptionsBL().AddOrUpdateAsync(NominationsSelectionOptionModel.ToEntity(model));
 			model.Id = id;
+			await ConfigureViewBag();
 			return PartialView("Partials/_Option", model);
 		}
 
@@ -88,11 +90,19 @@ namespace UI.Areas.Admin.Controllers
 				NominationId = nominationId
 			});
 			var models = NominationsSelectionOptionModel.FromEntitiesList(options.Objects);
+			await ConfigureViewBag();
 			return PartialView("Partials/_GetOptions", models);
 		}
 		public async Task DeleteOption(int id)
 		{
 			await new NominationsSelectionOptionsBL().DeleteAsync(id);
+		}
+
+		private async Task ConfigureViewBag()
+		{
+			var readers = await new ReadersBL().GetAsync(new ReadersSearchParams());
+
+			ViewBag.Readers = readers.Objects.Select(item => new SelectListItem(item.Name, item.Id.ToString())).ToList();
 		}
 	}
 }

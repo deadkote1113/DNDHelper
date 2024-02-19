@@ -4,11 +4,12 @@
     var random = new Random();
     var id = random.Next(1000000);
     Model.ViewName = "Partials/_Items";
-    var model = new PictureEditorViewModel() {
+    var model = new PictureEditorViewModel() 
+    {
         Filter = Model,
         UniqId = id
     };
 }
 
 <partial name="../Pictures/Partials/_AddConnect" model="model">
-    <partial name="../Pictures/Partials/_ConectedPictures" model="model">
+<partial name="../Pictures/Partials/_ConectedPictures" model="model">

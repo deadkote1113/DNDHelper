@@ -13,9 +13,18 @@
         padding: 20px;
     }
 </style>
-
 <div class="picture-div" id="Picture-@Model.PictureLinkId">
-    <img src="@Model.Picture.Link" class="picture"/>
+
+    @switch (Model.Picture.Type)
+    {
+        case PictureType.Picture:
+            <img src="@Model.Picture.Link" class="picture" />
+            break;
+        case PictureType.YouTube:
+            <iframe id="video-frame" src="@Model.Picture.Link" allowfullscreen="allowfullscreen" frameborder="0" width="100%" height="315"></iframe>
+            break;
+    }
+    
     <a id="deleteLink-@Model.PictureLinkId" class="btn btn-outline-secondary">Отвязать</a>
     <script>
         $("#deleteLink-@Model.PictureLinkId").on("click", function () {

@@ -90,11 +90,6 @@ public partial class DefaultDbContext : DbContext
                 .HasForeignKey(d => d.AwardsId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Nominations_Awards");
-
-            entity.HasOne(d => d.Reader).WithMany(p => p.Nominations)
-                .HasForeignKey(d => d.ReaderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Nominations_Readers");
         });
 
         modelBuilder.Entity<NominationsSelectionOption>(entity =>
@@ -107,6 +102,11 @@ public partial class DefaultDbContext : DbContext
                 .HasForeignKey(d => d.NominationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_NominationsSelectionOptions_Nominations");
+
+            entity.HasOne(d => d.Reader).WithMany(p => p.NominationsSelectionOptions)
+                .HasForeignKey(d => d.ReaderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Nominations_Readers");
 
             entity.HasOne(d => d.User).WithMany(p => p.NominationsSelectionOptions)
                 .HasForeignKey(d => d.UserId)

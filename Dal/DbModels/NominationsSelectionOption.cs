@@ -14,9 +14,13 @@ public partial class NominationsSelectionOption
 
     public int NominationId { get; set; }
 
+    public int ReaderId { get; set; }
+
     public virtual Nomination Nomination { get; set; }
 
     public virtual ICollection<PicturesToOther> PicturesToOthers { get; } = new List<PicturesToOther>();
+
+    public virtual Reader Reader { get; set; }
 
     public virtual User User { get; set; }
 

@@ -110,6 +110,11 @@ namespace UI.Areas.Admin.Controllers
 						pictureLink.NominationsSelectionOptionId = filterModel.Id;
 						break;
 					}
+				case PictureToOtherType.AwardEvent:
+					{
+						pictureLink.AwardId = filterModel.Id;
+						break;
+					}
 			}
 			var linkId = await new PicturesToOtherBL().AddOrUpdateAsync(pictureLink);
 			var picture = await new PicturesBL().GetAsync(PictureId);

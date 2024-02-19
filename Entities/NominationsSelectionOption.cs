@@ -7,14 +7,18 @@
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public int NominationId { get; set; }
+		public int ReaderId { get; set; }
 
-		public NominationsSelectionOption(int id, int? userId, string title, string description, int nominationId)
+		public Reader Reader { get; set; }
+
+		public NominationsSelectionOption(int id, int? userId, string title, string description, int nominationId, int readerId)
 		{
 			Id = id;
 			UserId = userId;
 			Title = title;
 			Description = description;
 			NominationId = nominationId;
+			ReaderId = readerId;
 		}
 	}
 }

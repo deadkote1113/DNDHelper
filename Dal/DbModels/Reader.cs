@@ -8,5 +8,5 @@ public partial class Reader
 
     public string Name { get; set; }
 
-    public virtual ICollection<Nomination> Nominations { get; } = new List<Nomination>();
+    public virtual ICollection<NominationsSelectionOption> NominationsSelectionOptions { get; } = new List<NominationsSelectionOption>();
 }

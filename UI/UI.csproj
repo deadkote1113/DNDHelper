@@ -86,8 +86,6 @@
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties appsettings_1development_1json__JsonSchema="https://cdn.jsdelivr.net/gh/tarampampam/error-pages@latest/schemas/config/1.0.schema.json" libman_1json__JsonSchema="http://json.schemastore.org/opspec-io-0.1.7" />
-    </VisualStudio>
+    <VisualStudio><UserProperties libman_1json__JsonSchema="http://json.schemastore.org/opspec-io-0.1.7" /></VisualStudio>
   </ProjectExtensions>
 </Project>

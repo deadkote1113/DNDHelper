@@ -65,10 +65,8 @@ create table "Nominations"(
 	"Description" text,
 	"OrderId" int not null,
 	"AwardsId" int not null,
-	"ReaderId" int not null,
 	
 	constraint "FK_Nominations_Awards" foreign key ("AwardsId") references "Awards"("Id"),
-	constraint "FK_Nominations_Readers" foreign key ("ReaderId") references "Readers"("Id"),
 	CONSTRAINT "Nominations_pkey" PRIMARY KEY ("Id")
 );
 
@@ -106,9 +104,11 @@ create table "NominationsSelectionOptions"(
 	"Title" text,
 	"Description" text,
 	"NominationId" int not null,
+	"ReaderId" int not null,
 	
 	constraint "FK_NominationsSelectionOptions_Users" foreign key ("UserId") references "Users"("Id"),
 	constraint "FK_NominationsSelectionOptions_Nominations" foreign key ("NominationId") references "Nominations"("Id"),
+	constraint "FK_Nominations_Readers" foreign key ("ReaderId") references "Readers"("Id"),
 	CONSTRAINT "NominationsSelectionOptions_pkey" PRIMARY KEY ("Id")
 );
 

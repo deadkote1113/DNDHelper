@@ -2,11 +2,6 @@
 
 @{
 	ViewBag.Title = "Номинациии";
-	var pagedList = Html.PagedList(Model.PagesInfo.ItemsCount, Model.PagesInfo.ItemsPerPage, Model.PagesInfo.CurrentPage,
-		Model.PagesInfo.DisplayedPages, pageNumber => Url.Action(Url.GetAction(), new
-		{
-			page = pageNumber
-		}), new PagedListExtensions.PagedListRenderParams());
 }
 
 <div class="row">
@@ -16,12 +11,6 @@
 				<a asp-action="Update" asp-route-awardId="@Model.FilterModel.AwardId" class="btn btn-outline-primary">Добавить</a>
 			</div>
 		</div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-md-12">
-		@pagedList
 	</div>
 </div>
 
@@ -63,11 +52,5 @@
                 }
 			</table>
 		</div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-md-12">
-		@pagedList
 	</div>
 </div>

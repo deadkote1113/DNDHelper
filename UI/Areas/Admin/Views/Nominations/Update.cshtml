@@ -5,16 +5,16 @@
     ViewBag.Title = (exists ? "Редактирование" : "Создание") + " Номинации";
     int awardId = ViewBag.AwardId;
     var pictureFilterModel = new InnerPictureFilterModel()
-    {
-        Type = PictureToOtherType.Nomination,
-        Id = Model.Id
-    };
-    var creatMode = new NominationsSelectionOptionModel() 
-    {
-        Id = 0,
-        NominationId = Model.Id,
-        Title = "",  
-    };
+            {
+                Type = PictureToOtherType.Nomination,
+                Id = Model.Id
+            };
+    var creatMode = new NominationsSelectionOptionModel()
+            {
+                Id = 0,
+                NominationId = Model.Id,
+                Title = "",
+            };
 }
 <div class="row">
     @if (Model.Id != 0)
@@ -24,22 +24,22 @@
         </div>
     }
     <form asp-action="Update" asp-antiforgery="true" method="post" class="@(Model.Id != 0 ? "col-md-6" : "col-md-12")">
-        <input asp-for="AwardsId" type="hidden"/>
+        <input asp-for="AwardsId" type="hidden" />
         <div class="col-md-12">
             <partial name="ModelWithPicture/MainInfo" model="@Model">
-           <div class="col-md-12">
-	            <div class="form-group">
-                    <div class="row">
-                        <label asp-for="OrderId" class="col-md-3" style="padding-left: 0px;"></label>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="row">
+                            <label asp-for="OrderId" class="col-md-3" style="padding-left: 0px;"></label>
                             <input type="text" name="OrderId" class="form-control col-md-9" value="@Model.OrderId" />
-                        <span asp-validation-for="OrderId" class="text-danger"></span>
+                            <span asp-validation-for="OrderId" class="text-danger"></span>
+                        </div>
                     </div>
-	            </div>
-            </div>
-            <div class="col-md-12 text-center">
-                <button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
+                </div>
+                <div class="col-md-12 text-center">
+                    <button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
                     <a asp-action="Index" asp-route-AwardId="@awardId" class="btn btn-outline-secondary">Назад</a>
-            </div>
+                </div>
         </div>
     </form>
 </div>

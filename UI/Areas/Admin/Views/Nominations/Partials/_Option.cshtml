@@ -7,6 +7,7 @@
         Type = PictureToOtherType.NominationSelectionOption,
         Id = Model.Id
     };
+    var readers = ViewBag.Readers as List<SelectListItem>;
 }
 
 <div class="row" style="border: solid; margin-bottom: 30px; padding: 20px" id="NominatonOption-@Model.Id">
@@ -21,6 +22,15 @@
         <input asp-for="NominationId" type="hidden" />
         <div class="col-md-12">
             <partial name="ModelWithPicture/MainInfo" model="@Model">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="row">
+                            <label asp-for="ReaderId" class="col-md-3" style="padding-left: 0px;"></label>
+                            <select asp-for="ReaderId" asp-items="readers" class="form-control col-md-9"></select>
+                            <span asp-validation-for="ReaderId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
             <div class="col-md-12 text-center">
                 <button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
                 @if (Model.Id != 0)

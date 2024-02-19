@@ -13,6 +13,11 @@ namespace UI.Areas.Admin.Models
 		[Required(ErrorMessage = "Укажите значение")]
 		public int NominationId { get; set; }
 
+		[Display(Name = "Зачтёт")]
+		public int ReaderId { get; set; }
+
+		public string ReaderName { get; set; }
+
 		public static NominationsSelectionOptionModel FromEntity(NominationsSelectionOption obj)
 		{
 			return obj == null ? null : new NominationsSelectionOptionModel
@@ -22,13 +27,16 @@ namespace UI.Areas.Admin.Models
 				Title = obj.Title,
 				FlavorText = obj.Description,
 				NominationId = obj.NominationId,
+				ReaderId = obj.ReaderId,
+
+				ReaderName = obj.Reader.Name,
 			};
 		}
 
 		public static NominationsSelectionOption ToEntity(NominationsSelectionOptionModel obj)
 		{
 			return obj == null ? null : new NominationsSelectionOption(obj.Id, obj.UserId, obj.Title, obj.FlavorText,
-				obj.NominationId);
+				obj.NominationId, obj.ReaderId);
 		}
 
 		public static List<NominationsSelectionOptionModel> FromEntitiesList(IEnumerable<NominationsSelectionOption> list)
