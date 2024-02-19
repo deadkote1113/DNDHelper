@@ -24,7 +24,7 @@ namespace UI.Areas.Admin.Models
 			{
 				Id = obj.Id,
 				Title = obj.Title,
-				PicturePath = obj.PicturePath,
+				PicturePath = obj.Link,
 			};
 		}
 

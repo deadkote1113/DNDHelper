@@ -12,6 +12,8 @@
     <Compile Include="NominationsSelectionOption.cs" />
     <Compile Include="Vote.cs" />
     <Compile Include="AwardSession.cs" />
+    <Compile Include="Reader.cs" />
+    <Compile Include="AwardEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="User.cs" />

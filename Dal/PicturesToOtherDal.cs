@@ -32,18 +32,6 @@ namespace Dal
 	
 		protected override Task<IQueryable<PicturesToOther>> BuildDbQueryAsync(DefaultDbContext context, IQueryable<PicturesToOther> dbObjects, PicturesToOtherSearchParams searchParams)
 		{
-			if(searchParams.ItemId != null)
-			{
-				dbObjects = dbObjects.Where(item => item.ItemId == searchParams.ItemId);
-			}
-			if (searchParams.StructureId != null)
-			{
-				dbObjects = dbObjects.Where(item => item.StructureId == searchParams.StructureId);
-			}
-			if (searchParams.CreatureId != null)
-			{
-				dbObjects = dbObjects.Where(item => item.CreatureId == searchParams.CreatureId);
-			}
 			if (searchParams.AwardId != null)
 			{
 				dbObjects = dbObjects.Where(item => item.AwardId == searchParams.AwardId);
@@ -51,6 +39,10 @@ namespace Dal
 			if (searchParams.NominationId != null)
 			{
 				dbObjects = dbObjects.Where(item => item.NominationId == searchParams.NominationId);
+			}
+			if (searchParams.AwardEventId != null)
+			{
+				dbObjects = dbObjects.Where(item => item.AwardEventId == searchParams.AwardEventId);
 			}
 			if (searchParams.NominationsSelectionOptionId != null)
 			{

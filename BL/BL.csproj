@@ -24,5 +24,7 @@
     <Compile Include="NominationsSelectionOptionsBL.cs" />
     <Compile Include="VotesBL.cs" />
     <Compile Include="AwardSessionsBL.cs" />
+    <Compile Include="ReadersBL.cs" />
+    <Compile Include="AwardEventsBL.cs" />
   </ItemGroup>
 </Project>

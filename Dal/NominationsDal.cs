@@ -36,7 +36,7 @@ namespace Dal
 			{
 				dbObjects = dbObjects.Where(item => item.AwardsId == searchParams.AwardId);
 			}
-			dbObjects = dbObjects.OrderBy(item => item.OrderId ?? 0);
+			dbObjects = dbObjects.OrderBy(item => item.OrderId);
 			return Task.FromResult(dbObjects);
 		}
 

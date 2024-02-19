@@ -27,6 +27,8 @@
     <Compile Include="Search\NominationsSelectionOptionsSearchParams.cs" />
     <Compile Include="Search\VotesSearchParams.cs" />
     <Compile Include="Search\AwardSessionsSearchParams.cs" />
+    <Compile Include="Search\ReadersSearchParams.cs" />
+    <Compile Include="Search\AwardEventsSearchParams.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MailKit" Version="3.4.3" />

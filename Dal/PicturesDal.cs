@@ -24,7 +24,7 @@ namespace Dal
 		protected override Task UpdateBeforeSavingAsync(DefaultDbContext context, Entities.Picture entity, Picture dbObject, bool exists)
 		{
 			dbObject.Title = entity.Title;
-			dbObject.PicturePath = entity.PicturePath;
+			dbObject.Link = entity.Link;
 			return Task.CompletedTask;
 		}
 	
@@ -55,7 +55,7 @@ namespace Dal
 
 		internal static Entities.Picture ConvertDbObjectToEntity(Picture dbObject)
 		{
-			return dbObject == null ? null : new Entities.Picture(dbObject.Id, dbObject.Title, dbObject.PicturePath);
+			return dbObject == null ? null : new Entities.Picture(dbObject.Id, dbObject.Title, dbObject.Link);
 		}
 	}
 }
