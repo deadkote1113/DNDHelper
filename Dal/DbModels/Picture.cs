@@ -8,7 +8,9 @@ public partial class Picture
 
     public string Title { get; set; }
 
-    public string PicturePath { get; set; }
+    public string Link { get; set; }
+
+    public int Type { get; set; }
 
     public virtual ICollection<PicturesToOther> PicturesToOthers { get; } = new List<PicturesToOther>();
 }

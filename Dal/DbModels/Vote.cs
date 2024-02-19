@@ -8,15 +8,15 @@ public partial class Vote
 
     public int NominationsSelectionOptionsId { get; set; }
 
-    public string TelegramUserName { get; set; }
-
     public bool IsCanseld { get; set; }
 
-	public string? TelegramAvatar { get; set; }
+    public int VoteTir { get; set; }
 
-	public int VoteTir { get; set; }
+    public string TelegramUserName { get; set; }
 
-	public virtual NominationsSelectionOption NominationsSelectionOptions { get; set; }
+    public string TelegramAvatar { get; set; }
+
+    public virtual NominationsSelectionOption NominationsSelectionOptions { get; set; }
 
     public virtual User User { get; set; }
 }

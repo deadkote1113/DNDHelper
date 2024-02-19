@@ -6,12 +6,14 @@
   <ItemGroup>
     <Compile Include="BaseDal.cs" />
     <Compile Include="DbModels\Award.cs" />
+    <Compile Include="DbModels\AwardEvent.cs" />
     <Compile Include="DbModels\AwardSession.cs" />
     <Compile Include="DbModels\DefaultDbContext.cs" />
     <Compile Include="DbModels\Nomination.cs" />
     <Compile Include="DbModels\NominationsSelectionOption.cs" />
     <Compile Include="DbModels\Picture.cs" />
     <Compile Include="DbModels\PicturesToOther.cs" />
+    <Compile Include="DbModels\Reader.cs" />
     <Compile Include="DbModels\User.cs" />
     <Compile Include="DbModels\Vote.cs" />
     <Compile Include="OrderedQueryableVisitor.cs" />

@@ -6,19 +6,17 @@ public partial class PicturesToOther
 
     public int? PictureId { get; set; }
 
-    public int? ItemId { get; set; }
-
-    public int? CreatureId { get; set; }
-
-    public int? StructureId { get; set; }
-
     public int? AwardId { get; set; }
 
     public int? NominationId { get; set; }
 
     public int? NominationsSelectionOptionId { get; set; }
 
+    public int? AwardEventId { get; set; }
+
     public virtual Award Award { get; set; }
+
+    public virtual AwardEvent AwardEvent { get; set; }
 
     public virtual Nomination Nomination { get; set; }
 

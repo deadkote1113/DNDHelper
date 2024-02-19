@@ -9,8 +9,8 @@
 create table "Users"
 (
 	"Id" int not null DEFAULT nextval('public."Users_id_seq"'::regclass),
-	"Login" character varying(255) ,
-	"Password" character varying(10000) not null,
+	"Login" text,
+	"Password" text,
 	"RoleId" int not null,
 	"IsBlocked" boolean not null,
 	"RegistrationDate" timestamp with time zone not null,
@@ -35,11 +35,26 @@ CREATE SEQUENCE "Awards_id_seq"
 create table "Awards"(
 	"Id" int not null DEFAULT nextval('public."Awards_id_seq"'::regclass),
 	"UserId" int not null,
-	"Title" character varying(10000) not null,
-	"Description" character varying(10000),
+	"Title" text,
+	"Description" text,
 
 	constraint "FK_Awards_Users" foreign key ("UserId") references "Users"("Id"),
 	CONSTRAINT "Awards_pkey" PRIMARY KEY ("Id")
+);
+
+CREATE SEQUENCE "Readers_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+create table "Readers"(
+	"Id" int not null DEFAULT nextval('public."Readers_id_seq"'::regclass),
+	"Name" text not null,
+	
+	CONSTRAINT "Readers_pkey" PRIMARY KEY ("Id")
 );
 
 CREATE SEQUENCE "Nominations_id_seq"
@@ -52,12 +67,35 @@ CREATE SEQUENCE "Nominations_id_seq"
 
 create table "Nominations"(
 	"Id" int not null DEFAULT nextval('public."Nominations_id_seq"'::regclass),
-	"Title" character varying(10000) not null,
-	"Description" character varying(10000),
+	"Title" text,
+	"Description" text,
+	"OrderId" int not null,
 	"AwardsId" int not null,
+	"ReaderId" int not null,
 	
 	constraint "FK_Nominations_Awards" foreign key ("AwardsId") references "Awards"("Id"),
+	constraint "FK_Nominations_Readers" foreign key ("ReaderId") references "Readers"("Id"),
 	CONSTRAINT "Nominations_pkey" PRIMARY KEY ("Id")
+);
+
+
+CREATE SEQUENCE "AwardEvents_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+create table "AwardEvents"(
+	"Id" int not null DEFAULT nextval('public."AwardEvents_id_seq"'::regclass),
+	"Title" text,
+	"Description" text,
+	"OrderId" int not null,
+	"AwardsId" int not null,
+	
+	constraint "FK_AwardEvents_Awards" foreign key ("AwardsId") references "Awards"("Id"),
+	CONSTRAINT "AwardEvents_pkey" PRIMARY KEY ("Id")
 );
 
 CREATE SEQUENCE "NominationsSelectionOptions_id_seq"
@@ -71,8 +109,8 @@ CREATE SEQUENCE "NominationsSelectionOptions_id_seq"
 create table "NominationsSelectionOptions"(
 	"Id" int not null DEFAULT nextval('public."NominationsSelectionOptions_id_seq"'::regclass),
 	"UserId" int,
-	"Title" character varying(10000) not null,
-	"Description" character varying(10000),
+	"Title" text,
+	"Description" text,
 	"NominationId" int not null,
 	
 	constraint "FK_NominationsSelectionOptions_Users" foreign key ("UserId") references "Users"("Id"),
@@ -87,14 +125,16 @@ CREATE SEQUENCE "Votes_id_seq"
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
+	
 create table "Votes"
 (
 	"Id" int not null DEFAULT nextval('public."Votes_id_seq"'::regclass),
 	"UserId" int,
 	"NominationsSelectionOptionsId" int not null,
-	"TelegramUserName" character varying(10000) not null,
 	"IsCanseld" boolean not null,
+	"VoteTir" int not null,
+	"TelegramUserName" text,
+	"TelegramAvatar" text,
 	
 	constraint "FK_Votes_Users" foreign key ("UserId") references "Users"("Id"),
 	constraint "FK_Votes_NominationsSelectionOptions" foreign key ("NominationsSelectionOptionsId") references "NominationsSelectionOptions"("Id"),
@@ -113,7 +153,7 @@ create table "AwardSessions"
 (
 	"Id" int not null DEFAULT nextval('public."AwardSessions_id_seq"'::regclass),
 	"UserId" int not null,
-	"ConnectionCode" character varying(10000) not null, 
+	"ConnectionCode" text, 
 	"State" int not null, 
 	"NominationPassed" int not null,
 	"AwardId" int not null,
@@ -134,8 +174,9 @@ CREATE SEQUENCE "Pictures_id_seq"
 
 create table "Pictures" (
 	"Id" int not null DEFAULT nextval('public."Pictures_id_seq"'::regclass),
-	"Title" character varying(10000) not null,
-	"PicturePath" character varying(10000) not null,
+	"Title" text,
+	"Link" text,
+	"Type" int not null,
 	CONSTRAINT "Pictures_pkey" PRIMARY KEY ("Id")
 );
 
@@ -153,14 +194,13 @@ create table "PicturesToOther" (
 	"AwardId" int,
 	"NominationId" int,
 	"NominationsSelectionOptionId" int,
+	"AwardEventId" int,
 
 	constraint FK_PicturesToOther_Pictures foreign key ("PictureId") references "Pictures"("Id"),
 	constraint "FK_PicturesToOther_Awards" foreign key ("AwardId") references "Awards"("Id"),
 	constraint "FK_PicturesToOther_Nominations" foreign key ("NominationId") references "Nominations"("Id"),
 	constraint "FK_PicturesToOther_NominationsSelectionOptions" foreign key ("NominationsSelectionOptionId") references "NominationsSelectionOptions"("Id"),
+	constraint "FK_PicturesToOther_AwardEvents" foreign key ("AwardEventId") references "AwardEvents"("Id"),
 	CONSTRAINT "PicturesToOther_pkey" PRIMARY KEY ("Id")
 );
 
-alter table "Votes" add column "VoteTir" int;
-alter table "Votes" add column "TelegramAvatar" character varying(10000);
-alter table "Nominations" add column "OrderId" int;

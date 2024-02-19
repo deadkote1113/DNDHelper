@@ -2,7 +2,7 @@
 
 namespace Dal.DbModels;
 
-public partial class Nomination
+public partial class AwardEvent
 {
     public int Id { get; set; }
 
@@ -14,13 +14,7 @@ public partial class Nomination
 
     public int AwardsId { get; set; }
 
-    public int ReaderId { get; set; }
-
     public virtual Award Awards { get; set; }
 
-    public virtual ICollection<NominationsSelectionOption> NominationsSelectionOptions { get; } = new List<NominationsSelectionOption>();
-
     public virtual ICollection<PicturesToOther> PicturesToOthers { get; } = new List<PicturesToOther>();
-
-    public virtual Reader Reader { get; set; }
 }
