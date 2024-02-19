@@ -54,10 +54,50 @@ namespace UI.Areas.Admin.Controllers
 			{
 				return View(model);
 			}
+			var isNew = model.Id == 0;
 			model.Id = await new NominationsBL().AddOrUpdateAsync(NominationModel.ToEntity(model));
+			if (isNew)
+			{
+				return RedirectToAction("Update", new { id = model.Id });
+			}
+			await ConfigureViewBag();
 			TempData[OperationResultType.Success.ToString()] = "Данные сохранены";
 			ViewBag.AwardId = model.AwardsId;
-			await ConfigureViewBag();
+			return View(model);
+		}
+
+		public async Task<IActionResult> UpdateAwardEvent(int? id, int awardId)
+		{
+			var model = new AwardEventModel();
+			ViewBag.AwardId = awardId;
+			if (id != null)
+			{
+				model = AwardEventModel.FromEntity(await new AwardEventsBL().GetAsync(id.Value));
+				if (model == null)
+					return NotFound();
+			}
+			else
+			{
+				model.AwardsId = awardId;
+			}
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> UpdateAwardEvent(AwardEventModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+			var isNew = model.Id == 0;
+
+
+
+			if (isNew)
+			{
+				return RedirectToAction("UpdateAwardEvent", new { id = model.Id });
+			}
 			return View(model);
 		}
 
