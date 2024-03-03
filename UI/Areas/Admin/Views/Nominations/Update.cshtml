@@ -36,6 +36,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="row">
+                            <label asp-for="IsCompleted" class="col-md-3" style="padding-left: 0px;"></label>
+                            <input asp-for="IsCompleted" type="checkbox" class="form-control col-md-9" />
+                            <span asp-validation-for="IsCompleted" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-12 text-center">
                     <button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
                     <a asp-action="Index" asp-route-AwardId="@awardId" class="btn btn-outline-secondary">Назад</a>

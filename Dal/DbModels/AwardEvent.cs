@@ -16,5 +16,7 @@ public partial class AwardEvent
 
     public virtual Award Awards { get; set; }
 
-    public virtual ICollection<PicturesToOther> PicturesToOthers { get; } = new List<PicturesToOther>();
+	public bool IsCompleted { get; set; }
+
+	public virtual ICollection<PicturesToOther> PicturesToOthers { get; } = new List<PicturesToOther>();
 }

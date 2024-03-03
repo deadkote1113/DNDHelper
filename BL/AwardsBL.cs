@@ -2,6 +2,9 @@
 using Dal;
 using Common.Search;
 using Award = Entities.Award;
+using Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BL
 {
@@ -36,6 +39,22 @@ namespace BL
 		public Task<SearchResult<Award>> GetAsync(AwardsSearchParams searchParams)
 		{
 			return new AwardsDal().GetAsync(searchParams);
+		}
+
+		public async Task<IAwardItem> GetCurentNominationItem(int awardId, int passedNominations)
+		{
+			var nominations = await new NominationsBL().GetAsync(new NominationsSearchParams()
+			{
+				AwardId = awardId
+			});
+			var events = await new AwardEventsBL().GetAsync(new AwardEventsSearchParams()
+			{
+				AwardId = awardId
+			});
+
+			List<IAwardItem> awardItems = nominations.Objects.Select(item => (IAwardItem)item)
+				.Concat(events.Objects.Select(item => (IAwardItem)item)).OrderBy(item => item.OrderId).ToList();
+			return awardItems.Skip(passedNominations).First();
 		}
 	}
 }

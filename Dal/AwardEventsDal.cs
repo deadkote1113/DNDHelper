@@ -27,11 +27,16 @@ namespace Dal
 			dbObject.Description = entity.Description;
 			dbObject.OrderId = entity.OrderId;
 			dbObject.AwardsId = entity.AwardsId;
+			dbObject.IsCompleted = entity.IsCompleted;
 			return Task.CompletedTask;
 		}
-	
+
 		protected override Task<IQueryable<AwardEvent>> BuildDbQueryAsync(DefaultDbContext context, IQueryable<AwardEvent> dbObjects, AwardEventsSearchParams searchParams)
 		{
+			if (searchParams is not null)
+			{
+				dbObjects = dbObjects.Where(item => item.AwardsId == searchParams.AwardId);
+			}
 			return Task.FromResult(dbObjects);
 		}
 
@@ -53,7 +58,7 @@ namespace Dal
 		internal static Entities.AwardEvent ConvertDbObjectToEntity(AwardEvent dbObject)
 		{
 			return dbObject == null ? null : new Entities.AwardEvent(dbObject.Id, dbObject.Title, dbObject.Description,
-				dbObject.OrderId, dbObject.AwardsId);
+				dbObject.OrderId, dbObject.AwardsId, dbObject.IsCompleted);
 		}
 	}
 }

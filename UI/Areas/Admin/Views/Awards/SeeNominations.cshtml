@@ -1,10 +1,11 @@
 ﻿@model SeeNominationsViewModel
 @{
     Layout = "_AwardingLayout";
+    var pictureToOterType = @Model.Nimination.Type == UI.Other.AwardItemType.Nomination ? PictureToOtherType.Nomination : PictureToOtherType.AwardEvent;
     var nominationPhoto = new InnerPictureFilterModel()
     {
-        Type = PictureToOtherType.Nomination,
-        Id = Model.Nimination.Id,
+                Type = pictureToOterType,
+        Id = Model.Nimination.Item.Id,
         Counts = 1,
     };
 }
@@ -16,16 +17,17 @@
         max-height: calc(25vw);
         object-fit: contain;
     }
+
     .award-picture-div {
         padding: calc(2vw);
         width: 100%;
     }
 </style>
 <div class="col-md-12">
-    <h1 class="text-center">@Model.Nimination.Title</h1>
+    <h1 class="text-center">@Model.Nimination.Item.Title</h1>
 </div>
 <div class="col-md-12">
-    <h3 class="text-center">@Model.Nimination.FlavorText</h3>
+    <h3 class="text-center">@Model.Nimination.Item.FlavorText</h3>
 </div>
 <div class="col-md-12">
     <center>
@@ -34,68 +36,91 @@
         </div>
     </center>
 </div>
-<div class="col-md-12" style="margin-bottom:40px">
-    <h2 class="text-center">Номинанты</h2>
-</div>
-<div class="swiper swiper-container">
-    <div class="swiper-wrapper">
-        @foreach (var option in Model.options)
-        {
-            var pictureFilterModel = new InnerPictureFilterModel()
-                {
-                    Type = PictureToOtherType.NominationSelectionOption,
-                    Id = option.Id,
-                };
-            <div class="swiper-slide">
-                <div class="col-md-12">
-                    <h4>
-                        @option.Title
-                    </h4>
-                    <partial name="../Pictures/Partials/_AwardPictureViewer" model="@pictureFilterModel">
-                    <h5>
-                        @option.FlavorText
-                    </h5>
-                </div>
-            </div>
-        }
+@if (Model.Nimination.Type == UI.Other.AwardItemType.Nomination)
+{
+    <div class="col-md-12" style="margin-bottom:40px">
+        <h2 class="text-center">Номинанты</h2>
     </div>
-    <div class="swiper-pagination"></div>
-</div>
-<div class="col-md-12 text-center" style="padding:40px;">
-    <a class="btn btn-outline-primary" id="SeeVotes" href="SeeVotes?">Узнать результат</a>
-    <span id="voteCounter">0</span>
-</div>
-@section Scripts
+    <div class="swiper swiper-container">
+        <div class="swiper-wrapper">
+            @foreach (var option in Model.Options)
+            {
+                var pictureFilterModel = new InnerPictureFilterModel()
+                    {
+                        Type = PictureToOtherType.NominationSelectionOption,
+                        Id = option.Id,
+                    };
+                <div class="swiper-slide">
+                    <div class="col-md-12">
+                        <h4>
+                            @option.Title
+                        </h4>
+                        <partial name="../Pictures/Partials/_AwardPictureViewer" model="@pictureFilterModel">
+                            <h7>
+                                Зачтёт: @option.ReaderName
+                            </h7>
+                            <br />
+                            <h5>
+                                @option.FlavorText
+                            </h5>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="col-md-12 text-center" style="padding:40px;">
+        <a class="btn btn-outline-primary" id="SeeVotes" href="SeeVotes?">Узнать результат</a>
+        <span id="voteCounter">0</span>
+    </div>
+    @section Scripts
     {
-    <script>
-        $(document).ready(function () {
-            var swiper = new Swiper('.swiper-container', {
-                slidesPerView: 2,
-                spaceBetween: 40,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-            });
-            let sessionId = sessionStorage.getItem("AwardSessionId")
-            var href = `SeeVotes?sessionId=${sessionId}`;
-            $("#SeeVotes").attr("href", href);
-            CountVotes();
-        }) 
+        <script>
+            $(document).ready(function () {
+                var swiper = new Swiper('.swiper-container', {
+                    slidesPerView: 2,
+                    spaceBetween: 40,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                });
+                let sessionId = sessionStorage.getItem("AwardSessionId")
+                var href = `SeeVotes?sessionId=${sessionId}`;
+                $("#SeeVotes").attr("href", href);
+                CountVotes();
+            })
 
-        function CountVotes(){
-            let sessionId = sessionStorage.getItem("AwardSessionId")
-            $.ajax({
-                url: "CountVotes",
-			    type: "get",
-			    data: {
-                    sessionId: sessionId
-			    },
-			    success: function (data) {
-                    $("#voteCounter").text(data.voteCount);
-			    }
-		    });
-            setTimeout(CountVotes, 2000);
-        }
-    </script>
+            function CountVotes() {
+                let sessionId = sessionStorage.getItem("AwardSessionId")
+                $.ajax({
+                    url: "CountVotes",
+                    type: "get",
+                    data: {
+                        sessionId: sessionId
+                    },
+                    success: function (data) {
+                        $("#voteCounter").text(data.voteCount);
+                    }
+                });
+                setTimeout(CountVotes, 2000);
+            }
+        </script>
+    }
+}
+else
+{
+    <div class="col-md-12 text-center" style="padding:40px;">
+        <a class="btn btn-outline-primary" id="GoNext" href="SeeVotes?">Далее</a>
+    </div>
+    @section Scripts
+    {
+        <script>
+            $(document).ready(function () {
+                let sessionId = sessionStorage.getItem("AwardSessionId")
+                var href = `GoNext?sessionId=${sessionId}`;
+            $("#GoNext").attr("href", href);
+            })
+        </script>
+    }
 }

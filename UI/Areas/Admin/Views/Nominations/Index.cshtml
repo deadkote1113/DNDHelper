@@ -1,57 +1,86 @@
-﻿@model SearchResultViewModel<NominationModel, NominationFilterModel>
+﻿@model List<AwardItemViewModel>
 
 @{
-	ViewBag.Title = "Номинациии";
+    ViewBag.Title = "Номинациии";
+    int awardId = ViewBag.AwardId;
 }
 
 <div class="row">
-	<div class="col-md-12">
-		<div class="card mb-3">
-			<div class="card-body">
-                <a asp-action="Update" asp-route-awardId="@Model.FilterModel.AwardId" class="btn btn-outline-primary">Добавить Номинацию</a>
-                <a asp-action="UpdateAwardEvent" asp-route-awardId="@Model.FilterModel.AwardId" class="btn btn-outline-primary">Добавить Событие</a>
-			</div>
-		</div>
-	</div>
+    <div class="col-md-12">
+        <div class="card mb-3">
+            <div class="card-body">
+                <a asp-action="Update" asp-route-awardId="@awardId" class="btn btn-outline-primary">Добавить Номинацию</a>
+                <a asp-action="UpdateAwardEvent" asp-route-awardId="@awardId" class="btn btn-outline-primary">Добавить Событие</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
-	<div class="col-md-12">
-		<div class="table-responsive">
-			<table class="table table-striped">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped">
                 <tr>
                     <th class="text-center">Название</th>
+                    <th class="text-center">Тип</th>
                     <th class="text-center">Картинка</th>
                     <th class="text-center">Действия</th>
                 </tr>
-                @foreach (var item in Model.Objects)
+                @foreach (var item in Model)
                 {
-                    <tr>
+                    var pictureToOtherType = item.Type == UI.Other.AwardItemType.Nomination ? PictureToOtherType.Nomination : PictureToOtherType.AwardEvent;
+                    string tableColor = item.IsCompleted ? "success" :
+                    item.Type == UI.Other.AwardItemType.Nomination ? "danger" : "primary";
+
+                    <tr class="bg-@tableColor">
                         <td class="text-center">
-                            @item.Title
+                            @switch (item.Type)
+                            {
+                                case UI.Other.AwardItemType.Nomination:
+                                    <b>@item.Item.Title</b>
+                                    break;
+                                case UI.Other.AwardItemType.Event:
+                                    <text>***</text>
+                                    break;
+                            }
+                           
                         </td>
                         <td class="text-center">
-                            @if (item.Id != null)
+                            <b>@item.Type.GetDisplayName()</b>
+                        </td>
+                        <td class="text-center">
+                            @if (item.Item.Id != null)
                             {
-                                var pictureFilterModel = new InnerPictureFilterModel()
+                                @switch (item.Type)
                                 {
-                                    Type = PictureToOtherType.Nomination,
-                                    Id = item.Id,
-                                    Counts = 1,
-                                };
-                                <div class="col-md-12">
-                                    <partial name="../Pictures/Partials/_PictureViewer" model="@pictureFilterModel">
-                                </div>
+                                    case UI.Other.AwardItemType.Nomination:
+                                        var pictureFilterModel = new InnerPictureFilterModel()
+                                        {
+                                            Type = pictureToOtherType,
+                                            Id = item.Item.Id,
+                                            Counts = 1,
+                                        };
+                                        <div class="col-md-12">
+                                            <partial name="../Pictures/Partials/_PictureViewer" model="@pictureFilterModel">
+                                        </div>
+                                    break;
+                                }
                             }
                         </td>
-                        <td class="text-center">
-                            <a asp-action="Update" asp-route-id="@item.Id" asp-route-awardId="@Model.FilterModel.AwardId">Изменить</a>
-                            <br />
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="delete-object-button">Удалить</a>
+                        <td class="text-center bg-dark">
+                            @switch (item.Type)
+                            {
+                                case UI.Other.AwardItemType.Nomination:
+                                    <b><a asp-action="Update" asp-route-id="@item.Item.Id" asp-route-awardId="@awardId" >Изменить</a></b>
+                                    break;
+                                case UI.Other.AwardItemType.Event:
+                                    <b><a asp-action="UpdateAwardEvent" asp-route-id="@item.Item.Id" asp-route-awardId="@awardId">Изменить</a></b>
+                                    break;
+                            }
                         </td>
                     </tr>
                 }
-			</table>
-		</div>
-	</div>
+            </table>
+        </div>
+    </div>
 </div>

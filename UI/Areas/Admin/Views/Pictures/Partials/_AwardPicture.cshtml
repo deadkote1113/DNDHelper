@@ -3,6 +3,14 @@
 @foreach (var picture in Model)
 {
     <div class="award-picture-div">
-        <img src="@picture.Picture.Link" class="award-picture" />
+        @switch (picture.Picture.Type)
+        {
+            case PictureType.Picture:
+                <img src="@picture.Picture.Link" class="award-picture" />
+                break;
+            case PictureType.YouTube:
+                <iframe id="video-frame" src="@picture.Picture.Link" allowfullscreen="allowfullscreen" frameborder="0" width="100%" height="315"></iframe>
+                break;
+        }
     </div>
 }

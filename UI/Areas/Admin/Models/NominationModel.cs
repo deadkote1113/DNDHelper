@@ -10,8 +10,13 @@ namespace UI.Areas.Admin.Models
 		[Required(ErrorMessage = "Укажите значение")]
 		[Display(Name = "AwardsId")]
 		public int AwardsId { get; set; }
+
 		[Display(Name = "Порядок")]
 		public int OrderId { get; set; }
+
+		[Required(ErrorMessage = "Укажите значение")]
+		[Display(Name = "Завершена")]
+		public bool IsCompleted { get; set; }
 
 		public static NominationModel FromEntity(Nomination obj)
 		{
@@ -22,12 +27,13 @@ namespace UI.Areas.Admin.Models
 				FlavorText = obj.Description,
 				AwardsId = obj.AwardsId,
 				OrderId = obj.OrderId,
+				IsCompleted = obj.IsCompleted,
 			};
 		}
 
 		public static Nomination ToEntity(NominationModel obj)
 		{
-			return obj == null ? null : new Nomination(obj.Id, obj.Title, obj.FlavorText, obj.AwardsId, obj.OrderId);
+			return obj == null ? null : new Nomination(obj.Id, obj.Title, obj.FlavorText, obj.AwardsId, obj.OrderId, obj.IsCompleted);
 		}
 
 		public static List<NominationModel> FromEntitiesList(IEnumerable<Nomination> list)

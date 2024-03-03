@@ -4,13 +4,13 @@ namespace UI.Areas.Admin.Models.ViewModels
 {
 	public class SeeNominationsViewModel
 	{
-		public SeeNominationsViewModel(NominationModel nimination, List<NominationsSelectionOptionModel> options)
+		public SeeNominationsViewModel(AwardItemViewModel nimination, List<NominationsSelectionOptionModel>? options)
 		{
 			Nimination = nimination;
-			this.options = options;
+			this.Options = options;
 		}
 
-		public NominationModel Nimination { get; set; }
-		public List<NominationsSelectionOptionModel> options { get; set; }
+		public AwardItemViewModel Nimination { get; set; }
+		public List<NominationsSelectionOptionModel>? Options { get; set; }
 	}
 }

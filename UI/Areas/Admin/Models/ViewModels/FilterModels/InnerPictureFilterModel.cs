@@ -31,6 +31,11 @@ namespace UI.Areas.Admin.Models.ViewModels.FilterModels
 						result.NominationsSelectionOptionId = filter.Id;
 						break;
 					}
+				case PictureToOtherType.AwardEvent:
+					{
+						result.AwardEventId = filter.Id;
+						break;
+					}
 			}
 			return result;
 		}

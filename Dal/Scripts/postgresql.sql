@@ -212,3 +212,6 @@ INSERT INTO public."Readers"
 	('Клим'),
 	('Настя'),
 	('Никита');
+
+alter table "AwardEvents" add column "IsCompleted" boolean not null default(false);
+alter table "Nominations" add column "IsCompleted" boolean not null default(false);

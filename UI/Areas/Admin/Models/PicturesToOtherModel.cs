@@ -18,6 +18,8 @@ namespace UI.Areas.Admin.Models
 
 		public int? NominationsSelectionOptionId { get; set; }
 
+		public int? AwardEventId { get; set; }
+
 		public static PicturesToOtherModel FromEntity(PicturesToOther obj)
 		{
 			return obj == null ? null : new PicturesToOtherModel
@@ -27,12 +29,13 @@ namespace UI.Areas.Admin.Models
 				AwardId = obj.AwardId,
 				NominationId = obj.NominationId,
 				NominationsSelectionOptionId = obj.NominationsSelectionOptionId,
+				AwardEventId = obj.AwardEventId
 			};
 		}
 
 		public static PicturesToOther ToEntity(PicturesToOtherModel obj)
 		{
-			return obj == null ? null : new PicturesToOther(obj.Id, obj.PictureId, obj.AwardId, obj.NominationId, obj.NominationsSelectionOptionId);
+			return obj == null ? null : new PicturesToOther(obj.Id, obj.PictureId, obj.AwardId, obj.NominationId, obj.NominationsSelectionOptionId, obj.AwardEventId);
 		}
 
 		public static List<PicturesToOtherModel> FromEntitiesList(IEnumerable<PicturesToOther> list)

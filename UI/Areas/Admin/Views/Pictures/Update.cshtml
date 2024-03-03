@@ -34,13 +34,16 @@
     </div>
     <div class="row">
         <div class="col-md-12 text-center">
-            <a href="javascript: void(0)" class="btn btn-outline-primary open-file-manager-button" title="Загрузить макет">
-                Загрузить картинку
+            <a href="javascript: void(0)" class="btn btn-outline-primary open-file-manager-button">
+                Загрузить картинку через файл
             </a>
-            <a href="javascript: void(0)" class="btn btn-outline-primary youtube-change-link" title="Загрузить макет">
+            <a href="javascript: void(0)" class="btn btn-outline-primary download-picture">
+                Загрузить картинку через прямую ссылку
+            </a>
+            <a href="javascript: void(0)" class="btn btn-outline-primary youtube-change-link">
                 Загрузить видос с ютуба
             </a>
-            <button class="btn btn-outline-primary show-after-picture-load" type="submit" style="display: none">@(exists ? "Сохранить" : "Добавить")</button>
+            <button class="btn btn-outline-primary show-after-picture-load" type="submit" style="display: @(string.IsNullOrEmpty(Model.Link) ? "none" : "inline-block") ">@(exists ? "Сохранить" : "Добавить")</button>
             <a asp-action="Index" class="btn btn-outline-secondary">Назад</a>
         </div>
     </div>
@@ -86,7 +89,7 @@
 
             $(".youtube-change-link").on("click", function () {
                 var input = prompt('вставьте ссылку');
-                var link = "http://www.youtube.com/embed/" + 
+                var link = "https://www.youtube.com/embed/" + 
                     input.split("https://www.youtube.com/watch?v=")[1].split("&")[0];
 
                 console.log(link);
@@ -96,6 +99,33 @@
                 $("#video-frame").attr("src", link);
                 $("#Link").val(link);
                 $("#Type").val(@((int)PictureType.YouTube));
+            });
+
+            $(".download-picture").on("click", function () {
+                var input = prompt('вставьте ссылку');
+                $.ajax({
+                    url: "/Admin/Pictures/AddFromLink",
+                    type: "post",
+                    data: {
+                        link: input
+                    },
+                    success: function (data) {
+                        var link = data.link
+
+                        console.log(link);
+
+                        HideYoutube();
+                        ShowPicture();
+                        $("#photo-frame").attr("src", link);
+                        $("#Link").val(link);
+                        $("#Type").val(@((int)PictureType.Picture));
+                    },
+                    error: function () {
+                        console.log("error")
+                    }
+                });
+
+                
             });
         });
     </script>

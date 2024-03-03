@@ -27,6 +27,7 @@ namespace Dal
 			dbObject.Description = entity.Description;
 			dbObject.AwardsId = entity.AwardsId;
 			dbObject.OrderId = entity.OrderId;
+			dbObject.IsCompleted = entity.IsCompleted;
 			return Task.CompletedTask;
 		}
 	
@@ -58,7 +59,7 @@ namespace Dal
 		internal static Entities.Nomination ConvertDbObjectToEntity(Nomination dbObject)
 		{
 			return dbObject == null ? null : new Entities.Nomination(dbObject.Id, dbObject.Title, dbObject.Description,
-				dbObject.AwardsId, dbObject.OrderId);
+				dbObject.AwardsId, dbObject.OrderId, dbObject.IsCompleted);
 		}
 	}
 }

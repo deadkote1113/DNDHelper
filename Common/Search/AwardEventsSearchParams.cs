@@ -5,5 +5,7 @@
 		public AwardEventsSearchParams(int startIndex = 0, int? objectsCount = null) : base(startIndex, objectsCount)
 		{
 		}
+
+		public int? AwardId { get; set; }
 	}
 }

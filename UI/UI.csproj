@@ -26,6 +26,7 @@
     <Compile Include="Areas\Admin\Models\FileManager\FileModel.cs" />
     <Compile Include="Areas\Admin\Models\FileManager\RenameError.cs" />
     <Compile Include="Areas\Admin\Models\FileManager\UploadError.cs" />
+    <Compile Include="Areas\Admin\Models\ViewModels\AwardItemViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\FilterModels\InnerPictureFilterModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\FilterModels\NominationFilterModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\PictureEditorViewModel.cs" />
@@ -46,6 +47,7 @@
     <Compile Include="Areas\Admin\Models\ViewModels\PagesInfoModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewModels\SearchResultViewModel.cs" />
     <Compile Include="Extensions\Middleware\StatusCodePagesExtensions.cs" />
+    <Compile Include="Other\AwardItemType.cs" />
     <Compile Include="Other\OperationResultType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Startup.cs" />
@@ -61,7 +63,6 @@
     <Compile Include="Areas\Admin\Models\AwardSessionModel.cs" />
     <Compile Include="Areas\Admin\Models\ReaderModel.cs" />
     <Compile Include="Areas\Admin\Models\AwardEventModel.cs" />
-    <Compile Include="Areas\Admin\Controllers\AwardEventsController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="compilerconfig.json" />

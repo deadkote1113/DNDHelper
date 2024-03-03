@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Setting2.cs" />
+    <Compile Include="IAwardItem.cs" />
     <Compile Include="PicturesToOther.cs" />
     <Compile Include="Picture.cs" />
     <Compile Include="Award.cs" />

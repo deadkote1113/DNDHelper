@@ -14,7 +14,9 @@ public partial class Nomination
 
     public int AwardsId { get; set; }
 
-    public virtual Award Awards { get; set; }
+	public bool IsCompleted { get; set; }
+
+	public virtual Award Awards { get; set; }
 
     public virtual ICollection<NominationsSelectionOption> NominationsSelectionOptions { get; } = new List<NominationsSelectionOption>();
 

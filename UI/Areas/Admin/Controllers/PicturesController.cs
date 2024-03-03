@@ -10,6 +10,9 @@ using UI.Areas.Admin.Models.ViewModels;
 using UI.Other;
 using UI.Areas.Admin.Models.ViewModels.FilterModels;
 using Entities;
+using System.Net;
+using Org.BouncyCastle.Utilities;
+using System;
 
 namespace UI.Areas.Admin.Controllers
 {
@@ -112,7 +115,7 @@ namespace UI.Areas.Admin.Controllers
 					}
 				case PictureToOtherType.AwardEvent:
 					{
-						pictureLink.AwardId = filterModel.Id;
+						pictureLink.AwardEventId = filterModel.Id;
 						break;
 					}
 			}
@@ -127,6 +130,17 @@ namespace UI.Areas.Admin.Controllers
 		public async Task DeleteLink(int LinkId)
 		{
 			await new PicturesToOtherBL().DeleteAsync(LinkId);
+		}
+
+		public async Task<JsonResult> AddFromLink(string link)
+		{
+			var returnLink = "/Uploads/Links/" + Guid.NewGuid() + link.Split("/").Last();
+			var newLink = "wwwroot" + returnLink;
+			using (WebClient webClient = new WebClient())
+			{
+				webClient.DownloadFile(link, newLink);
+			}
+			return Json(new { link = returnLink });
 		}
 	}
 }

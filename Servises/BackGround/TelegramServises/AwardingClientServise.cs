@@ -2,6 +2,7 @@
 using Common.Search;
 using Entities;
 using Servises.DTO;
+using System.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 using Update = Telegram.Bot.Types.Update;
@@ -10,7 +11,7 @@ namespace Servises.BackGround.TelegramServises;
 
 internal class AwardingClientServise : IAwardingClientServise
 {
-	private readonly ITelegramBotClient _client; 
+	private readonly ITelegramBotClient _client;
 	private readonly List<AwardSession> _curentSessions;
 	private readonly Dictionary<long, List<Vote>> _votes;
 	private readonly Dictionary<string, List<TelegramUser>> _usersToAwards;
@@ -28,13 +29,13 @@ internal class AwardingClientServise : IAwardingClientServise
 		foreach (var newSession in newSessions)
 		{
 			var previosSession = _curentSessions.Where(item => item.Id == newSession.Id).FirstOrDefault();
-			if(previosSession == null)
+			if (previosSession == null)
 			{
 				_curentSessions.Add(newSession);
 			}
 			else
 			{
-				if(newSession.State == Common.Enums.AwardSessionsState.End)
+				if (newSession.State == Common.Enums.AwardSessionsState.End)
 				{
 					var index = _curentSessions.Select(item => item.Id).ToList().IndexOf(newSession.Id);
 					_curentSessions.RemoveAt(index);
@@ -42,19 +43,21 @@ internal class AwardingClientServise : IAwardingClientServise
 				}
 				else
 				{
-					if(previosSession.NominationPassed != newSession.NominationPassed || previosSession.State != newSession.State)
+					if (previosSession.NominationPassed != newSession.NominationPassed || previosSession.State != newSession.State)
 					{
 						previosSession.NominationPassed = newSession.NominationPassed;
 						previosSession.State = newSession.State;
-						var nomination = (await new NominationsBL().GetAsync(new NominationsSearchParams(newSession.NominationPassed, 1)
+
+						var nomination = await new AwardsBL().GetCurentNominationItem(newSession.AwardId, newSession.NominationPassed);
+
+						if (nomination.NeedVote())
 						{
-							AwardId = newSession.AwardId
-						})).Objects.FirstOrDefault();
-						var nominations = await new NominationsSelectionOptionsBL().GetAsync(new NominationsSelectionOptionsSearchParams()
-						{
-							NominationId = nomination.Id
-						});
-						await SendOptions(newSession.ConnectionCode.ToLower(), nominations.Objects.ToList(), cancellationToken);
+							var options = await new NominationsSelectionOptionsBL().GetAsync(new NominationsSelectionOptionsSearchParams()
+							{
+								NominationId = nomination.Id
+							});
+							await SendOptions(newSession.ConnectionCode.ToLower(), options.Objects.ToList(), cancellationToken);
+						}
 					}
 				}
 			}
@@ -79,13 +82,13 @@ internal class AwardingClientServise : IAwardingClientServise
 	public async Task Subscride(TelegramUser user, string code, CancellationToken cancellationToken)
 	{
 		string text;
-		if(_usersToAwards.Select(item => item.Value).SelectMany(item => item).Select(item => item.ChatId).Contains(user.ChatId))
+		if (_usersToAwards.Select(item => item.Value).SelectMany(item => item).Select(item => item.ChatId).Contains(user.ChatId))
 		{
 			text = "нельзя участвовать в двух голосаваниях одновременно";
 		}
 		else
 		{
-			if(_curentSessions.Select(item => item.ConnectionCode.ToLower()).Contains(code))
+			if (_curentSessions.Select(item => item.ConnectionCode.ToLower()).Contains(code))
 			{
 				text = "вы успешно подписались";
 				bool isExict = _usersToAwards.TryGetValue(code, out List<TelegramUser> users);
@@ -109,7 +112,7 @@ internal class AwardingClientServise : IAwardingClientServise
 	public async Task Vote(TelegramUser user, int nominationOptionId, CancellationToken cancellationToken)
 	{
 		var code = _usersToAwards.Select(item => item).Where(item => item.Value.Select(item => item.Id).Contains(user.Id)).FirstOrDefault().Key ?? "";
-		if(string.IsNullOrEmpty(code))
+		if (string.IsNullOrEmpty(code))
 		{
 			var text = "вы не участвуете ни в одном голосовании";
 			var massage = await _client.SendTextMessageAsync(chatId: user.ChatId, text: text, cancellationToken: cancellationToken);
@@ -123,15 +126,12 @@ internal class AwardingClientServise : IAwardingClientServise
 			if (votes.Count() <= 2)
 			{
 				var awardSession = _curentSessions.Where(item => item.ConnectionCode.ToLower() == code).FirstOrDefault();
-				var nomination = (await new NominationsBL().GetAsync(new NominationsSearchParams(awardSession.NominationPassed, 1)
-				{
-					AwardId = awardSession.AwardId
-				})).Objects.FirstOrDefault();
-				var nominations = await new NominationsSelectionOptionsBL().GetAsync(new NominationsSelectionOptionsSearchParams()
+				var nomination = await new AwardsBL().GetCurentNominationItem(awardSession.AwardId, awardSession.NominationPassed);
+				var options = await new NominationsSelectionOptionsBL().GetAsync(new NominationsSelectionOptionsSearchParams()
 				{
 					NominationId = nomination.Id
 				});
-				var vote = new Vote(0, null, nominations.Objects.Where(item => item.Id == nominationOptionId).FirstOrDefault().Id, false, $"{user.LastName} {user.FirstName}", "", Common.Enums.VoteTir.Gold);
+				var vote = new Vote(0, null, options.Objects.Where(item => item.Id == nominationOptionId).FirstOrDefault().Id, false, $"{user.LastName} {user.FirstName}", "", Common.Enums.VoteTir.Gold);
 
 				var badIndexes = new List<int>()
 				{
@@ -141,7 +141,7 @@ internal class AwardingClientServise : IAwardingClientServise
 				{
 					badIndexes.Add(item.NominationsSelectionOptionsId);
 				}
-				var lastNominations = nominations.Objects.Where(item => badIndexes.Contains(item.Id) == false).ToList();
+				var lastNominations = options.Objects.Where(item => badIndexes.Contains(item.Id) == false).ToList();
 				if (votes.Count == 0)
 				{
 					ReplyKeyboardMarkup replyKeyboardMarkup = CreateButtons(lastNominations);
@@ -157,7 +157,7 @@ internal class AwardingClientServise : IAwardingClientServise
 				{
 					ReplyKeyboardMarkup replyKeyboardMarkup = CreateButtons(lastNominations);
 
-					vote.VoteTir = Common.Enums.VoteTir.Silver; 
+					vote.VoteTir = Common.Enums.VoteTir.Silver;
 					await _client.SendTextMessageAsync(
 						chatId: user.ChatId,
 						text: "выберайте бронзового призёра",
@@ -166,7 +166,7 @@ internal class AwardingClientServise : IAwardingClientServise
 				}
 				if (votes.Count == 2)
 				{
-					vote.VoteTir = Common.Enums.VoteTir.Bronze; 
+					vote.VoteTir = Common.Enums.VoteTir.Bronze;
 					await _client.SendTextMessageAsync(
 						chatId: user.ChatId,
 						text: "вы проголосовали 3 раза",
@@ -176,9 +176,9 @@ internal class AwardingClientServise : IAwardingClientServise
 				}
 				await new VotesBL().AddOrUpdateAsync(vote);
 
-				if(votes.Count == 0)
+				if (votes.Count == 0)
 				{
-					_votes.Add(user.Id, new() { vote});
+					_votes.Add(user.Id, new() { vote });
 				}
 				else
 				{

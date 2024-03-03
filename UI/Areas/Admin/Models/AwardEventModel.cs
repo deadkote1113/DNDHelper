@@ -5,18 +5,8 @@ using Entities;
 
 namespace UI.Areas.Admin.Models
 {
-	public class AwardEventModel
+	public class AwardEventModel : ModelWithPicture
 	{
-		[Required(ErrorMessage = "Укажите значение")]
-		[Display(Name = "Id")]
-		public int Id { get; set; }
-
-		[Display(Name = "Title")]
-		public string Title { get; set; }
-
-		[Display(Name = "Description")]
-		public string Description { get; set; }
-
 		[Required(ErrorMessage = "Укажите значение")]
 		[Display(Name = "OrderId")]
 		public int OrderId { get; set; }
@@ -25,21 +15,26 @@ namespace UI.Areas.Admin.Models
 		[Display(Name = "AwardsId")]
 		public int AwardsId { get; set; }
 
+		[Required(ErrorMessage = "Укажите значение")]
+		[Display(Name = "Завершена")]
+		public bool IsCompleted { get; set; }
+
 		public static AwardEventModel FromEntity(AwardEvent obj)
 		{
 			return obj == null ? null : new AwardEventModel
 			{
 				Id = obj.Id,
 				Title = obj.Title,
-				Description = obj.Description,
+				FlavorText = obj.Description,
 				OrderId = obj.OrderId,
 				AwardsId = obj.AwardsId,
+				IsCompleted = obj.IsCompleted,
 			};
 		}
 
 		public static AwardEvent ToEntity(AwardEventModel obj)
 		{
-			return obj == null ? null : new AwardEvent(obj.Id, obj.Title, obj.Description, obj.OrderId, obj.AwardsId);
+			return obj == null ? null : new AwardEvent(obj.Id, obj.Title, obj.FlavorText, obj.OrderId, obj.AwardsId, obj.IsCompleted);
 		}
 
 		public static List<AwardEventModel> FromEntitiesList(IEnumerable<AwardEvent> list)

@@ -27,6 +27,7 @@ namespace Dal
 			dbObject.AwardId = entity.AwardId;
 			dbObject.NominationId = entity.NominationId;
 			dbObject.NominationsSelectionOptionId = entity.NominationsSelectionOptionId;
+			dbObject.AwardEventId = entity.AwardEventId;
 			return Task.CompletedTask;
 		}
 	
@@ -70,7 +71,7 @@ namespace Dal
 		internal static Entities.PicturesToOther ConvertDbObjectToEntity(PicturesToOther dbObject)
 		{
 			return dbObject == null ? null : new Entities.PicturesToOther(dbObject.Id, dbObject.PictureId,
-				dbObject.AwardId, dbObject.NominationId, dbObject.NominationsSelectionOptionId)
+				dbObject.AwardId, dbObject.NominationId, dbObject.NominationsSelectionOptionId, dbObject.AwardEventId)
 			{
 				Picture = PicturesDal.ConvertDbObjectToEntity(dbObject.Picture),
 			};
